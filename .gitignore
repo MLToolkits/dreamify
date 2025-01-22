@@ -1,0 +1,45 @@
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore cache directories
+__pycache__/
+*.egg-info/
+.eggs/
+
+# Ignore virtual environments
+env/
+venv/
+
+# Ignore dist and build directories
+dist/
+build/
+
+# Ignore logs
+*.log
+
+# Ignore compiled C extensions
+*.so
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore mypy cache
+.mypy_cache/
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Ignore workspace config
+.codesandbox
+.devcontainer
+
+# Ignore Poetry files
+poetry.lock
+.cache/
