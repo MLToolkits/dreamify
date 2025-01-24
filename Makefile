@@ -9,3 +9,9 @@ publish:
 	git add . && \
     git commit -m "$(message)" && \
 	git push origin v$$version
+
+setup:
+	pip install -r requirements.txt
+
+setup_dev: setup
+	pip install -r requirements.dev.txt
