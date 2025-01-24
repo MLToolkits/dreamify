@@ -1,7 +1,19 @@
 from tensorflow import keras
 import numpy as np
 import tensorflow as tf
-from tqdm.tqdm import trange
+from tqdm import trange
+
+is_configured = False
+feature_extractor = None
+layer_settings = None
+
+def configure(extractor, settings):
+    global is_configured, feature_extractor, layer_settings
+    if not is_configured:
+        feature_extractor = extractor
+        layer_settings = settings
+        is_configured = True
+
  
 def preprocess_image(image_path):
     img = keras.utils.load_img(image_path)
@@ -18,7 +30,7 @@ def deprocess_image(img):
     img = np.clip(img, 0, 255).astype("uint8")
     return img
 
-def compute_loss(input_image, feature_extractor, layer_settings):
+def compute_loss(input_image):
     features = feature_extractor(input_image)
     loss = tf.zeros(shape=())
     for name in features.keys():
@@ -28,19 +40,21 @@ def compute_loss(input_image, feature_extractor, layer_settings):
     return loss
 
 @tf.function
-def _gradient_ascent_step(image, learning_rate, feature_extractor, layer_settings):
+def _gradient_ascent_step(image, learning_rate):
     with tf.GradientTape() as tape:
         tape.watch(image)
-        loss = compute_loss(image, feature_extractor, layer_settings)
+        loss = compute_loss(image)
     grads = tape.gradient(loss, image)
     grads = tf.math.l2_normalize(grads)
     image += learning_rate * grads
     return loss, image
 
 
-def gradient_ascent_loop(image, iterations, learning_rate, feature_extractor, layer_settings, max_loss=None):
-    for i in trange(iterations, desc="Gradient Ascent", unit="step"):
-        loss, image = _gradient_ascent_step(image, learning_rate, feature_extractor, layer_settings)
+def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
+    for i in trange(iterations, desc="Gradient Ascent", unit="step", 
+        ncols=75,
+        mininterval=0.5):
+        loss, image = _gradient_ascent_step(image, learning_rate)
         if max_loss is not None and loss > max_loss:
             print(f"Terminating early: Loss exceeded max_loss ({max_loss:.2f}).")
             break

@@ -9,7 +9,7 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="keras.src.models.functional")
 
 
-from utils import preprocess_image, deprocess_image, compute_loss, gradient_ascent_loop
+from utils import preprocess_image, deprocess_image, compute_loss, gradient_ascent_loop, configure
 
 def generate_dream_image(
     image_path,
@@ -39,6 +39,8 @@ def generate_dream_image(
     }
     feature_extractor = keras.Model(inputs=model.inputs, outputs=outputs_dict)
 
+    configure(feature_extractor, layer_settings)
+
 
     original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
@@ -53,10 +55,10 @@ def generate_dream_image(
 
     img = tf.identity(original_img)
     for i, shape in enumerate(successive_shapes):
-        print(f"\n\n{'_'*40} Processing octave {i} with shape {shape} {'_'*40}\n\n")
+        print(f"\n\n{'_'*30} Processing octave {i} with shape {shape} {'_'*30}\n\n")
         img = tf.image.resize(img, shape)
         img = gradient_ascent_loop(
-            img, iterations=iterations, learning_rate=step, max_loss=max_loss, feature_extractor=feature_extractor, layer_settings=layer_settings
+            img, iterations=iterations, learning_rate=step, max_loss=max_loss
         )
         upscaled_shrunk_original_img = tf.image.resize(shrunk_original_img, shape)
         same_size_original = tf.image.resize(original_img, shape)
@@ -68,4 +70,6 @@ def generate_dream_image(
     print(f"Dream image saved to {output_path}")
 
 if __name__ == "__main__":
-    generate_dream_image("example.jpg")
+    generate_dream_image("examples/example0.jpg", output_path="examples/dream0.png")
+    generate_dream_image("examples/example1.jpg", output_path="examples/dream1.png")
+    generate_dream_image("examples/example2.jpg", output_path="examples/dream2.png")
