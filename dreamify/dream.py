@@ -9,7 +9,7 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="keras.src.models.functional")
 
 
-from utils.utils import preprocess_image, deprocess_image, compute_loss, gradient_ascent_loop, configure
+from dreamify.utils.utils import preprocess_image, deprocess_image, compute_loss, gradient_ascent_loop, configure
 
 def generate_dream_image(
     image_path,
@@ -69,9 +69,12 @@ def generate_dream_image(
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
 
-if __name__ == "__main__":
+def main():
     generate_dream_image("examples/example0.jpg", output_path="examples/dream0.png")
     generate_dream_image("examples/example1.jpg", output_path="examples/dream1.png")
     generate_dream_image("examples/example2.jpg", output_path="examples/dream2.png")
     generate_dream_image("examples/example3.jpg", output_path="examples/dream3.png")
     generate_dream_image("examples/example4.jpg", output_path="examples/dream4.png")
+
+if __name__ == "__main__":
+    main()
