@@ -64,7 +64,7 @@ def generate_dream_image(
 
     img = tf.identity(original_img)
     for i, shape in enumerate(successive_shapes):
-        print(f"\n\n{'_'*25} Processing octave {i + 1} with shape {shape} {'_'*25}\n\n")
+        print(f"\n\n{'_'*20} Processing octave {i + 1} with shape {shape} {'_'*20}\n\n")
         img = tf.image.resize(img, shape)
         img = gradient_ascent_loop(
             img, iterations=iterations, learning_rate=step, max_loss=max_loss
