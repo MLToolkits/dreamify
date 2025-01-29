@@ -60,7 +60,7 @@ def _gradient_ascent_step(image, learning_rate):
 def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images_for_vid=None):
     prev_frame = None
     disable_framing = False
-    video_diff_threshold = 10
+    video_diff_threshold = 100
 
 
     for i in trange(
