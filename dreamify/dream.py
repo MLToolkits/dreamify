@@ -64,17 +64,18 @@ def generate_dream_image(
     shrunk_original_img = tf.image.resize(original_img, successive_shapes[0])
 
     img = tf.identity(original_img)
-    for i, shape in trange(enumerate(successive_shapes), desc="Dreamifying Image", unit="step", ncols=100, mininterval=0.25):
-        print(f"\n\n{'_'*20} Processing octave {i + 1} with shape {shape} {'_'*20}\n\n")
-        img = tf.image.resize(img, shape)
+    for i, shape in enumerate(trange(len(successive_shapes), desc="Dreamifying Image", unit="step", ncols=100, mininterval=0.25)):
+        print(f"\n\n{'_'*20} Processing octave {i + 1} with shape {successive_shapes[i]} {'_'*20}\n\n")
+        img = tf.image.resize(img, successive_shapes[i])
         img = gradient_ascent_loop(
             img, iterations=iterations, learning_rate=step, max_loss=max_loss
         )
-        upscaled_shrunk_original_img = tf.image.resize(shrunk_original_img, shape)
-        same_size_original = tf.image.resize(original_img, shape)
+        upscaled_shrunk_original_img = tf.image.resize(shrunk_original_img, successive_shapes[i])
+        same_size_original = tf.image.resize(original_img, successive_shapes[i])
         lost_detail = same_size_original - upscaled_shrunk_original_img
         img += lost_detail
-        shrunk_original_img = tf.image.resize(original_img, shape)
+        shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
+
 
         images.append(img.numpy().copy())
 
