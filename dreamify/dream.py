@@ -81,7 +81,7 @@ def generate_dream_image(
     print(f"Dream image saved to {output_path}")
 
     if save_video:
-        to_video(str(images_for_vid, output_path.with_suffix(".mp4")))
+        to_video(images_for_vid, str(output_path.with_suffix(".mp4")))
 
 
 
