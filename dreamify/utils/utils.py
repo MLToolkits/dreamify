@@ -78,5 +78,5 @@ def to_video(output_path, fps=1):
     def identity(img):
         return img
 
-    vid = DataVideoClip(images, identity, fps=fps)
+    vid = DataVideoClip(images_for_vid, identity, fps=fps)
     vid.write_videofile(output_path)
