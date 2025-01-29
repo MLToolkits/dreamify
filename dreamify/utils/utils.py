@@ -63,7 +63,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
     ):
         loss, image = _gradient_ascent_step(image, learning_rate)
 
-        print(f"Loss: {loss.2f}")
+        print(f"Loss: {loss:.2f}")
         if max_loss is not None and loss > max_loss:
             print(f"\nTerminating early: Loss exceeded max_loss ({max_loss:.2f}).\n")
             break
