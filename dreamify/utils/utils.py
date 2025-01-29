@@ -11,7 +11,7 @@ original_shape = None
 images = []
 
 
-def configure(extractor, settings):
+def configure(extractor, settings, original_shape):
     global is_configured, feature_extractor, layer_settings, original_shape, images
     if not is_configured:
         feature_extractor = extractor
