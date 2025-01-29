@@ -8,11 +8,11 @@ is_configured = False
 feature_extractor = None
 layer_settings = None
 original_shape = None
-images = []
+images_for_vid = []
 
 
 def configure(extractor, settings, original_shape_of_image):
-    global is_configured, feature_extractor, layer_settings, original_shape, images
+    global is_configured, feature_extractor, layer_settings, original_shape, images_for_vid
     if not is_configured:
         feature_extractor = extractor
         layer_settings = settings
@@ -64,9 +64,9 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     ):
         loss, image = _gradient_ascent_step(image, learning_rate)
 
-        image_for_vid = image.numpy().copy()
-        image_for_vid = tf.image.resize(image_for_vid, original_img)
-        image.append(deprocess_image(image_for_vid))
+        image_for_vid = tf.image.resize(image, original_shape)
+        image_for_vid = deprocess_image(image.numpy())
+        images_for_vid.append(image_for_vid)
 
         if max_loss is not None and loss > max_loss:
             print(f"Terminating early: Loss exceeded max_loss ({max_loss:.2f}).")
