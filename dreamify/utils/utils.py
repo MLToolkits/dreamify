@@ -12,7 +12,7 @@ images_for_vid = None
 
 
 def configure(extractor, settings, original_shape_of_image):
-    global is_configured, feature_extractor, layer_settings, original_shape, images_for_vid
+    global is_configured, feature_extractor, layer_settings, original_shape
     if not is_configured:
         feature_extractor = extractor
         layer_settings = settings
@@ -85,5 +85,3 @@ def to_video(output_path, fps=2):
     vid.write_videofile(output_path)
 
     images_for_vid.clear()
-
-
