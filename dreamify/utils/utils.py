@@ -83,4 +83,4 @@ def to_video(output_path, fps=2):
     vid = DataVideoClip(images_for_vid, identity, fps=fps)
     vid.write_videofile(output_path)
 
-    images_for_vid.clear()
+

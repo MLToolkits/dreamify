@@ -84,6 +84,7 @@ def generate_dream_image(
 
     if save_video:
         to_video(str(base_image_path.with_suffix(".mp4")))
+        images_for_vid.clear()
 
 
 
