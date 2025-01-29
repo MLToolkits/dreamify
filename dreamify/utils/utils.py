@@ -52,7 +52,7 @@ def _gradient_ascent_step(image, learning_rate):
 
 def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     for i in trange(iterations, desc="Gradient Ascent", unit="step", 
-        ncols=75,
+        ncols=60,
         mininterval=0.5):
         loss, image = _gradient_ascent_step(image, learning_rate)
         if max_loss is not None and loss > max_loss:
