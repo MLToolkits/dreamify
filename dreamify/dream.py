@@ -38,7 +38,6 @@ def generate_dream_image(
             "mixed6": 2.0,
             "mixed7": 2.5,
         }
-    images = []
 
     base_image_path = Path(image_path)
 
@@ -50,10 +49,10 @@ def generate_dream_image(
     }
     feature_extractor = keras.Model(inputs=model.inputs, outputs=outputs_dict)
 
-    configure(feature_extractor, layer_settings)
-
     original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
+
+    configure(feature_extractor, layer_settings, original_shape)
 
     successive_shapes = [original_shape]
     for i in range(1, num_octave):
@@ -64,7 +63,7 @@ def generate_dream_image(
     shrunk_original_img = tf.image.resize(original_img, successive_shapes[0])
 
     img = tf.identity(original_img)
-    for i, shape in enumerate(trange(len(successive_shapes), desc="Dreamifying Image", unit="step", ncols=100, mininterval=0.25)):
+    for i, shape in enumerate(successive_shapes):
         print(f"\n\n{'_'*20} Processing octave {i + 1} with shape {successive_shapes[i]} {'_'*20}\n\n")
         img = tf.image.resize(img, successive_shapes[i])
         img = gradient_ascent_loop(
@@ -77,13 +76,11 @@ def generate_dream_image(
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
 
-        images.append(deprocess_image(img.numpy().copy()))
-
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
 
     if save_video:
-        to_video(images, str(base_image_path.with_suffix(".mp4")))
+        to_video(str(base_image_path.with_suffix(".mp4")))
 
 
 
