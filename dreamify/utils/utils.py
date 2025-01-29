@@ -66,7 +66,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     return image
 
 
-def to_video(imgs, output_path, fps=30):
+def to_video(imgs, output_path, fps=1):
     def identity(img):
         return img
 
