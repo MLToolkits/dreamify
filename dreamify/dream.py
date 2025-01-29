@@ -40,6 +40,7 @@ def generate_dream_image(
         }
 
     base_image_path = Path(image_path)
+    output_path = Path(output_path)
 
     model = inception_v3.InceptionV3(weights="imagenet", include_top=False)
 
@@ -81,7 +82,7 @@ def generate_dream_image(
     print(f"Dream image saved to {output_path}")
 
     if save_video:
-        to_video(images_for_vid, file_path.name + ".mp4")
+        to_video(images_for_vid, output_path.name + ".mp4")
 
 
 
