@@ -64,13 +64,14 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     ):
         loss, image = _gradient_ascent_step(image, learning_rate)
 
+        if max_loss is not None and loss > max_loss:
+            print(f"Terminating early: Loss exceeded max_loss ({max_loss:.2f}).")
+            break
+        
         image_for_vid = tf.image.resize(image, original_shape)
         image_for_vid = deprocess_image(image.numpy())
         images_for_vid.append(image_for_vid)
 
-        if max_loss is not None and loss > max_loss:
-            print(f"Terminating early: Loss exceeded max_loss ({max_loss:.2f}).")
-            break
     return image
 
 
