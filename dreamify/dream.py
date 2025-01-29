@@ -1,15 +1,21 @@
-import numpy as np
+import warnings
+from pathlib import Path
+
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.applications import inception_v3
-import matplotlib.pyplot as plt
-from pathlib import Path
-import warnings
 
-warnings.filterwarnings("ignore", category=UserWarning, module="keras.src.models.functional")
+from dreamify.utils.utils import (
+    configure,
+    deprocess_image,
+    gradient_ascent_loop,
+    preprocess_image,
+)
 
+warnings.filterwarnings(
+    "ignore", category=UserWarning, module="keras.src.models.functional"
+)
 
-from dreamify.utils.utils import preprocess_image, deprocess_image, compute_loss, gradient_ascent_loop, configure
 
 def generate_dream_image(
     image_path,
@@ -41,7 +47,6 @@ def generate_dream_image(
 
     configure(feature_extractor, layer_settings)
 
-
     original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
 
@@ -69,12 +74,14 @@ def generate_dream_image(
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
 
+
 def main():
     generate_dream_image("examples/example0.jpg", output_path="examples/dream0.png")
     generate_dream_image("examples/example1.jpg", output_path="examples/dream1.png")
     generate_dream_image("examples/example2.jpg", output_path="examples/dream2.png")
     generate_dream_image("examples/example3.jpg", output_path="examples/dream3.png")
     generate_dream_image("examples/example4.jpg", output_path="examples/dream4.png")
+
 
 if __name__ == "__main__":
     main()
