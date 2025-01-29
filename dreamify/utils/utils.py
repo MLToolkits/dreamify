@@ -8,15 +8,18 @@ is_configured = False
 feature_extractor = None
 layer_settings = None
 original_shape = None
+max_frames = None
+curr_frame = 0
 
 
-def configure(extractor, settings, original_shape_of_image):
-    global is_configured, feature_extractor, layer_settings, original_shape
+def configure(extractor, settings, original_shape_of_image, max_frames_for_vid):
+    global is_configured, feature_extractor, layer_settings, original_shape, max_frames
     if not is_configured:
         feature_extractor = extractor
         layer_settings = settings
         original_shape = original_shape_of_image
         is_configured = True
+        max_frames = max_frames_for_vid
 
 
 def preprocess_image(image_path):
@@ -58,27 +61,27 @@ def _gradient_ascent_step(image, learning_rate):
 
 
 def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images_for_vid=None):
+    global curr_frame
     for i in trange(
-        iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.5
+        iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
     ):
         loss, image = _gradient_ascent_step(image, learning_rate)
 
         if max_loss is not None and loss > max_loss:
-            print(f"\nTerminating early: Loss exceeded max_loss ({max_loss:.2f}).\n")
+            print(f"\nTerminating early: Loss ({loss:.2f}) exceeded max_loss ({max_loss:.2f}).\n")
             break
         
-        image_for_vid = tf.image.resize(image, original_shape)
-        image_for_vid = deprocess_image(image.numpy())
-        images_for_vid.append(image_for_vid)
+        if curr_frame < max_frames:
+            image_for_vid = tf.image.resize(image, original_shape)
+            image_for_vid = deprocess_image(image.numpy())
+            images_for_vid.append(image_for_vid)
+            curr_frame += 1
 
     return image
 
 
 def to_video(images_for_vid, output_path, fps=2):
-    def identity(img):
-        return img
-
-    vid = DataVideoClip(images_for_vid, identity, fps=fps)
+    vid = DataVideoClip(images_for_vid, lambda x: x, fps=fps)
     vid.write_videofile(output_path)
 
 

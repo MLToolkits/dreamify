@@ -53,8 +53,9 @@ def generate_dream_image(
     original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
 
-    configure(feature_extractor, layer_settings, original_shape)
     images_for_vid = []
+    max_frames = num_octave * iterations
+    configure(feature_extractor, layer_settings, original_shape, max_frames)
 
     successive_shapes = [original_shape]
     for i in range(1, num_octave):
@@ -82,8 +83,7 @@ def generate_dream_image(
     print(f"Dream image saved to {output_path}")
 
     if save_video:
-        to_video(images_for_vid, output_path.name + ".mp4")
-
+        to_video(images_for_vid, output_path.stem + ".mp4")
 
 
 def main():
