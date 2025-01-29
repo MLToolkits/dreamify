@@ -1,5 +1,6 @@
 import os
 import warnings
+from tqdm import trange
 from pathlib import Path
 
 import tensorflow as tf
@@ -63,7 +64,7 @@ def generate_dream_image(
     shrunk_original_img = tf.image.resize(original_img, successive_shapes[0])
 
     img = tf.identity(original_img)
-    for i, shape in enumerate(successive_shapes):
+    for i, shape in trange(enumerate(successive_shapes), desc="Dreamifying Image", unit="step", ncols=100, mininterval=0.25):
         print(f"\n\n{'_'*20} Processing octave {i + 1} with shape {shape} {'_'*20}\n\n")
         img = tf.image.resize(img, shape)
         img = gradient_ascent_loop(
