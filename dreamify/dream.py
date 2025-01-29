@@ -12,7 +12,8 @@ from dreamify.utils.utils import (
     deprocess_image,
     gradient_ascent_loop,
     preprocess_image,
-    to_video
+    to_video,
+    images_for_vid
 )
 
 warnings.filterwarnings(
@@ -53,6 +54,8 @@ def generate_dream_image(
     original_shape = original_img.shape[1:3]
 
     configure(feature_extractor, layer_settings, original_shape)
+    global images_for_vid
+    images_for_vid = []
 
     successive_shapes = [original_shape]
     for i in range(1, num_octave):
