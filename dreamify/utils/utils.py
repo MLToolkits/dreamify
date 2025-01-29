@@ -60,7 +60,7 @@ def _gradient_ascent_step(image, learning_rate):
 def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images_for_vid=None):
     prev_frame = None
     disable_framing = False
-    video_diff_threshold = 1000
+    video_diff_threshold = 10
 
 
     for i in trange(
@@ -72,7 +72,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
             print(f"\nTerminating early: Loss ({loss:.2f}) exceeded max_loss ({max_loss:.2f}).\n")
             break
         
-        
+
         curr_frame = tf.image.resize(image, original_shape)
 
         if prev_frame is not None:
