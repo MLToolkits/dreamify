@@ -8,7 +8,7 @@ is_configured = False
 feature_extractor = None
 layer_settings = None
 original_shape = None
-images_for_vid = []
+images_for_vid = None
 
 
 def configure(extractor, settings, original_shape_of_image):
@@ -18,6 +18,7 @@ def configure(extractor, settings, original_shape_of_image):
         layer_settings = settings
         original_shape = original_shape_of_image
         is_configured = True
+        images_for_vid = []
 
 
 def preprocess_image(image_path):
@@ -76,7 +77,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     return image
 
 
-def to_video(output_path, fps=1):
+def to_video(output_path, fps=2):
     def identity(img):
         return img
 
