@@ -8,18 +8,15 @@ is_configured = False
 feature_extractor = None
 layer_settings = None
 original_shape = None
-max_frames = None
-curr_frame = 0
 
 
-def configure(extractor, settings, original_shape_of_image, max_frames_for_vid):
-    global is_configured, feature_extractor, layer_settings, original_shape, max_frames
+def configure(extractor, settings, original_shape_of_image):
+    global is_configured, feature_extractor, layer_settings, original_shape
     if not is_configured:
         feature_extractor = extractor
         layer_settings = settings
         original_shape = original_shape_of_image
         is_configured = True
-        max_frames = max_frames_for_vid
 
 
 def preprocess_image(image_path):
@@ -61,7 +58,11 @@ def _gradient_ascent_step(image, learning_rate):
 
 
 def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images_for_vid=None):
-    global curr_frame
+    prev_frame = None
+    disable_framing = False
+    video_diff_threshold = 1000
+
+
     for i in trange(
         iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
     ):
@@ -71,11 +72,21 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
             print(f"\nTerminating early: Loss ({loss:.2f}) exceeded max_loss ({max_loss:.2f}).\n")
             break
         
-        if curr_frame < max_frames:
-            image_for_vid = tf.image.resize(image, original_shape)
-            image_for_vid = deprocess_image(image.numpy())
-            images_for_vid.append(image_for_vid)
-            curr_frame += 1
+        
+        curr_frame = tf.image.resize(image, original_shape)
+
+        if prev_frame is not None:
+            frame_diff = calculate_frame_difference(curr_frame, prev_frame)
+
+            if frame_diff > video_diff_threshold:
+                print(f"Frame difference ({frame_diff:.2f}) exceeded threshold ({video_diff_threshold:.2f}).")
+
+        if not disable_framing:
+            frame_for_vid = tf.image.resize(image, original_shape)
+            frame_for_vid = deprocess_image(image.numpy())
+            images_for_vid.append(frame_for_vid)
+
+        prev_frame = curr_frame
 
     return image
 
@@ -85,3 +96,6 @@ def to_video(images_for_vid, output_path, fps=2):
     vid.write_videofile(output_path)
 
 
+def calculate_frame_difference(curr_frame, prev_frame):
+    """Calculate the absolute difference between two frames."""
+    return tf.reduce_sum(tf.abs(curr_frame - prev_frame))
