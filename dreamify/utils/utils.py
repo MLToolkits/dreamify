@@ -64,8 +64,9 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     ):
         loss, image = _gradient_ascent_step(image, learning_rate)
 
+        print(f"Loss: {loss.2f}")
         if max_loss is not None and loss > max_loss:
-            print(f"Terminating early: Loss exceeded max_loss ({max_loss:.2f}).")
+            print(f"\nTerminating early: Loss exceeded max_loss ({max_loss:.2f}).\n")
             break
         
         image_for_vid = tf.image.resize(image, original_shape)
@@ -81,3 +82,7 @@ def to_video(output_path, fps=1):
 
     vid = DataVideoClip(images_for_vid, identity, fps=fps)
     vid.write_videofile(output_path)
+
+    images_for_vid.clear()
+
+
