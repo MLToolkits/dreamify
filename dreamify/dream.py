@@ -1,3 +1,4 @@
+import os
 import warnings
 from pathlib import Path
 
@@ -10,6 +11,7 @@ from dreamify.utils.utils import (
     deprocess_image,
     gradient_ascent_loop,
     preprocess_image,
+    to_video
 )
 
 warnings.filterwarnings(
@@ -26,6 +28,7 @@ def generate_dream_image(
     octave_scale=1.4,
     iterations=30,
     max_loss=15.0,
+    save_video=False
 ):
     if layer_settings is None:
         layer_settings = {
@@ -34,6 +37,7 @@ def generate_dream_image(
             "mixed6": 2.0,
             "mixed7": 2.5,
         }
+    images = []
 
     base_image_path = Path(image_path)
 
@@ -71,8 +75,13 @@ def generate_dream_image(
         img += lost_detail
         shrunk_original_img = tf.image.resize(original_img, shape)
 
+        images.append(img.numpy().copy())
+
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
+
+    if save_video:
+        to_video(images, os.path.basename(output_path) + ".mp4")
 
 
 def main():
