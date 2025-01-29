@@ -8,7 +8,6 @@ is_configured = False
 feature_extractor = None
 layer_settings = None
 original_shape = None
-images_for_vid = None
 
 
 def configure(extractor, settings, original_shape_of_image):
@@ -58,7 +57,7 @@ def _gradient_ascent_step(image, learning_rate):
     return loss, image
 
 
-def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
+def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images_for_vid=[]):
     for i in trange(
         iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.5
     ):
