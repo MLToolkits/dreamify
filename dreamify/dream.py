@@ -77,7 +77,7 @@ def generate_dream_image(
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
 
-        images.append(img.numpy().copy())
+        images.append(deprocess_image(img.numpy().copy()))
 
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
