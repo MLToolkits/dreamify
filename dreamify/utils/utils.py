@@ -16,6 +16,7 @@ def configure_settings(
     enable_framing,
     frames_for_vid,
     iterations,
+    upsample_vid,
 ):
     global config
     config = Config(
@@ -25,6 +26,7 @@ def configure_settings(
         enable_framing=enable_framing,
         frames_for_vid=frames_for_vid,
         max_frames_to_sample=iterations,
+        upsample_vid=upsample_vid,
     )
 
 
@@ -92,8 +94,11 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     return image
 
 
-def to_video(output_path, fps=1):
+def to_video(output_path, fps=5):
     global config
+
+    if config.upsample_vid:
+        upsample()
 
     print(f"Number of images to frame: {len(config.frames_for_vid)}")
 
@@ -101,6 +106,28 @@ def to_video(output_path, fps=1):
     vid.write_videofile(output_path)
 
     config = Config()  # Reset the configuration
+
+
+def upsample():
+    global config
+    NUM_FRAMES_TO_INSERT = 5
+
+    new_frames = []
+
+    for i in range(len(config.frames_for_vid) - 1):
+        frame1 = config.frames_for_vid[i].astype(np.float32)
+        frame2 = config.frames_for_vid[i + 1].astype(np.float32)
+
+        new_frames.append(config.frames_for_vid[i])
+
+        # Generate interpolated frames
+        for j in range(1, NUM_FRAMES_TO_INSERT + 1):
+            alpha = j / (NUM_FRAMES_TO_INSERT + 1)
+            interpolated_frame = (1 - alpha) * frame1 + alpha * frame2
+            new_frames.append(interpolated_frame.astype(np.uint8))
+
+    new_frames.append(config.frames_for_vid[-1])
+    config.frames_for_vid = new_frames
 
 
 __all__ = [

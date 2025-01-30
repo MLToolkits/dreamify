@@ -28,6 +28,7 @@ def generate_dream_image(
     iterations=30,
     max_loss=15.0,
     save_video=False,
+    upsample_vid=False,
 ):
     if layer_settings is None:
         layer_settings = {
@@ -58,6 +59,7 @@ def generate_dream_image(
         save_video,
         [],
         iterations,
+        upsample_vid,
     )
 
     successive_shapes = [original_shape]
