@@ -79,6 +79,7 @@ def generate_dream_image(
 
 
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
+    print(len(images_for_vid))
     print(f"Dream image saved to {output_path}")
 
     if save_video:
