@@ -1,6 +1,4 @@
-import os
 import warnings
-from tqdm import trange
 from pathlib import Path
 
 import tensorflow as tf
@@ -29,7 +27,7 @@ def generate_dream_image(
     octave_scale=1.4,
     iterations=30,
     max_loss=15.0,
-    save_video=False
+    save_video=False,
 ):
     if layer_settings is None:
         layer_settings = {
@@ -53,8 +51,9 @@ def generate_dream_image(
     original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
 
-    images_for_vid = []
-    configure(feature_extractor, layer_settings, original_shape)
+    configure(
+        feature_extractor, layer_settings, original_shape, [], iterations, 
+    )
 
     successive_shapes = [original_shape]
     for i in range(1, num_octave):
@@ -66,23 +65,29 @@ def generate_dream_image(
 
     img = tf.identity(original_img)
     for i, shape in enumerate(successive_shapes):
-        print(f"\n\n{'_'*20} Processing octave {i + 1} with shape {successive_shapes[i]} {'_'*20}\n\n")
+        print(
+            f"\n\n{'_'*20} Processing octave {i + 1} with shape {successive_shapes[i]} {'_'*20}\n\n"
+        )
         img = tf.image.resize(img, successive_shapes[i])
         img = gradient_ascent_loop(
-            img, iterations=iterations, learning_rate=step, max_loss=max_loss, images_for_vid=images_for_vid,
+            img,
+            iterations=iterations,
+            learning_rate=step,
+            max_loss=max_loss,
         )
-        upscaled_shrunk_original_img = tf.image.resize(shrunk_original_img, successive_shapes[i])
+        upscaled_shrunk_original_img = tf.image.resize(
+            shrunk_original_img, successive_shapes[i]
+        )
         same_size_original = tf.image.resize(original_img, successive_shapes[i])
         lost_detail = same_size_original - upscaled_shrunk_original_img
         img += lost_detail
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
-
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
 
     if save_video:
-        to_video(images_for_vid, output_path.stem + ".mp4")
+        to_video(output_path.stem + ".mp4")
 
 
 def main():

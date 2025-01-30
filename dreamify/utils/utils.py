@@ -4,19 +4,22 @@ from moviepy.video.VideoClip import DataVideoClip
 from tensorflow import keras
 from tqdm import trange
 
-is_configured = False
-feature_extractor = None
-layer_settings = None
-original_shape = None
+from dreamify.utils.configure import Config
+
+config: Config = None
 
 
-def configure(extractor, settings, original_shape_of_image):
-    global is_configured, feature_extractor, layer_settings, original_shape
-    if not is_configured:
-        feature_extractor = extractor
-        layer_settings = settings
-        original_shape = original_shape_of_image
-        is_configured = True
+def configure(
+    feature_extractor, layer_settings, original_shape, frames_for_vid, iterations
+):
+    global config
+    config = Config(
+        feature_extractor=feature_extractor,
+        layer_settings=layer_settings,
+        original_shape=original_shape,
+        frames_for_vid=frames_for_vid,
+        max_frames_to_sample=iterations,
+    )
 
 
 def preprocess_image(image_path):
@@ -37,10 +40,10 @@ def deprocess_image(img):
 
 
 def compute_loss(input_image):
-    features = feature_extractor(input_image)
+    features = config.feature_extractor(input_image)
     loss = tf.zeros(shape=())
     for name in features.keys():
-        coeff = layer_settings[name]
+        coeff = config.layer_settings[name]
         activation = features[name]
         loss += coeff * tf.reduce_mean(tf.square(activation[:, 2:-2, 2:-2, :]))
     return loss
@@ -57,13 +60,8 @@ def _gradient_ascent_step(image, learning_rate):
     return loss, image
 
 
-def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images_for_vid=None):
-    prev_frame = None
-    enable_framing = True
-    image_shape = tf.shape(image)
-    h, w = image_shape[0], image_shape[1]
-    video_diff_threshold = tf.cast(h, tf.float32) * tf.cast(w, tf.float32) * 50
-
+def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
+    global config
 
     for i in trange(
         iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
@@ -71,36 +69,29 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
         loss, image = _gradient_ascent_step(image, learning_rate)
 
         if max_loss is not None and loss > max_loss:
-            print(f"\nTerminating early: Loss ({loss:.2f}) exceeded max_loss ({max_loss:.2f}).\n")
+            print(
+                f"\nTerminating early: Loss ({loss:.2f}) exceeded max_loss ({max_loss:.2f}).\n"
+            )
             break
-        
 
-        curr_frame = image.numpy()
-
-        if enable_framing and prev_frame is not None:
-            frame_diff = calculate_frame_difference(curr_frame, prev_frame)
-
-            if frame_diff > video_diff_threshold:
-                enable_framing = False
-
-        prev_frame = curr_frame
-
-        if enable_framing:
-            frame_for_vid = tf.image.resize(image, original_shape)
-            frame_for_vid = deprocess_image(image.numpy())
-            images_for_vid.append(frame_for_vid)
+        if config.curr_frame_idx < config.max_frames_to_sample - 1:
+            frame = tf.image.resize(image, config.original_shape)
+            frame = deprocess_image(image.numpy())
+            config.frames_for_vid.append(frame)
+            config.curr_frame_idx += 1
 
     return image
 
 
-def to_video(images_for_vid, output_path, fps=2):
+def to_video(output_path, fps=1):
+    global config
+
+    print(f"Number of images to frame: {len(config.frames_for_vid)}")
+
     def identity(x):
         return x
-    print(f"Number of images to frame: {len(images_for_vid)}")
-    vid = DataVideoClip(images_for_vid, identity, fps=fps)
+
+    vid = DataVideoClip(config.frames_for_vid, identity, fps=fps)
     vid.write_videofile(output_path)
 
-
-def calculate_frame_difference(curr_frame, prev_frame):
-    """Calculate the absolute difference between two frames."""
-    return tf.reduce_sum(tf.abs(curr_frame - prev_frame))
+    config = Config()  # Reset the configuration
