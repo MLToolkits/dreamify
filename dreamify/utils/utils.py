@@ -61,6 +61,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
     prev_frame = None
     enable_framing = True
     video_diff_threshold = tf.size(image) * 100000000
+    print(video_diff_threshold)
 
     for i in trange(
         iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
