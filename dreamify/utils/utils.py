@@ -25,7 +25,6 @@ def configure_settings(
         enable_framing=enable_framing,
         frames_for_vid=frames_for_vid,
         max_frames_to_sample=iterations,
-        upsample_vid=enable_framing,
     )
 
 
@@ -106,6 +105,16 @@ def to_video(output_path, fps=60):
     config = Config()  # Reset the configuration
 
 
+@tf.function
+def interpolate_frames(frame1, frame2, num_frames):
+    alphas = tf.linspace(0.0, 1.0, num_frames + 2)[1:-1]  # Avoid 0 and 1
+    return tf.cast(
+        (1 - alphas[:, None, None, None]) * frame1
+        + alphas[:, None, None, None] * frame2,
+        tf.uint8,
+    )
+
+
 def upsample():
     global config
     NUM_FRAMES_TO_INSERT = 60
@@ -113,16 +122,13 @@ def upsample():
     new_frames = []
 
     for i in range(len(config.frames_for_vid) - 1):
-        frame1 = config.frames_for_vid[i].astype(np.float32)
-        frame2 = config.frames_for_vid[i + 1].astype(np.float32)
+        frame1 = tf.convert_to_tensor(config.frames_for_vid[i], dtype=tf.float32)
+        frame2 = tf.convert_to_tensor(config.frames_for_vid[i + 1], dtype=tf.float32)
 
         new_frames.append(config.frames_for_vid[i])
-
-        # Generate interpolated frames
-        for j in range(1, NUM_FRAMES_TO_INSERT + 1):
-            alpha = j / (NUM_FRAMES_TO_INSERT + 1)
-            interpolated_frame = (1 - alpha) * frame1 + alpha * frame2
-            new_frames.append(interpolated_frame.astype(np.uint8))
+        new_frames.extend(
+            interpolate_frames(frame1, frame2, NUM_FRAMES_TO_INSERT).numpy()
+        )
 
     new_frames.append(config.frames_for_vid[-1])
     config.frames_for_vid = new_frames

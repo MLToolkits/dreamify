@@ -10,4 +10,3 @@ class Config:
     frames_for_vid: list = None
     max_frames_to_sample: int = 0
     curr_frame_idx: int = 0
-    upsample_vid: bool = False
