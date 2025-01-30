@@ -59,8 +59,8 @@ def _gradient_ascent_step(image, learning_rate):
 
 def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images_for_vid=None):
     prev_frame = None
-    disable_framing = False
-    video_diff_threshold = 100
+    enable_framing = True
+    video_diff_threshold = 500
 
 
     for i in trange(
@@ -73,15 +73,15 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
             break
         
 
-        curr_frame = tf.image.resize(image, original_shape)
+        curr_frame = image.numpy()
 
         if prev_frame is not None:
             frame_diff = calculate_frame_difference(curr_frame, prev_frame)
 
             if frame_diff > video_diff_threshold:
-                print(f"Frame difference ({frame_diff:.2f}) exceeded threshold ({video_diff_threshold:.2f}).")
+                disable_framing = False
 
-        if not disable_framing:
+        if enable_framing:
             frame_for_vid = tf.image.resize(image, original_shape)
             frame_for_vid = deprocess_image(image.numpy())
             images_for_vid.append(frame_for_vid)
