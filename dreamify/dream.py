@@ -69,7 +69,7 @@ def generate_dream_image(
         print(f"\n\n{'_'*20} Processing octave {i + 1} with shape {successive_shapes[i]} {'_'*20}\n\n")
         img = tf.image.resize(img, successive_shapes[i])
         img = gradient_ascent_loop(
-            img, iterations=iterations, learning_rate=step, max_loss=max_loss, images_for_vid=images_for_vid
+            img, iterations=iterations, learning_rate=step, max_loss=max_loss, images_for_vid=images_for_vid,
         )
         upscaled_shrunk_original_img = tf.image.resize(shrunk_original_img, successive_shapes[i])
         same_size_original = tf.image.resize(original_img, successive_shapes[i])
@@ -79,7 +79,6 @@ def generate_dream_image(
 
 
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
-    print(len(images_for_vid))
     print(f"Dream image saved to {output_path}")
 
     if save_video:

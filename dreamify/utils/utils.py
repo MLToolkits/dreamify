@@ -61,8 +61,9 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
     prev_frame = None
     enable_framing = True
     image_shape = tf.shape(image)
-    image_height, image_width, _ = image_shape.numpy()
-    video_diff_threshold = image_shape.numpy() * 1.1
+    h, w = image_shape[0], image_shape[1]
+    video_diff_threshold = tf.cast(h, tf.float32) * tf.cast(w, tf.float32) * 50
+
 
     for i in trange(
         iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
@@ -76,13 +77,13 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
 
         curr_frame = image.numpy()
 
-        if enable_framing or prev_frame is not None:
+        if enable_framing and prev_frame is not None:
             frame_diff = calculate_frame_difference(curr_frame, prev_frame)
 
             if frame_diff > video_diff_threshold:
                 enable_framing = False
 
-            prev_frame = curr_frame
+        prev_frame = curr_frame
 
         if enable_framing:
             frame_for_vid = tf.image.resize(image, original_shape)
@@ -95,7 +96,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, images
 def to_video(images_for_vid, output_path, fps=2):
     def identity(x):
         return x
-
+    print(f"Number of images to frame: {len(images_for_vid)}")
     vid = DataVideoClip(images_for_vid, identity, fps=fps)
     vid.write_videofile(output_path)
 
