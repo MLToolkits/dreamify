@@ -10,13 +10,19 @@ config: Config = None
 
 
 def configure_settings(
-    feature_extractor, layer_settings, original_shape, frames_for_vid, iterations
+    feature_extractor,
+    layer_settings,
+    original_shape,
+    enable_framing,
+    frames_for_vid,
+    iterations,
 ):
     global config
     config = Config(
         feature_extractor=feature_extractor,
         layer_settings=layer_settings,
         original_shape=original_shape,
+        enable_framing=enable_framing,
         frames_for_vid=frames_for_vid,
         max_frames_to_sample=iterations,
     )
@@ -74,7 +80,10 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
             )
             break
 
-        if config.curr_frame_idx < config.max_frames_to_sample - 1:
+        if (
+            config.enable_framing
+            and config.curr_frame_idx < config.max_frames_to_sample - 1
+        ):
             frame = tf.image.resize(image, config.original_shape)
             frame = deprocess_image(image.numpy())
             config.frames_for_vid.append(frame)
@@ -94,4 +103,10 @@ def to_video(output_path, fps=1):
     config = Config()  # Reset the configuration
 
 
-__all__ = [configure_settings, preprocess_image, deprocess_image, gradient_ascent_loop, to_video]
+__all__ = [
+    configure_settings,
+    preprocess_image,
+    deprocess_image,
+    gradient_ascent_loop,
+    to_video,
+]

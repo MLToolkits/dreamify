@@ -52,7 +52,12 @@ def generate_dream_image(
     original_shape = original_img.shape[1:3]
 
     configure_settings(
-        feature_extractor, layer_settings, original_shape, [], iterations, 
+        feature_extractor,
+        layer_settings,
+        original_shape,
+        save_video,
+        [],
+        iterations,
     )
 
     successive_shapes = [original_shape]
