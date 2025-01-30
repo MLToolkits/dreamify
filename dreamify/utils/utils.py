@@ -88,10 +88,7 @@ def to_video(output_path, fps=1):
 
     print(f"Number of images to frame: {len(config.frames_for_vid)}")
 
-    def identity(x):
-        return x
-
-    vid = DataVideoClip(config.frames_for_vid, identity, fps=fps)
+    vid = DataVideoClip(config.frames_for_vid, lambda x: x, fps=fps)
     vid.write_videofile(output_path)
 
     config = Config()  # Reset the configuration
