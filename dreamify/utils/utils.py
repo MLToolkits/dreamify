@@ -16,7 +16,6 @@ def configure_settings(
     enable_framing,
     frames_for_vid,
     iterations,
-    upsample_vid,
 ):
     global config
     config = Config(
@@ -26,7 +25,7 @@ def configure_settings(
         enable_framing=enable_framing,
         frames_for_vid=frames_for_vid,
         max_frames_to_sample=iterations,
-        upsample_vid=upsample_vid,
+        upsample_vid=enable_framing,
     )
 
 
@@ -94,11 +93,10 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     return image
 
 
-def to_video(output_path, fps=5):
+def to_video(output_path, fps=60):
     global config
 
-    if config.upsample_vid:
-        upsample()
+    upsample()
 
     print(f"Number of images to frame: {len(config.frames_for_vid)}")
 
@@ -110,7 +108,7 @@ def to_video(output_path, fps=5):
 
 def upsample():
     global config
-    NUM_FRAMES_TO_INSERT = 5
+    NUM_FRAMES_TO_INSERT = 60
 
     new_frames = []
 
