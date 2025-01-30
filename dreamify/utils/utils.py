@@ -9,7 +9,7 @@ from dreamify.utils.configure import Config
 config: Config = None
 
 
-def configure(
+def configure_settings(
     feature_extractor, layer_settings, original_shape, frames_for_vid, iterations
 ):
     global config
@@ -50,7 +50,7 @@ def compute_loss(input_image):
 
 
 @tf.function
-def _gradient_ascent_step(image, learning_rate):
+def gradient_ascent_step(image, learning_rate):
     with tf.GradientTape() as tape:
         tape.watch(image)
         loss = compute_loss(image)
@@ -66,7 +66,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     for i in trange(
         iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
     ):
-        loss, image = _gradient_ascent_step(image, learning_rate)
+        loss, image = gradient_ascent_step(image, learning_rate)
 
         if max_loss is not None and loss > max_loss:
             print(
@@ -95,3 +95,6 @@ def to_video(output_path, fps=1):
     vid.write_videofile(output_path)
 
     config = Config()  # Reset the configuration
+
+
+__all__ = [configure_settings, preprocess_image, deprocess_image, gradient_ascent_loop, to_video]
