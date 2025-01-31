@@ -1,5 +1,6 @@
 import numpy as np
 import tensorflow as tf
+from moviepy.video.fx import AccelDecel
 from moviepy.video.VideoClip import DataVideoClip
 from tensorflow import keras
 from tqdm import trange
@@ -92,7 +93,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
     return image
 
 
-def to_video(output_path, fps=60):
+def to_video(output_path, duration, fps=60):
     global config
 
     upsample()
@@ -100,6 +101,7 @@ def to_video(output_path, fps=60):
     print(f"Number of images to frame: {len(config.frames_for_vid)}")
 
     vid = DataVideoClip(config.frames_for_vid, lambda x: x, fps=fps)
+    vid = AccelDecel(new_duration=duration).apply(vid)
     vid.write_videofile(output_path)
 
     config = Config()  # Reset the configuration
@@ -121,6 +123,7 @@ def upsample():
 
     new_frames = []
 
+    # Upsample via frame-frame interpoliation
     for i in range(len(config.frames_for_vid) - 1):
         frame1 = tf.convert_to_tensor(config.frames_for_vid[i], dtype=tf.float32)
         frame2 = tf.convert_to_tensor(config.frames_for_vid[i + 1], dtype=tf.float32)
@@ -130,7 +133,9 @@ def upsample():
             interpolate_frames(frame1, frame2, NUM_FRAMES_TO_INSERT).numpy()
         )
 
-    new_frames.append(config.frames_for_vid[-1])
+    new_frames.extend(
+        [config.frames_for_vid[-1]] * 60 * 3
+    )  # Lengthen end frame by 3 secs
     config.frames_for_vid = new_frames
 
 

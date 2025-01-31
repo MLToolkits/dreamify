@@ -28,6 +28,7 @@ def generate_dream_image(
     iterations=30,
     max_loss=15.0,
     save_video=False,
+    duration=5,
 ):
     if layer_settings is None:
         layer_settings = {
@@ -87,7 +88,7 @@ def generate_dream_image(
     print(f"Dream image saved to {output_path}")
 
     if save_video:
-        to_video(output_path.stem + ".mp4")
+        to_video(output_path.stem + ".mp4", duration)
 
 
 def main():
