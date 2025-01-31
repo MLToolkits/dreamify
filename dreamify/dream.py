@@ -3,8 +3,8 @@ from pathlib import Path
 
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.applications import inception_v3
 
+from dreamify.utils.models import choose_model
 from dreamify.utils.utils import (
     configure_settings,
     deprocess_image,
@@ -21,7 +21,8 @@ warnings.filterwarnings(
 def generate_dream_image(
     image_path,
     output_path="dream.png",
-    layer_settings=None,
+    model_name="xception",
+    # layer_settings=None,
     step=20.0,
     num_octave=3,
     octave_scale=1.4,
@@ -30,18 +31,18 @@ def generate_dream_image(
     save_video=False,
     duration=10,
 ):
-    if layer_settings is None:
-        layer_settings = {
-            "mixed4": 1.0,
-            "mixed5": 1.5,
-            "mixed6": 2.0,
-            "mixed7": 2.5,
-        }
+    # if layer_settings is None:
+    #     layer_settings = {
+    #         "mixed4": 1.0,
+    #         "mixed5": 1.5,
+    #         "mixed6": 2.0,
+    #         "mixed7": 2.5,
+    #     }
 
     base_image_path = Path(image_path)
     output_path = Path(output_path)
 
-    model = inception_v3.InceptionV3(weights="imagenet", include_top=False)
+    model, layer_settings = choose_model(model_name)
 
     outputs_dict = {
         layer.name: layer.output
