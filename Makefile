@@ -10,12 +10,9 @@ setup_dev: setup
 
 publish:
 	@poetry version $(change)
-	@version=$$(poetry version -s) && \
-	poetry build && \
-	git tag v$$version && \
-	git add . && \
-    git commit -m "$(message)" && \
-	git push origin v$$version
+	@git tag v$$(poetry version -s)
+	@git commit -am "$(message)"
+	@git push origin --tags
 
 lint:
 	isort .
