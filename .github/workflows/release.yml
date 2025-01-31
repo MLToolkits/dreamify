@@ -70,8 +70,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           body: |
-            🎉 **New Release: ${{ github.ref_name }}** 🎉
-            - Automatically generated release using GitHub Actions.
+            🚀 **New Release: ${{ github.ref_name }}** 🚀
           draft: false
           prerelease: false
         env:
