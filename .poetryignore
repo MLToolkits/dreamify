@@ -1,2 +1,2 @@
-examples/
+examples/*
 !examples/example0.jpg
