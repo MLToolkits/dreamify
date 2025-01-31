@@ -13,6 +13,7 @@ publish:
 	@git tag v$$(poetry version -s)
 	@git commit -am "$(message)"
 	@git push origin --tags
+	@poetry publish --build
 
 lint:
 	isort .
