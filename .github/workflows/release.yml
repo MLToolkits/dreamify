@@ -1,14 +1,14 @@
 name: Python Release to GitHub
 
 on:
-  workflow_run:
-    workflows: ["Code Formatter and Linter"]
-    branches: [main]
-    types: 
-      - completed
   push:
     tags:
       - 'v*'
+  workflow_run:
+    workflows: ["Code Formatter and Linter"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
   release-build:
