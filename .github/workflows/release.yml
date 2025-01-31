@@ -43,7 +43,9 @@ jobs:
           export PATH="$HOME/.local/bin:$PATH"
 
       - name: Install dependencies
-        run: poetry install --no-root
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install --no-root --no-interaction --prefer-cache
 
       - name: Build release distributions
         run: poetry build
