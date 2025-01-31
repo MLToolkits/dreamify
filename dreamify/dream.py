@@ -12,7 +12,7 @@ from dreamify.utils.utils import (
     preprocess_image,
     to_video,
 )
-from dreamify.utils.compare import main
+# from dreamify.utils.compare import main
 
 warnings.filterwarnings(
     "ignore", category=UserWarning, module="keras.src.models.functional"
@@ -88,4 +88,5 @@ def generate_dream_image(
 
 # Compares all models and layer settings on an image
 if __name__ == "__main__":
-    main()
+    # main()  # current implementation of comparison has circular import
+    pass
