@@ -43,7 +43,7 @@ def compare_images(image_paths):
     fig, axes = plt.subplots(1, len(image_paths), figsize=(15, 5))
 
     if len(image_paths) == 1:
-        axes = [axes]  # Convert to list if only one image is present
+        axes = [axes]
 
     for ax, image_path in zip(axes, image_paths):
         img = Image.open(image_path)

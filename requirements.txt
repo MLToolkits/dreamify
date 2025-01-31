@@ -1,5 +1,6 @@
 matplotlib
 moviepy
 numpy
+pillow==10.0.0
 tensorflow
 tqdm
