@@ -22,7 +22,6 @@ def generate_dream_image(
     image_path,
     output_path="dream.png",
     model_name="xception",
-    # layer_settings=None,
     step=20.0,
     num_octave=3,
     octave_scale=1.4,
@@ -31,14 +30,6 @@ def generate_dream_image(
     save_video=False,
     duration=10,
 ):
-    # if layer_settings is None:
-    #     layer_settings = {
-    #         "mixed4": 1.0,
-    #         "mixed5": 1.5,
-    #         "mixed6": 2.0,
-    #         "mixed7": 2.5,
-    #     }
-
     base_image_path = Path(image_path)
     output_path = Path(output_path)
 
@@ -80,10 +71,12 @@ def generate_dream_image(
         upscaled_shrunk_original_img = tf.image.resize(
             shrunk_original_img, successive_shapes[i]
         )
-        same_size_original = tf.image.resize(original_img, successive_shapes[i])
+        same_size_original = tf.image.resize(
+            original_img, successive_shapes[i])
         lost_detail = same_size_original - upscaled_shrunk_original_img
         img += lost_detail
-        shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
+        shrunk_original_img = tf.image.resize(
+            original_img, successive_shapes[i])
 
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
@@ -93,11 +86,16 @@ def generate_dream_image(
 
 
 def main():
-    generate_dream_image("examples/example0.jpg", output_path="examples/dream0.png")
-    generate_dream_image("examples/example1.jpg", output_path="examples/dream1.png")
-    generate_dream_image("examples/example2.jpg", output_path="examples/dream2.png")
-    generate_dream_image("examples/example3.jpg", output_path="examples/dream3.png")
-    generate_dream_image("examples/example4.jpg", output_path="examples/dream4.png")
+    generate_dream_image("examples/example0.jpg",
+                         output_path="examples/dream0.png")
+    generate_dream_image("examples/example1.jpg",
+                         output_path="examples/dream1.png")
+    generate_dream_image("examples/example2.jpg",
+                         output_path="examples/dream2.png")
+    generate_dream_image("examples/example3.jpg",
+                         output_path="examples/dream3.png")
+    generate_dream_image("examples/example4.jpg",
+                         output_path="examples/dream4.png")
 
 
 if __name__ == "__main__":
