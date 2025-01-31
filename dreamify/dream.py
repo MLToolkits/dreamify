@@ -12,6 +12,7 @@ from dreamify.utils.utils import (
     preprocess_image,
     to_video,
 )
+from dreamify.utils.compare import main
 
 warnings.filterwarnings(
     "ignore", category=UserWarning, module="keras.src.models.functional"
@@ -71,10 +72,12 @@ def generate_dream_image(
         upscaled_shrunk_original_img = tf.image.resize(
             shrunk_original_img, successive_shapes[i]
         )
-        same_size_original = tf.image.resize(original_img, successive_shapes[i])
+        same_size_original = tf.image.resize(
+            original_img, successive_shapes[i])
         lost_detail = same_size_original - upscaled_shrunk_original_img
         img += lost_detail
-        shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
+        shrunk_original_img = tf.image.resize(
+            original_img, successive_shapes[i])
 
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
@@ -83,13 +86,6 @@ def generate_dream_image(
         to_video(output_path.stem + ".mp4", duration)
 
 
-def main():
-    generate_dream_image("examples/example0.jpg", output_path="examples/dream0.png")
-    generate_dream_image("examples/example1.jpg", output_path="examples/dream1.png")
-    generate_dream_image("examples/example2.jpg", output_path="examples/dream2.png")
-    generate_dream_image("examples/example3.jpg", output_path="examples/dream3.png")
-    generate_dream_image("examples/example4.jpg", output_path="examples/dream4.png")
-
-
+# Compares all models and layer settings on an image
 if __name__ == "__main__":
     main()
