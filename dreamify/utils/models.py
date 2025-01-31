@@ -1,7 +1,6 @@
 import random
 from enum import Enum
 
-from tensorflow.keras.applications import MobileNetV2  # Added MobileNetV2
 from tensorflow.keras.applications import (
     VGG19,
     ConvNeXtXLarge,
@@ -9,6 +8,7 @@ from tensorflow.keras.applications import (
     EfficientNetV2L,
     InceptionResNetV2,
     InceptionV3,
+    MobileNetV2.
     ResNet152V2,
     Xception,
 )
@@ -23,7 +23,7 @@ class ModelType(Enum):
     INCEPTION_V3 = "inception_v3"
     RESNET152V2 = "resnet152v2"
     XCEPTION = "xception"
-    MOBILENET_V2 = "mobilenet_v2"  # Added MobileNetV2
+    MOBILENET_V2 = "mobilenet_v2"
 
 
 model_layer_settings = {
@@ -76,10 +76,10 @@ model_layer_settings = {
         "stage1_block2_depthwise_conv": 2.5,
     },
     ModelType.MOBILENET_V2: {
-        "block_16_depthwise": 1.0,  # Example layer
-        "block_13_depthwise": 1.5,  # Example layer
-        "block_8_depthwise": 2.0,  # Example layer
-        "block_5_depthwise": 2.5,  # Example layer
+        "block_16_depthwise": 1.0,
+        "block_13_depthwise": 1.5,
+        "block_8_depthwise": 2.0,
+        "block_5_depthwise": 2.5,
     },
 }
 
