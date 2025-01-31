@@ -1,5 +1,6 @@
 import random
 from enum import Enum
+
 from tensorflow.keras.applications import (
     VGG19,
     ConvNeXtXLarge,
@@ -99,9 +100,15 @@ def choose_model(model_name: str = None):
         case ModelType.DENSENET121:
             return DenseNet121(weights="imagenet", include_top=False), layer_settings
         case ModelType.EFFICIENTNET_V2L:
-            return EfficientNetV2L(weights="imagenet", include_top=False), layer_settings
+            return (
+                EfficientNetV2L(weights="imagenet", include_top=False),
+                layer_settings,
+            )
         case ModelType.INCEPTION_RESNET_V2:
-            return InceptionResNetV2(weights="imagenet", include_top=False), layer_settings
+            return (
+                InceptionResNetV2(weights="imagenet", include_top=False),
+                layer_settings,
+            )
         case ModelType.INCEPTION_V3:
             return InceptionV3(weights="imagenet", include_top=False), layer_settings
         case ModelType.RESNET152V2:
