@@ -27,6 +27,7 @@ jobs:
           python-version: "3.10"
 
       - name: Cache Poetry dependencies
+        id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
           path: |
@@ -45,7 +46,8 @@ jobs:
       - name: Install dependencies
         run: |
           poetry config virtualenvs.in-project true
-          poetry install --no-root --no-interaction --prefer-cache
+          poetry install --no-root --no-interaction 
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
 
       - name: Build release distributions
         run: poetry build
