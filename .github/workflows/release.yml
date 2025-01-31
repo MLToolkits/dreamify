@@ -49,6 +49,11 @@ jobs:
           poetry install --no-root --no-interaction 
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
 
+      - name: Use cached dependencies (cache hit)
+        run: |
+          echo "Using cached Poetry dependencies."
+        if: steps.cached-poetry-dependencies.outputs.cache-hit == 'true'
+
       - name: Build release distributions
         run: poetry build
 
