@@ -71,12 +71,10 @@ def generate_dream_image(
         upscaled_shrunk_original_img = tf.image.resize(
             shrunk_original_img, successive_shapes[i]
         )
-        same_size_original = tf.image.resize(
-            original_img, successive_shapes[i])
+        same_size_original = tf.image.resize(original_img, successive_shapes[i])
         lost_detail = same_size_original - upscaled_shrunk_original_img
         img += lost_detail
-        shrunk_original_img = tf.image.resize(
-            original_img, successive_shapes[i])
+        shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
@@ -86,16 +84,11 @@ def generate_dream_image(
 
 
 def main():
-    generate_dream_image("examples/example0.jpg",
-                         output_path="examples/dream0.png")
-    generate_dream_image("examples/example1.jpg",
-                         output_path="examples/dream1.png")
-    generate_dream_image("examples/example2.jpg",
-                         output_path="examples/dream2.png")
-    generate_dream_image("examples/example3.jpg",
-                         output_path="examples/dream3.png")
-    generate_dream_image("examples/example4.jpg",
-                         output_path="examples/dream4.png")
+    generate_dream_image("examples/example0.jpg", output_path="examples/dream0.png")
+    generate_dream_image("examples/example1.jpg", output_path="examples/dream1.png")
+    generate_dream_image("examples/example2.jpg", output_path="examples/dream2.png")
+    generate_dream_image("examples/example3.jpg", output_path="examples/dream3.png")
+    generate_dream_image("examples/example4.jpg", output_path="examples/dream4.png")
 
 
 if __name__ == "__main__":

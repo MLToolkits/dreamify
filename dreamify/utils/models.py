@@ -8,7 +8,7 @@ from tensorflow.keras.applications import (
     EfficientNetV2L,
     InceptionResNetV2,
     InceptionV3,
-    MobileNetV2.
+    MobileNetV2,
     ResNet152V2,
     Xception,
 )
