@@ -2,7 +2,7 @@ name: Python Release to GitHub
 
 on:
   workflow_run:
-    workflows: ["Continuous Deployment To PyPI"]
+    workflows: ["Code Formatter and Linter"]
     branches: [main]
     types: 
       - completed
