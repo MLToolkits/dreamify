@@ -13,6 +13,7 @@ publish:
 	@git add .
 	@git commit -m "$(message)"
 	@git tag v$$(poetry version -s)
+	@git push
 	@git push origin --tags
 
 lint:
