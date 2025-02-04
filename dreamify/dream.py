@@ -23,7 +23,7 @@ def generate_dream_image(
     image_path,
     output_path="dream.png",
     model_name="xception",
-    step=0.01,
+    learning_rate=0.01,
     num_octave=3,
     octave_scale=1.4,
     iterations=100,
@@ -66,7 +66,7 @@ def generate_dream_image(
         img = gradient_ascent_loop(
             img,
             iterations=iterations,
-            learning_rate=step,
+            learning_rate=learning_rate,
             max_loss=max_loss,
         )
         upscaled_shrunk_original_img = tf.image.resize(
