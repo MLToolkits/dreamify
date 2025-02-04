@@ -26,7 +26,7 @@ def generate_dream_image(
     learning_rate=0.01,
     num_octave=3,
     octave_scale=1.4,
-    iterations=100,
+    iterations=50,
     max_loss=15.0,
     save_video=False,
     duration=10,
