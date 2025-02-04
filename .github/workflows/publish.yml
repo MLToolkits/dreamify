@@ -102,6 +102,7 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit == 'true'
 
       - name: Authenticate on PyPI using poetry
+        environment: PYPI
         run: poetry config pypi-token.pypi ${{ secrets.PYPI.PYPI_TOKEN }}
 
       - name: Publish to PyPI
