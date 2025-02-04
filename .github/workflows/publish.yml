@@ -1,0 +1,54 @@
+name: Python Release to GitHub
+
+on:
+  push:
+    tags:
+      - 'v*'
+      
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write 
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Cache Poetry dependencies
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pypoetry
+            ~/.virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/pyproject.toml', '**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.local/bin:$PATH"
+
+      - name: Install dependencies
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install --no-root --no-interaction 
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+
+      - name: Use cached dependencies
+        run: |
+          echo "Using cached Poetry dependencies."
+        if: steps.cached-poetry-dependencies.outputs.cache-hit == 'true'
+
+      - name: Publish to PyPI
+        run: poetry publish --build
+
