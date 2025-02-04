@@ -13,7 +13,7 @@ pip install dreamify
 To apply Dreamify to an image, use the following Python script:
 
 ```python
-from dreamify import generate_dream_image
+from dreamify.dream import generate_dream_image
 
 
 image_path = "example.jpg"
@@ -24,7 +24,7 @@ generate_dream_image(image_path):
 You may customize the behavior of the dreamifyer by selecting a different pre-trained model, saving it as a video, etc.:
 
 ```python
-from dreamify import generate_dream_image
+from dreamify.dream import generate_dream_image
 
 
 image_path = "example.jpg"
