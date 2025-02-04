@@ -3,19 +3,14 @@ name: Python Release to GitHub
 on:
   push:
     tags:
-      - 'v*'
-  workflow_run:
-    workflows: ["Code Formatter and Linter"]
-    branches: [main]
-    types:
-      - completed
+      - "v*"
 
 jobs:
   release-build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write 
+      id-token: write
 
     steps:
       - name: Checkout code
@@ -46,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry config virtualenvs.in-project true
-          poetry install --no-root --no-interaction 
+          poetry install --no-root --no-interaction
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
 
       - name: Use cached dependencies
