@@ -1,4 +1,4 @@
-name: Python Release to GitHub
+name: Publish to PyPI
 
 on:
   push:
@@ -48,6 +48,9 @@ jobs:
         run: |
           echo "Using cached Poetry dependencies."
         if: steps.cached-poetry-dependencies.outputs.cache-hit == 'true'
+
+      - name: Authenticate on PyPI using poetry
+        run: poetry config pypi-token.pypi ${{ secrets.PYPI.PYPI_TOKEN }}
 
       - name: Publish to PyPI
         run: poetry publish --build
