@@ -103,7 +103,7 @@ jobs:
 
       - name: Authenticate on PyPI using poetry
         environment: PYPI
-        run: poetry config pypi-token.pypi ${{ secrets.PYPI.PYPI_TOKEN }}
+        run: poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish to PyPI
         run: poetry publish --build
