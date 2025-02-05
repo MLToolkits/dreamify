@@ -64,6 +64,8 @@ def calc_loss(img, model):
 def run_deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
+    base_shape = tf.shape(img)[:-1]
+
     step_size = tf.convert_to_tensor(step_size)
     steps_remaining = steps
     step = 0
@@ -81,6 +83,7 @@ def run_deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
         show(deprocess(img))
         print("Step {}, loss {}".format(step, loss))
 
+    img = tf.image.resize(img, base_shape)
     result = deprocess(img)
     # display.clear_output(wait=True)
     show(result)
@@ -180,6 +183,8 @@ def run_deep_dream_rolled(
     octaves=range(-2, 3),
     octave_scale=1.3,
 ):
+    get_tiled_gradients = TiledGradients(dream_model)
+    
     base_shape = tf.shape(img)
     img = tf.keras.utils.img_to_array(img)
     img = tf.keras.applications.inception_v3.preprocess_input(img)
