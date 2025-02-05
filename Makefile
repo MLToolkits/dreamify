@@ -8,7 +8,7 @@ setup:
 setup_dev: setup
 	pip install -r requirements.dev.txt
 
-publish:
+publish: all
 	@poetry version $(change)
 	@git add .
 	@git commit -m "$(message)"
