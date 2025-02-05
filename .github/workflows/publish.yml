@@ -74,6 +74,7 @@ jobs:
         with:
           python-version: "3.10"
 
+      # Cache Poetry dependencies (this step is useful for caching dependencies)
       - name: Cache Poetry dependencies
         id: cached-poetry-dependencies
         uses: actions/cache@v3
@@ -85,11 +86,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-poetry-
 
+      # Poetry installation - this could be skipped if you know poetry is already available on the runner
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           export PATH="$HOME/.local/bin:$PATH"
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true' # Only install if poetry cache is missed
 
       - name: Install dependencies
         run: |
