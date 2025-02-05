@@ -6,8 +6,10 @@ import tensorflow as tf
 
 def main():
 
-    url = "https://storage.googleapis.com/download.tensorflow.org/\
-    example_images/YellowLabradorLooking_new.jpg"
+    url = (
+        "https://storage.googleapis.com/download.tensorflow.org/"
+        "example_images/YellowLabradorLooking_new.jpg"
+    )
 
     # Download an image and read it into a NumPy array.
     def download(url, max_dim=None):
@@ -34,8 +36,8 @@ def main():
     show(original_img)
     display.display(
         display.HTML(
-            'Image cc-by: <a "href=https://commons.wikimedia.org/wiki/\
-            File:Felis_catus-cat_on_snow.jpg">Von.grzanka</a>'
+            'Image cc-by: <a href="https://commons.wikimedia.org/wiki/'
+            'File:Felis_catus-cat_on_snow.jpg">Von.grzanka</a>'
         )
     )
 
