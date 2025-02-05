@@ -62,8 +62,9 @@ def gradient_ascent_step(image, learning_rate):
         tape.watch(image)
         loss = compute_loss(image)
     grads = tape.gradient(loss, image)
-    grads = tf.math.l2_normalize(grads)
-    image += learning_rate * grads
+    grads = tf.math.l2_normalize(grads) + 1e-8 
+    image += learning_rate * grads 
+    img = tf.clip_by_value(img, -1, 1)
     return loss, image
 
 
