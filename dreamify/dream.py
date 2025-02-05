@@ -11,6 +11,7 @@ from dreamify.utils.utils import (
     gradient_ascent_loop,
     preprocess_image,
     to_video,
+    show
 )
 
 # from dreamify.utils.compare import main
@@ -51,7 +52,7 @@ def generate_dream_image(
     )
 
     successive_shapes = [original_shape]
-    for i in range(-2, num_octave - 2):
+    for i in range(-2, num_octave - 3):
         shape = tuple([int(dim / (octave_scale**i)) for dim in original_shape])
         successive_shapes.append(shape)
     successive_shapes = successive_shapes[::-1]
@@ -78,7 +79,9 @@ def generate_dream_image(
         img += lost_detail
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
-    keras.utils.save_img(output_path, deprocess_image(img.numpy()))
+    image = img.numpy()
+    keras.utils.save_img(output_path, deprocess_image(image))
+    show(image)
     print(f"Dream image saved to {output_path}")
 
     if save_video:

@@ -140,10 +140,15 @@ def upsample():
     config.frames_for_vid = new_frames
 
 
+def show(img):
+  display.display(PIL.Image.fromarray(np.array(img)))
+
+
 __all__ = [
     configure_settings,
     preprocess_image,
     deprocess_image,
     gradient_ascent_loop,
     to_video,
+    show
 ]
