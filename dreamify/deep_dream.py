@@ -205,7 +205,7 @@ def run_deep_dream_rolled(
             img = tf.clip_by_value(img, -1, 1)
 
             if step % 10 == 0:
-                display.clear_output(wait=True)
+                # display.clear_output(wait=True)
                 show(deprocess(img))
                 print("Octave {}, Step {}".format(octave, step))
 
