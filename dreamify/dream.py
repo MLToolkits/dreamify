@@ -12,6 +12,7 @@ from dreamify.utils.utils import (
     preprocess_image,
     to_video,
 )
+
 # from dreamify.utils.compare import main
 
 warnings.filterwarnings(
@@ -72,12 +73,10 @@ def generate_dream_image(
         upscaled_shrunk_original_img = tf.image.resize(
             shrunk_original_img, successive_shapes[i]
         )
-        same_size_original = tf.image.resize(
-            original_img, successive_shapes[i])
+        same_size_original = tf.image.resize(original_img, successive_shapes[i])
         lost_detail = same_size_original - upscaled_shrunk_original_img
         img += lost_detail
-        shrunk_original_img = tf.image.resize(
-            original_img, successive_shapes[i])
+        shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
     keras.utils.save_img(output_path, deprocess_image(img.numpy()))
     print(f"Dream image saved to {output_path}")
