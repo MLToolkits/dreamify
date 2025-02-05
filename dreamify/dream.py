@@ -23,7 +23,7 @@ def generate_dream_image(
     image_path,
     output_path="dream.png",
     model_name="xception",
-    learning_rate=0.01,
+    learning_rate=0.1,
     num_octave=3,
     octave_scale=1.4,
     iterations=50,
