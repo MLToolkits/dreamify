@@ -142,7 +142,7 @@ def upsample():
 
 
 def show(img):
-    plt.imshow(np.array(img))
+    plt.imshow(img)
     plt.axis("off")
     plt.show()
 
