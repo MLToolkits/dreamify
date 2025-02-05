@@ -3,8 +3,6 @@ import numpy as np
 import PIL.Image
 import tensorflow as tf
 
-import time
-
 
 def download(url, max_dim=None):
     """Download an image and load it as a NumPy array."""
@@ -77,7 +75,7 @@ def run_deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
         steps_remaining -= run_steps
         step += run_steps
 
-        loss, img = deepdream(img, run_steps, tf.constant(step_size))
+        loss, img = dream_model(img, run_steps, tf.constant(step_size))
 
         # display.clear_output(wait=True)
         show(deprocess(img))
@@ -89,9 +87,8 @@ def run_deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
 
     return result
 
-def run_deep_dream_octaved(img, dream_model, steps=100, step_size=0.01):
-    start = time.time()
 
+def run_deep_dream_octaved(img, dream_model, steps=100, step_size=0.01):
     OCTAVE_SCALE = 1.30
 
     img = tf.constant(np.array(img))
@@ -99,15 +96,16 @@ def run_deep_dream_octaved(img, dream_model, steps=100, step_size=0.01):
     float_base_shape = tf.cast(base_shape, tf.float32)
 
     for n in range(-2, 3):
-        new_shape = tf.cast(float_base_shape*(OCTAVE_SCALE**n), tf.int32)
+        new_shape = tf.cast(float_base_shape * (OCTAVE_SCALE**n), tf.int32)
 
         img = tf.image.resize(img, new_shape).numpy()
-        img = run_deep_dream_simple(img=img, dream_model=dream_model, steps=50, step_size=0.01)
-
+        img = run_deep_dream_simple(
+            img=img, dream_model=dream_model, steps=50, step_size=0.01
+        )
 
     # display.clear_output(wait=True)
     img = tf.image.resize(img, base_shape)
-    img = tf.image.convert_image_dtype(img/255.0, dtype=tf.uint8)
+    img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
     show(img)
 
     return img
