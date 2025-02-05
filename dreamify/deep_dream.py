@@ -17,13 +17,13 @@ def main():
         if max_dim:
             img.thumbnail((max_dim, max_dim))
 
-    return np.array(img)
+        return np.array(img)
 
     # Normalize an image
     def deprocess(img):
         img = 255 * (img + 1.0) / 2.0
 
-    return tf.cast(img, tf.uint8)
+        return tf.cast(img, tf.uint8)
 
     # Display an image
     def show(img):
@@ -63,7 +63,7 @@ def main():
             loss = tf.math.reduce_mean(act)
             losses.append(loss)
 
-    return tf.reduce_sum(losses)
+        return tf.reduce_sum(losses)
 
     class DeepDream(tf.Module):
         def __init__(self, model):
@@ -127,7 +127,7 @@ def main():
         display.clear_output(wait=True)
         show(result)
 
-    return result
+        return result
 
     run_deep_dream_simple(img=original_img, steps=100, step_size=0.01)
 
