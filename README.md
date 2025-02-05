@@ -33,7 +33,7 @@ generate_dream_image(
     image_path,
     output_path="dream.png",
     model_name="inception_v3",
-    learning_rate=0.1,
+    learning_rate=5.0,
     num_octave=5,
     octave_scale=1.3,
     iterations=100,
@@ -54,9 +54,9 @@ Dreamify supports the following models:
 | DenseNet121           | `densenet121`          |
 | EfficientNet-V2L      | `efficientnet_v2l`     |
 | Inception-ResNet-V2   | `inception_resnet_v2`  |
-| Inception-V3          | `inception_v3`         |
+| Inception-V3 (Default)         | `inception_v3`         |
 | ResNet152V2           | `resnet152v2`          |
-| Xception (Default)              | `xception`             |
+| Xception               | `xception`             |
 | MobileNet-V2          | `mobilenet_v2`         |
 
 
