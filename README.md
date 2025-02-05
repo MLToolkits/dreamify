@@ -2,6 +2,11 @@
 
 A function that applies deep dream to an image using pre-trained CNNs trained on the ImageNet dataset.
 
+## Testing it
+``` bash
+dreamify
+```
+
 ## Installation
 
 ``` bash
