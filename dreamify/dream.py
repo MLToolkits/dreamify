@@ -25,7 +25,7 @@ def generate_dream_image(
     image_path,
     output_path="dream.png",
     model_name="inception_v3",
-    learning_rate=0.1,
+    learning_rate=5.0,
     num_octave=5,
     octave_scale=1.3,
     iterations=100,
