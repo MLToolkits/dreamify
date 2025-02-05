@@ -81,7 +81,7 @@ def generate_dream_image(
 
     image = img.numpy()
     keras.utils.save_img(output_path, deprocess_image(image))
-    show(np.squeeze(image))
+    show(image)
 
     print(f"Dream image saved to {output_path}")
 
