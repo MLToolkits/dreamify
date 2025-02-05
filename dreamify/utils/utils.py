@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from moviepy.video.fx import AccelDecel
@@ -141,7 +142,9 @@ def upsample():
 
 
 def show(img):
-    display.display(PIL.Image.fromarray(np.array(img)))
+    plt.imshow(np.array(img))
+    plt.axis("off")
+    plt.show()
 
 
 __all__ = [
