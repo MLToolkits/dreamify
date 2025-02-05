@@ -141,7 +141,7 @@ def upsample():
 
 
 def show(img):
-  display.display(PIL.Image.fromarray(np.array(img)))
+    display.display(PIL.Image.fromarray(np.array(img)))
 
 
 __all__ = [
@@ -150,5 +150,5 @@ __all__ = [
     deprocess_image,
     gradient_ascent_loop,
     to_video,
-    show
+    show,
 ]

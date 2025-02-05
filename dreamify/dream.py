@@ -10,8 +10,8 @@ from dreamify.utils.utils import (
     deprocess_image,
     gradient_ascent_loop,
     preprocess_image,
+    show,
     to_video,
-    show
 )
 
 # from dreamify.utils.compare import main
