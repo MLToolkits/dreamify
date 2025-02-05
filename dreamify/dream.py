@@ -22,14 +22,14 @@ warnings.filterwarnings(
 def generate_dream_image(
     image_path,
     output_path="dream.png",
-    model_name="xception",
+    model_name="inception_v3",
     learning_rate=0.1,
     num_octave=3,
-    octave_scale=1.4,
+    octave_scale=1.3,
     iterations=50,
     max_loss=15.0,
     save_video=False,
-    duration=10,
+    duration=3,
 ):
     base_image_path = Path(image_path)
     output_path = Path(output_path)
