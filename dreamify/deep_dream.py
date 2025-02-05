@@ -184,7 +184,7 @@ def run_deep_dream_rolled(
     octave_scale=1.3,
 ):
     get_tiled_gradients = TiledGradients(dream_model)
-    
+
     base_shape = tf.shape(img)
     img = tf.keras.utils.img_to_array(img)
     img = tf.keras.applications.inception_v3.preprocess_input(img)
@@ -243,12 +243,12 @@ def main():
 
     deepdream = DeepDream(dream_model)
 
-    run_deep_dream_simple(
-        img=original_img, dream_model=deepdream, steps=100, step_size=0.01
-    )
-    run_deep_dream_octaved(
-        img=original_img, dream_model=deepdream, steps_per_octave=50, step_size=0.01
-    )
+    # run_deep_dream_simple(
+    #     img=original_img, dream_model=deepdream, steps=100, step_size=0.01
+    # )
+    # run_deep_dream_octaved(
+    #     img=original_img, dream_model=deepdream, steps_per_octave=50, step_size=0.01
+    # )
     run_deep_dream_rolled(
         img=original_img, dream_model=deepdream, steps_per_octave=50, step_size=0.01
     )
