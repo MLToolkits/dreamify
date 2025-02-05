@@ -61,7 +61,7 @@ def calc_loss(img, model):
     return tf.reduce_sum([tf.math.reduce_mean(act) for act in layer_activations])
 
 
-def run_deep_dream_simple(img, steps=100, step_size=0.01):
+def run_deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
     step_size = tf.convert_to_tensor(step_size)
@@ -116,7 +116,7 @@ def main():
     deepdream = DeepDream(dream_model)
 
     run_deep_dream_simple(
-        img=original_img, deepdream=deepdream, steps=100, step_size=0.01
+        img=original_img, dream_model=deepdream, steps=100, step_size=0.01
     )
 
 
