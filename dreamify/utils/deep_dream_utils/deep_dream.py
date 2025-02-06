@@ -1,3 +1,6 @@
+import tensorflow as tf
+
+
 class DeepDream(tf.Module):
     def __init__(self, model):
         self.model = model
