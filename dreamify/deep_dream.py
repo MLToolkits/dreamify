@@ -105,11 +105,6 @@ def run_deep_dream_octaved(img, dream_model, steps_per_octave=100, step_size=0.0
             step_size=step_size,
         )
 
-    # display.clear_output(wait=True)
-    # img = tf.image.resize(img, base_shape)
-    # img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
-    # show(img)
-
     return img
 
 
