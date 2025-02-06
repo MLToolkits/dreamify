@@ -4,6 +4,7 @@ from pathlib import Path
 import tensorflow as tf
 from tensorflow import keras
 
+from dreamify.lib.feature_extractor import FeatureExtractor
 from dreamify.utils.dream_utils import (
     configure_settings,
     deprocess_image,
@@ -12,7 +13,6 @@ from dreamify.utils.dream_utils import (
     show,
     to_video,
 )
-from dreamify.utils.models import choose_model
 
 # from dreamify.utils.compare import main
 
@@ -36,13 +36,7 @@ def generate_dream_image(
     base_image_path = Path(image_path)
     output_path = Path(output_path)
 
-    model, layer_settings = choose_model(model_name)
-
-    outputs_dict = {
-        layer.name: layer.output
-        for layer in [model.get_layer(name) for name in layer_settings.keys()]
-    }
-    feature_extractor = keras.Model(inputs=model.inputs, outputs=outputs_dict)
+    feature_extractor = FeatureExtractor(model_name)
 
     original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
