@@ -207,7 +207,7 @@ def run_deep_dream_rolled(
     return result
 
 
-def main1():
+def main():
     url = (
         "https://storage.googleapis.com/download.tensorflow.org/"
         "example_images/YellowLabradorLooking_new.jpg"

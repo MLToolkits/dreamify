@@ -4,8 +4,7 @@ from pathlib import Path
 import tensorflow as tf
 from tensorflow import keras
 
-from dreamify.utils.models import choose_model
-from dreamify.utils.utils import (
+from dreamify.utils.dream_utils import (
     configure_settings,
     deprocess_image,
     gradient_ascent_loop,
@@ -13,6 +12,7 @@ from dreamify.utils.utils import (
     show,
     to_video,
 )
+from dreamify.utils.models import choose_model
 
 # from dreamify.utils.compare import main
 
@@ -87,6 +87,10 @@ def generate_dream_image(
 
     if save_video:
         to_video(output_path.stem + ".mp4", duration)
+
+
+def main():
+    generate_dream_image("examples/example0.jpg", num_octave=2, iterations=10)
 
 
 # Compares all models and layer settings on an image
