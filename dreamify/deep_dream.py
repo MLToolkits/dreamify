@@ -2,43 +2,14 @@ import IPython.display as display
 import numpy as np
 import tensorflow as tf
 
-from dreamify.utils.deep_dream_utils import deprocess, download, show
-
-
-class DeepDream(tf.Module):
-    def __init__(self, model):
-        self.model = model
-
-    @tf.function(
-        input_signature=(
-            tf.TensorSpec(shape=[None, None, 3], dtype=tf.float32),
-            tf.TensorSpec(shape=[], dtype=tf.int32),
-            tf.TensorSpec(shape=[], dtype=tf.float32),
-        )
-    )
-    def __call__(self, img, steps, step_size):
-        print("Tracing DeepDream computation graph...")
-        loss = tf.constant(0.0)
-        for n in tf.range(steps):
-            with tf.GradientTape() as tape:
-                tape.watch(img)
-                loss = calc_loss(img, self.model)
-                gradients = tape.gradient(loss, img)
-            gradients /= tf.math.reduce_std(gradients) + 1e-8
-            img = img + gradients * step_size
-            img = tf.clip_by_value(img, -1, 1)
-
-        return loss, img
-
-
-def calc_loss(img, model):
-    """Calculate the DeepDream loss by maximizing activations."""
-    img_batch = tf.expand_dims(img, axis=0)
-    layer_activations = model(img_batch)
-    if len(layer_activations) == 1:
-        layer_activations = [layer_activations]
-
-    return tf.reduce_sum([tf.math.reduce_mean(act) for act in layer_activations])
+from dreamify.utils.deep_dream_utils import (
+    DeepDream,
+    calc_loss,
+    deprocess,
+    download,
+    random_roll,
+    show,
+)
 
 
 def run_deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
@@ -86,15 +57,6 @@ def run_deep_dream_octaved(img, dream_model, steps_per_octave=100, step_size=0.0
         )
 
     return img
-
-
-def random_roll(img, maxroll):
-    # Randomly shift the image to avoid tiled boundaries.
-    shift = tf.random.uniform(
-        shape=[2], minval=-maxroll, maxval=maxroll, dtype=tf.int32
-    )
-    img_rolled = tf.roll(img, shift=shift, axis=[0, 1])
-    return shift, img_rolled
 
 
 class TiledGradients(tf.Module):

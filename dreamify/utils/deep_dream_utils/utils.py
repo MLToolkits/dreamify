@@ -22,3 +22,22 @@ def deprocess(img):
 def show(img):
     """Display an image."""
     display.display(PIL.Image.fromarray(np.array(img)))
+
+
+def calc_loss(img, model):
+    """Calculate the DeepDream loss by maximizing activations."""
+    img_batch = tf.expand_dims(img, axis=0)
+    layer_activations = model(img_batch)
+    if len(layer_activations) == 1:
+        layer_activations = [layer_activations]
+
+    return tf.reduce_sum([tf.math.reduce_mean(act) for act in layer_activations])
+
+
+def random_roll(img, maxroll):
+    # Randomly shift the image to avoid tiled boundaries.
+    shift = tf.random.uniform(
+        shape=[2], minval=-maxroll, maxval=maxroll, dtype=tf.int32
+    )
+    img_rolled = tf.roll(img, shift=shift, axis=[0, 1])
+    return shift, img_rolled
