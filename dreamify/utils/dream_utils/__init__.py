@@ -1,4 +1,4 @@
-from .utils import (
+from dreamify.utils.dream_utils.utils import (
     configure_settings,
     deprocess_image,
     gradient_ascent_loop,
