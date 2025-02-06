@@ -1,4 +1,5 @@
 import IPython.display as display
+import numpy as np
 import PIL.Image
 import tensorflow as tf
 

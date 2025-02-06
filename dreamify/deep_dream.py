@@ -2,7 +2,13 @@ import IPython.display as display
 import numpy as np
 import tensorflow as tf
 
-from dreamify.utils.deep_dream_utils import DeepDream, deprocess, download, show
+from dreamify.utils.deep_dream_utils import (
+    DeepDream,
+    TiledGradients,
+    deprocess,
+    download,
+    show,
+)
 
 
 def deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
