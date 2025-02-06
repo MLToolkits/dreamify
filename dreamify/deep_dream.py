@@ -311,7 +311,6 @@ def main3():
     img = run_deep_dream_rolled(
         img=original_img,
         get_tiled_gradients=get_tiled_gradients,
-        steps_per_octave=50,
         step_size=0.01,
     )
     img = tf.image.resize(img, original_img.shape[:-1])
