@@ -1,6 +1,15 @@
 import tensorflow as tf
 
-from dreamify.utils.deep_dream_utils import calc_loss, random_roll
+from dreamify.utils.deep_dream_utils import calc_loss
+
+
+def random_roll(img, maxroll):
+    # Randomly shift the image to avoid tiled boundaries.
+    shift = tf.random.uniform(
+        shape=[2], minval=-maxroll, maxval=maxroll, dtype=tf.int32
+    )
+    img_rolled = tf.roll(img, shift=shift, axis=[0, 1])
+    return shift, img_rolled
 
 
 class TiledGradients(tf.Module):
@@ -50,3 +59,6 @@ class TiledGradients(tf.Module):
         gradients /= tf.math.reduce_std(gradients) + 1e-8
 
         return gradients
+
+
+__all__ = [TiledGradients]
