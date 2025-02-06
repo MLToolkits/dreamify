@@ -5,7 +5,7 @@ import tensorflow as tf
 from dreamify.utils.deep_dream_utils import DeepDream, deprocess, download, show
 
 
-def run_deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
+def deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
 
@@ -31,7 +31,7 @@ def run_deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
     return result
 
 
-def run_deep_dream_octaved(img, dream_model, steps_per_octave=100, step_size=0.01):
+def deep_dream_octaved(img, dream_model, steps_per_octave=100, step_size=0.01):
     OCTAVE_SCALE = 1.30
 
     img = tf.constant(np.array(img))
@@ -42,7 +42,7 @@ def run_deep_dream_octaved(img, dream_model, steps_per_octave=100, step_size=0.0
         new_shape = tf.cast(float_base_shape * (OCTAVE_SCALE**n), tf.int32)
 
         img = tf.image.resize(img, new_shape).numpy()
-        img = run_deep_dream_simple(
+        img = deep_dream_simple(
             img=img,
             dream_model=dream_model,
             steps=steps_per_octave,
@@ -52,7 +52,7 @@ def run_deep_dream_octaved(img, dream_model, steps_per_octave=100, step_size=0.0
     return img
 
 
-def run_deep_dream_rolled(
+def deep_dream_rolled(
     img,
     get_tiled_gradients,
     steps_per_octave=100,
@@ -97,13 +97,6 @@ def main():
     original_img = download(url, max_dim=500)
     show(original_img)
 
-    display.display(
-        display.HTML(
-            'Image cc-by: <a href="https://commons.wikimedia.org/wiki/'
-            'File:Felis_catus-cat_on_snow.jpg">Von.grzanka</a>'
-        )
-    )
-
     base_model = tf.keras.applications.InceptionV3(
         include_top=False, weights="imagenet"
     )
@@ -116,7 +109,7 @@ def main():
     deepdream = DeepDream(dream_model)
 
     # Single Octave
-    img = run_deep_dream_simple(
+    img = deep_dream_simple(
         img=original_img, dream_model=deepdream, steps=100, step_size=0.01
     )
 
@@ -134,13 +127,6 @@ def main2():
     original_img = download(url, max_dim=500)
     show(original_img)
 
-    display.display(
-        display.HTML(
-            'Image cc-by: <a href="https://commons.wikimedia.org/wiki/'
-            'File:Felis_catus-cat_on_snow.jpg">Von.grzanka</a>'
-        )
-    )
-
     base_model = tf.keras.applications.InceptionV3(
         include_top=False, weights="imagenet"
     )
@@ -153,7 +139,7 @@ def main2():
     deepdream = DeepDream(dream_model)
 
     # Multi-Octave
-    img = run_deep_dream_octaved(
+    img = deep_dream_octaved(
         img=original_img, dream_model=deepdream, steps_per_octave=50, step_size=0.01
     )
     img = tf.image.resize(img, original_img.shape[:-1])
@@ -171,13 +157,6 @@ def main3():
     original_img = download(url, max_dim=500)
     show(original_img)
 
-    display.display(
-        display.HTML(
-            'Image cc-by: <a href="https://commons.wikimedia.org/wiki/'
-            'File:Felis_catus-cat_on_snow.jpg">Von.grzanka</a>'
-        )
-    )
-
     base_model = tf.keras.applications.InceptionV3(
         include_top=False, weights="imagenet"
     )
@@ -189,7 +168,7 @@ def main3():
 
     # Rolling/Multi-Octave with Tiling
     get_tiled_gradients = TiledGradients(dream_model)
-    img = run_deep_dream_rolled(
+    img = deep_dream_rolled(
         img=original_img,
         get_tiled_gradients=get_tiled_gradients,
         step_size=0.01,
