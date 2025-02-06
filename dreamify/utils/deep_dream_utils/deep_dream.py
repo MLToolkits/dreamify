@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+from dreamify.utils.deep_dream_utils import calc_loss
+
 
 class DeepDream(tf.Module):
     def __init__(self, model):
