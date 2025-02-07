@@ -1,4 +1,4 @@
-MAIN:
+HIGH:
 1.  Modularize and share code b/n dream and deepdream
 2.  Implement class for ImageToVideo converter
 3.  Implement optional backward loop for video
@@ -9,6 +9,11 @@ MAIN:
 8.  Add more comments. Duhh
 
 
-MISC:
+MEDIUM:
+1.  Compare different pre-trained models in generation
+2.  Optional seeded generations
+
+
+LOW:
 1.  Optimize cicd pipeline
 2.  Update README
