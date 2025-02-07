@@ -2,11 +2,13 @@ import IPython.display as display
 import numpy as np
 import tensorflow as tf
 
+from dreamify.lib.validators import validate_dream
 from dreamify.utils.common import deprocess, show
 from dreamify.utils.deep_dream_utils import DeepDream, TiledGradients, download
 
 
-def deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
+@validate_dream
+def deep_dream_simple(img, dream_model, iterations=100, learning_rate=0.01):
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
 
@@ -32,7 +34,8 @@ def deep_dream_simple(img, dream_model, steps=100, step_size=0.01):
     return result
 
 
-def deep_dream_octaved(img, dream_model, steps_per_octave=100, step_size=0.01):
+@validate_dream
+def deep_dream_octaved(img, dream_model, iterations=100, learning_rate=0.01):
     OCTAVE_SCALE = 1.30
 
     img = tf.constant(np.array(img))
@@ -46,18 +49,19 @@ def deep_dream_octaved(img, dream_model, steps_per_octave=100, step_size=0.01):
         img = deep_dream_simple(
             img=img,
             dream_model=dream_model,
-            steps=steps_per_octave,
+            iterations=iterations,
             step_size=step_size,
         )
 
     return img
 
 
+@validate_dream
 def deep_dream_rolled(
     img,
     get_tiled_gradients,
-    steps_per_octave=100,
-    step_size=0.01,
+    iterations=100,
+    learning_rate=0.01,
     octaves=range(-2, 3),
     octave_scale=1.3,
 ):
@@ -75,7 +79,7 @@ def deep_dream_rolled(
         new_size = tf.cast(new_size, tf.int32)
         img = tf.image.resize(img, new_size)
 
-        for step in range(steps_per_octave):
+        for step in range(iterations):
             gradients = get_tiled_gradients(img, new_size)
             img = img + gradients * step_size
             img = tf.clip_by_value(img, -1, 1)
@@ -90,7 +94,6 @@ def deep_dream_rolled(
 
 
 def main():
-
     url = (
         "https://storage.googleapis.com/download.tensorflow.org/"
         "example_images/YellowLabradorLooking_new.jpg"
@@ -112,7 +115,7 @@ def main():
 
     # Single Octave
     img = deep_dream_simple(
-        img=original_img, dream_model=deepdream, steps=100, step_size=0.01
+        img=original_img, dream_model=deepdream, iterations=100, learning_rate=0.01
     )
 
     img = tf.image.resize(img, original_img.shape[:-1])
@@ -142,7 +145,7 @@ def main2():
 
     # Multi-Octave
     img = deep_dream_octaved(
-        img=original_img, dream_model=deepdream, steps_per_octave=50, step_size=0.01
+        img=original_img, dream_model=deepdream, iterations=50, learning_rate=0.01
     )
     img = tf.image.resize(img, original_img.shape[:-1])
     img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
@@ -173,7 +176,7 @@ def main3():
     img = deep_dream_rolled(
         img=original_img,
         get_tiled_gradients=get_tiled_gradients,
-        step_size=0.01,
+        learning_rate=0.01,
     )
     img = tf.image.resize(img, original_img.shape[:-1])
     img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)

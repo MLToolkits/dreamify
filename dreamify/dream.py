@@ -26,7 +26,7 @@ def generate_dream_image(
     output_path="dream.png",
     model_name="inception_v3",
     learning_rate=20.0,
-    num_octave=3,
+    octaves=3,
     octave_scale=1.4,
     iterations=30,
     max_loss=15.0,
@@ -51,7 +51,7 @@ def generate_dream_image(
     )
 
     successive_shapes = [original_shape]
-    for i in range(-2, num_octave - 3):
+    for i in range(-2, octaves - 3):
         shape = tuple([int(dim / (octave_scale**i)) for dim in original_shape])
         successive_shapes.append(shape)
     successive_shapes = successive_shapes[::-1]
@@ -89,7 +89,7 @@ def generate_dream_image(
 
 
 def main():
-    generate_dream_image("examples/example0.jpg", num_octave=2, iterations=10)
+    generate_dream_image("examples/example0.jpg", octaves=2, iterations=10)
 
 
 # Compares all models and layer settings on an image
