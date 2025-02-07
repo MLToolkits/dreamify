@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from moviepy.video.fx import AccelDecel
@@ -6,28 +5,15 @@ from moviepy.video.VideoClip import DataVideoClip
 from tensorflow import keras
 from tqdm import trange
 
+from dreamify.utils.common import deprocess
 from dreamify.utils.configure import Config
 
 config: Config = None
 
 
-def configure_settings(
-    feature_extractor,
-    layer_settings,
-    original_shape,
-    enable_framing,
-    frames_for_vid,
-    iterations,
-):
+def configure_settings(**kwargs):
     global config
-    config = Config(
-        feature_extractor=feature_extractor,
-        layer_settings=layer_settings,
-        original_shape=original_shape,
-        enable_framing=enable_framing,
-        frames_for_vid=frames_for_vid,
-        max_frames_to_sample=iterations,
-    )
+    config = Config(**kwargs)
 
 
 def preprocess_image(image_path):
@@ -35,15 +21,6 @@ def preprocess_image(image_path):
     img = keras.utils.img_to_array(img)
     img = np.expand_dims(img, axis=0)
     img = keras.applications.inception_v3.preprocess_input(img)
-    return img
-
-
-def deprocess_image(img):
-    img = img.reshape((img.shape[1], img.shape[2], 3))
-    img /= 2.0
-    img += 0.5
-    img *= 255.0
-    img = np.clip(img, 0, 255).astype("uint8")
     return img
 
 
@@ -63,7 +40,7 @@ def gradient_ascent_step(image, learning_rate):
         tape.watch(image)
         loss = compute_loss(image)
     grads = tape.gradient(loss, image)
-    grads = tf.math.l2_normalize(grads) + 1e-8
+    grads = tf.math.l2_normalize(grads)
     image += learning_rate * grads
     image = tf.clip_by_value(image, -1, 1)
     return loss, image
@@ -88,7 +65,7 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
             and config.curr_frame_idx < config.max_frames_to_sample - 1
         ):
             frame = tf.image.resize(image, config.original_shape)
-            frame = deprocess_image(image.numpy())
+            frame = deprocess(image.numpy())
             config.frames_for_vid.append(frame)
             config.curr_frame_idx += 1
 
@@ -112,11 +89,14 @@ def to_video(output_path, duration, fps=60):
 @tf.function
 def interpolate_frames(frame1, frame2, num_frames):
     alphas = tf.linspace(0.0, 1.0, num_frames + 2)[1:-1]  # Avoid 0 and 1
-    return tf.cast(
-        (1 - alphas[:, None, None, None]) * frame1
-        + alphas[:, None, None, None] * frame2,
-        tf.uint8,
-    )
+
+    frame1 = tf.cast(frame1, tf.float32)
+    frame2 = tf.cast(frame2, tf.float32)
+
+    interpolated_frames = (1 - alphas[:, None, None, None]) * frame1 + alphas[
+        :, None, None, None
+    ] * frame2
+    return tf.cast(interpolated_frames, tf.uint8)
 
 
 def upsample():
@@ -125,33 +105,25 @@ def upsample():
 
     new_frames = []
 
-    # Upsample via frame-frame interpoliation
+    # Upsample via frame-frame interpolation
     for i in range(len(config.frames_for_vid) - 1):
-        frame1 = tf.convert_to_tensor(config.frames_for_vid[i], dtype=tf.float32)
-        frame2 = tf.convert_to_tensor(config.frames_for_vid[i + 1], dtype=tf.float32)
+        frame1 = tf.cast(config.frames_for_vid[i], tf.float32)
+        frame2 = tf.cast(config.frames_for_vid[i + 1], tf.float32)
 
-        new_frames.append(config.frames_for_vid[i])
-        new_frames.extend(
-            interpolate_frames(frame1, frame2, NUM_FRAMES_TO_INSERT).numpy()
-        )
+        new_frames.append(config.frames_for_vid[i].numpy())  # Add original frame
+
+        interpolated = interpolate_frames(frame1, frame2, NUM_FRAMES_TO_INSERT)
+        new_frames.extend(interpolated.numpy())
 
     new_frames.extend(
-        [config.frames_for_vid[-1]] * 60 * 3
-    )  # Lengthen end frame by 3 secs
+        [config.frames_for_vid[-1].numpy()] * 60 * 3
+    )  # Lengthen end frame by 3 seconds
     config.frames_for_vid = new_frames
-
-
-def show(img):
-    plt.imshow(np.squeeze(img))
-    plt.axis("off")
-    plt.show()
 
 
 __all__ = [
     configure_settings,
     preprocess_image,
-    deprocess_image,
     gradient_ascent_loop,
     to_video,
-    show,
 ]

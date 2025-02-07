@@ -1,4 +1,3 @@
-import IPython.display as display
 import numpy as np
 import PIL.Image
 import tensorflow as tf
@@ -12,17 +11,6 @@ def download(url, max_dim=None):
     if max_dim:
         img.thumbnail((max_dim, max_dim))
     return np.array(img)
-
-
-def deprocess(img):
-    """Normalize image for display."""
-    img = 255 * (img + 1.0) / 2.0
-    return tf.cast(img, tf.uint8)
-
-
-def show(img):
-    """Display an image."""
-    display.display(PIL.Image.fromarray(np.array(img)))
 
 
 def calc_loss(img, model):

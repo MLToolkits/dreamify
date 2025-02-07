@@ -5,14 +5,9 @@ import tensorflow as tf
 from tensorflow import keras
 
 from dreamify.lib.feature_extractor import FeatureExtractor
-from dreamify.utils.dream_utils import (
-    configure_settings,
-    deprocess_image,
-    gradient_ascent_loop,
-    preprocess_image,
-    show,
-    to_video,
-)
+from dreamify.utils.common import deprocess, show
+from dreamify.utils.dream_utils import configure_settings  # deprocess_image,
+from dreamify.utils.dream_utils import gradient_ascent_loop, preprocess_image, to_video
 
 # from dreamify.utils.compare import main
 
@@ -26,7 +21,7 @@ def generate_dream_image(
     output_path="dream.png",
     model_name="inception_v3",
     learning_rate=5.0,
-    num_octave=5,
+    num_octave=4,
     octave_scale=1.3,
     iterations=100,
     max_loss=15.0,
@@ -36,13 +31,17 @@ def generate_dream_image(
     base_image_path = Path(image_path)
     output_path = Path(output_path)
 
-    feature_extractor = FeatureExtractor(model_name)
+    ft_ext = FeatureExtractor(model_name)
 
     original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
 
     configure_settings(
-        feature_extractor, layer_settings, original_shape, save_video, [], iterations
+        feature_extractor=ft_ext,
+        layer_settings=ft_ext.layer_settings,
+        original_shape=original_shape,
+        enable_framing=save_video,
+        max_frames_to_sample=iterations,
     )
 
     successive_shapes = [original_shape]
@@ -74,8 +73,8 @@ def generate_dream_image(
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
     image = img.numpy()
-    keras.utils.save_img(output_path, deprocess_image(image))
-    show(image)
+    keras.utils.save_img(output_path, deprocess(image))
+    show(deprocess(image))
 
     print(f"Dream image saved to {output_path}")
 
@@ -89,5 +88,5 @@ def main():
 
 # Compares all models and layer settings on an image
 if __name__ == "__main__":
-    # main()  # current implementation of comparison has circular import
+    # main()  # current implementation of comparison,py has circular import
     pass
