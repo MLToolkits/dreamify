@@ -78,9 +78,9 @@ def generate_dream_image(
 
     img = deprocess(img)
     keras.utils.save_img(output_path, img)
-    show(img)
-
     print(f"Dream image saved to {output_path}")
+
+    show(img)
 
     if save_video:
         to_video(output_path.stem + ".mp4", duration)

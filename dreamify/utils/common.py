@@ -1,12 +1,13 @@
-import IPython.display as display
 import numpy as np
 import PIL.Image
 import tensorflow as tf
+from IPython import display
 
 
 def show(img):
     """Display an image."""
     img = np.array(img)
+    img = np.squeeze(img)
     display.display(PIL.Image.fromarray(img))
 
 

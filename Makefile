@@ -8,7 +8,7 @@ setup:
 setup_dev: setup
 	pip install -r requirements.dev.txt
 
-publish: all
+publish: lint
 	@poetry version $(change)
 	@git add .
 	@git commit -m "$(message)"
@@ -21,4 +21,7 @@ lint:
 	black .
 	flake8 .
 
-all: lint 
+test:
+	pytest . -s
+
+all: lint test
