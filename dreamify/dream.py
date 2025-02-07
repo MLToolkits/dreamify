@@ -6,8 +6,12 @@ from tensorflow import keras
 
 from dreamify.lib.feature_extractor import FeatureExtractor
 from dreamify.utils.common import deprocess, show
-from dreamify.utils.dream_utils import configure_settings  # deprocess_image,
-from dreamify.utils.dream_utils import gradient_ascent_loop, preprocess_image, to_video
+from dreamify.utils.dream_utils import (
+    configure_settings,
+    gradient_ascent_loop,
+    preprocess_image,
+    to_video,
+)
 
 # from dreamify.utils.compare import main
 
@@ -72,9 +76,9 @@ def generate_dream_image(
         img += lost_detail
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
-    image = img.numpy()
-    keras.utils.save_img(output_path, deprocess(image))
-    show(deprocess(image))
+    img = deprocess(img)
+    keras.utils.save_img(output_path, img)
+    show(img)
 
     print(f"Dream image saved to {output_path}")
 

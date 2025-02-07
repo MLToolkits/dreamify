@@ -90,6 +90,7 @@ def deep_dream_rolled(
 
 
 def main():
+
     url = (
         "https://storage.googleapis.com/download.tensorflow.org/"
         "example_images/YellowLabradorLooking_new.jpg"

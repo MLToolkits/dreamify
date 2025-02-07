@@ -1,0 +1,6 @@
+1. Modularize and share code b/n dream and deepdream
+2. Implement class for ImageToVideo converter
+3. Implement optional backward loop for video
+4. Implement video framing for deep dream
+5. Handle unmatched dim sizes for dream
+6. Implement validators as decorators for dream and deepdream
