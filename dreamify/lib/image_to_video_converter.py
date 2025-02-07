@@ -1,5 +1,5 @@
 import tensorflow as tf
-from moviepy.video.fx import AccelDecel
+from moviepy.video.fx import AccelDecel, TimeSymmetrize
 from moviepy.video.VideoClip import DataVideoClip
 
 from dreamify.utils.common import deprocess
@@ -22,12 +22,16 @@ class ImageToVideoConverter:
     def continue_framing(self):
         return self.curr_frame_idx < self.max_frames_to_sample - 1
 
-    def to_video(self, output_path, duration, fps=60):
+    def to_video(self, output_path, duration, mirror_video, fps=60):
         self.upsample()
 
         print(f"Number of images to frame: {len(self.frames_for_vid)}")
 
         vid = DataVideoClip(self.frames_for_vid, lambda x: x, fps=fps)
+
+        if mirror_video:
+            vid = TimeSymmetrize().apply(vid)
+
         vid = AccelDecel(new_duration=duration).apply(vid)
         vid.write_videofile(output_path)
 

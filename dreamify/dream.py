@@ -30,6 +30,7 @@ def generate_dream_image(
     max_loss=15.0,
     save_video=False,
     duration=3,
+    mirror_video=False,
 ):
     base_image_path = Path(image_path)
     output_path = Path(output_path)
@@ -82,7 +83,7 @@ def generate_dream_image(
     show(img)
 
     if save_video:
-        config.framer.to_video(output_path.stem + ".mp4", duration)
+        config.framer.to_video(output_path.stem + ".mp4", duration, mirror_video)
 
 
 def main():
