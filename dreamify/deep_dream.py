@@ -2,9 +2,9 @@ import IPython.display as display
 import numpy as np
 import tensorflow as tf
 
-from dreamify.lib.validators import validate_dream
+from dreamify.lib import DeepDream, TiledGradients, validate_dream
 from dreamify.utils.common import deprocess, show
-from dreamify.utils.deep_dream_utils import DeepDream, TiledGradients, download
+from dreamify.utils.deep_dream_utils import download
 
 
 @validate_dream

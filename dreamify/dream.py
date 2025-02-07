@@ -4,8 +4,7 @@ from pathlib import Path
 import tensorflow as tf
 from tensorflow import keras
 
-from dreamify.lib.feature_extractor import FeatureExtractor
-from dreamify.lib.validators import validate_dream
+from dreamify.lib import FeatureExtractor, validate_dream
 from dreamify.utils.common import deprocess, show
 from dreamify.utils.dream_utils import (
     configure_settings,
