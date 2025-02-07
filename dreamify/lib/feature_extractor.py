@@ -1,3 +1,4 @@
+import tensorflow as tf
 from tensorflow import keras
 
 from dreamify.utils.models import choose_model
@@ -17,5 +18,6 @@ class FeatureExtractor:
             inputs=self.model.inputs, outputs=outputs_dict
         )
 
+    @tf.function
     def __call__(self, input):
         return self.feature_extractor(input)

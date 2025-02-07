@@ -5,13 +5,11 @@ import tensorflow as tf
 from tensorflow import keras
 
 from dreamify.lib.feature_extractor import FeatureExtractor
+
+# from dreamify.lib.image_to_video_converter import ImageToVideoConverter
 from dreamify.utils.common import deprocess, show
-from dreamify.utils.dream_utils import (
-    configure_settings,
-    gradient_ascent_loop,
-    preprocess_image,
-    to_video,
-)
+from dreamify.utils.dream_utils import configure_settings  # to_video,
+from dreamify.utils.dream_utils import gradient_ascent_loop, preprocess_image
 
 # from dreamify.utils.compare import main
 
@@ -24,10 +22,10 @@ def generate_dream_image(
     image_path,
     output_path="dream.png",
     model_name="inception_v3",
-    learning_rate=5.0,
-    num_octave=4,
-    octave_scale=1.3,
-    iterations=100,
+    learning_rate=20.0,
+    num_octave=3,
+    octave_scale=1.4,
+    iterations=30,
     max_loss=15.0,
     save_video=False,
     duration=3,
@@ -40,7 +38,7 @@ def generate_dream_image(
     original_img = preprocess_image(base_image_path)
     original_shape = original_img.shape[1:3]
 
-    configure_settings(
+    config = configure_settings(
         feature_extractor=ft_ext,
         layer_settings=ft_ext.layer_settings,
         original_shape=original_shape,
@@ -83,7 +81,8 @@ def generate_dream_image(
     show(img)
 
     if save_video:
-        to_video(output_path.stem + ".mp4", duration)
+        # to_video(output_path.stem + ".mp4", duration)
+        config.framer.to_video(output_path.stem + ".mp4", duration)
 
 
 def main():
