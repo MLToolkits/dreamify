@@ -5,11 +5,12 @@ import tensorflow as tf
 from tensorflow import keras
 
 from dreamify.lib.feature_extractor import FeatureExtractor
-
-# from dreamify.lib.image_to_video_converter import ImageToVideoConverter
 from dreamify.utils.common import deprocess, show
-from dreamify.utils.dream_utils import configure_settings  # to_video,
-from dreamify.utils.dream_utils import gradient_ascent_loop, preprocess_image
+from dreamify.utils.dream_utils import (
+    configure_settings,
+    gradient_ascent_loop,
+    preprocess_image,
+)
 
 # from dreamify.utils.compare import main
 
@@ -81,7 +82,6 @@ def generate_dream_image(
     show(img)
 
     if save_video:
-        # to_video(output_path.stem + ".mp4", duration)
         config.framer.to_video(output_path.stem + ".mp4", duration)
 
 
