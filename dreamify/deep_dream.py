@@ -90,6 +90,7 @@ def deep_dream_rolled(
     save_video=False,
     duration=3,
     mirror_video=False,
+    config=None,
 ):
 
     base_shape = tf.shape(img)
@@ -245,6 +246,7 @@ def main3():
         get_tiled_gradients=get_tiled_gradients,
         learning_rate=0.01,
         save_video=True,
+        config=config,
     )
     img = tf.image.resize(img, original_img.shape[:-1])
     img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
