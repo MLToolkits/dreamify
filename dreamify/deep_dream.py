@@ -4,7 +4,8 @@ import tensorflow as tf
 
 from dreamify.lib import DeepDream, TiledGradients, validate_dream
 from dreamify.utils.common import deprocess, show
-from dreamify.utils.configure import Config
+
+# from dreamify.utils.configure import Config
 from dreamify.utils.deep_dream_utils import download
 
 
@@ -215,5 +216,4 @@ def main3():
 
 
 if __name__ == "__main__":
-    config: Config = None
     main()
