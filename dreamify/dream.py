@@ -50,7 +50,7 @@ def generate_dream_image(
     )
 
     successive_shapes = [original_shape]
-    for i in range(1, num_octave):
+    for i in range(1, octaves):
         shape = tuple([int(dim / (octave_scale**i)) for dim in original_shape])
         successive_shapes.append(shape)
     successive_shapes = successive_shapes[::-1]
