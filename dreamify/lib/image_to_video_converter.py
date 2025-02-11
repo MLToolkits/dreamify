@@ -14,7 +14,7 @@ class ImageToVideoConverter:
 
     def add_to_frames(self, frame):
         frame = tf.image.resize(frame, self.dimensions)
-        frame = deprocess(frame.numpy())
+        frame = deprocess(frame)
 
         self.frames_for_vid.append(frame)
         self.curr_frame_idx += 1
@@ -45,7 +45,8 @@ class ImageToVideoConverter:
             frame1 = tf.cast(self.frames_for_vid[i], tf.float32)
             frame2 = tf.cast(self.frames_for_vid[i + 1], tf.float32)
 
-            new_frames.append(self.frames_for_vid[i].numpy())  # Add original frame
+            # Add original frame
+            new_frames.append(self.frames_for_vid[i].numpy())
 
             interpolated = self.interpolate_frames(frame1, frame2, NUM_FRAMES_TO_INSERT)
             new_frames.extend(interpolated.numpy())
