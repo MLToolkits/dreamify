@@ -1,6 +1,6 @@
 ipython
 matplotlib
-moviepy
+moviepy==2.1.2
 numpy
 pillow==10.0.0
 tensorflow
