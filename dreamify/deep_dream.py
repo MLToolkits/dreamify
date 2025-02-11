@@ -140,16 +140,16 @@ def main():
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    deepdream = DeepDream(dream_model, config)
-
     global config
     config = configure_settings(
-        feature_extractor=deepdream,
+        feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
         enable_framing=True,
         max_frames_to_sample=100,
     )
+
+    deepdream = DeepDream(dream_model, config)
 
     # Single Octave
     img = deep_dream_simple(
@@ -184,16 +184,16 @@ def main2():
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    deepdream = DeepDream(dream_model, config)
-
     global config
     config = configure_settings(
-        feature_extractor=deepdream,
+        feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
         enable_framing=True,
         max_frames_to_sample=100,
     )
+
+    deepdream = DeepDream(dream_model, config)
 
     # Multi-Octave
     img = deep_dream_octaved(
@@ -228,11 +228,9 @@ def main3():
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    deepdream = DeepDream(dream_model, config)
-
     global config
     config = configure_settings(
-        feature_extractor=deepdream,
+        feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
         enable_framing=True,
