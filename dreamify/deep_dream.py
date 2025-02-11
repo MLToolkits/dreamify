@@ -4,9 +4,16 @@ import tensorflow as tf
 
 from dreamify.lib import DeepDream, TiledGradients, validate_dream
 from dreamify.utils.common import deprocess, show
-
-# from dreamify.utils.configure import Config
+from dreamify.utils.configure import Config
 from dreamify.utils.deep_dream_utils import download
+
+config: Config = None
+
+
+def configure_settings(**kwargs):
+    global config
+    config = Config(**kwargs)
+    return config
 
 
 @validate_dream
@@ -107,6 +114,9 @@ def deep_dream_rolled(
                 show(deprocess(img))
                 print("Octave {}, Iteration {}".format(octave, iteration))
 
+            if config.enable_framing and config.framer.continue_framing():
+                config.framer.add_to_frames(img)
+
     return deprocess(img)
 
 
@@ -117,7 +127,7 @@ def main():
     )
 
     original_img = download(url, max_dim=500)
-    # original_shape = original_img.shape[1:3]
+    original_shape = original_img.shape[1:3]
     show(original_img)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -130,6 +140,15 @@ def main():
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
     deepdream = DeepDream(dream_model, config)
+
+    global config
+    config = configure_settings(
+        feature_extractor=deepdream,
+        layer_settings=layers,
+        original_shape=original_shape,
+        enable_framing=True,
+        max_frames_to_sample=100,
+    )
 
     # Single Octave
     img = deep_dream_simple(
@@ -152,7 +171,7 @@ def main2():
     )
 
     original_img = download(url, max_dim=500)
-    # original_shape = original_img.shape[1:3]
+    original_shape = original_img.shape[1:3]
     show(original_img)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -165,6 +184,15 @@ def main2():
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
     deepdream = DeepDream(dream_model, config)
+
+    global config
+    config = configure_settings(
+        feature_extractor=deepdream,
+        layer_settings=layers,
+        original_shape=original_shape,
+        enable_framing=True,
+        max_frames_to_sample=100,
+    )
 
     # Multi-Octave
     img = deep_dream_octaved(
@@ -187,7 +215,7 @@ def main3():
     )
 
     original_img = download(url, max_dim=500)
-    # original_shape = original_img.shape[1:3]
+    original_shape = original_img.shape[1:3]
     show(original_img)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -199,7 +227,16 @@ def main3():
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    # deepdream = DeepDream(dream_model, config)
+    deepdream = DeepDream(dream_model, config)
+
+    global config
+    config = configure_settings(
+        feature_extractor=deepdream,
+        layer_settings=layers,
+        original_shape=original_shape,
+        enable_framing=True,
+        max_frames_to_sample=100,
+    )
 
     # Rolling/Multi-Octave with Tiling
     get_tiled_gradients = TiledGradients(dream_model)
