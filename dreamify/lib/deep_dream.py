@@ -30,6 +30,6 @@ class DeepDream(tf.Module):
             framer = self.config.framer
 
             if self.config.enable_framing and framer.continue_framing():
-                framer.add_to_frames(image)
+                framer.add_to_frames(img)
 
         return loss, img
