@@ -4,8 +4,9 @@ from dreamify.utils.deep_dream_utils.utils import calc_loss
 
 
 class DeepDream(tf.Module):
-    def __init__(self, model):
+    def __init__(self, model, config):
         self.model = model
+        self.config = config
 
     @tf.function(
         input_signature=(
@@ -25,5 +26,10 @@ class DeepDream(tf.Module):
             gradients /= tf.math.reduce_std(gradients) + 1e-8
             img = img + gradients * step_size
             img = tf.clip_by_value(img, -1, 1)
+
+            framer = self.config.framer
+
+            if self.config.enable_framing and framer.continue_framing():
+                framer.add_to_frames(image)
 
         return loss, img
