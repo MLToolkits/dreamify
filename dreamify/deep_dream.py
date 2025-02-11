@@ -7,13 +7,14 @@ from dreamify.utils.common import deprocess, show
 from dreamify.utils.configure import Config
 from dreamify.utils.deep_dream_utils import download
 
-
 config: Config = None
+
 
 def configure_settings(**kwargs):
     global config
     config = Config(**kwargs)
     return config
+
 
 @validate_dream
 def deep_dream_simple(
@@ -28,7 +29,7 @@ def deep_dream_simple(
 ):
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
-    
+
     learning_rate = tf.convert_to_tensor(learning_rate)
     iterations_remaining = iterations
     iteration = 0
@@ -36,14 +37,15 @@ def deep_dream_simple(
         run_iterations = tf.constant(min(100, iterations_remaining))
         iterations_remaining -= run_iterations
         iteration += run_iterations
-        
+
         loss, img = dream_model(img, run_iterations, tf.constant(learning_rate))
-        
+
         display.clear_output(wait=True)
         show(deprocess(img))
         print("Iteration {}, loss {}".format(iteration, loss))
-    
+
     return deprocess(img)
+
 
 @validate_dream
 def deep_dream_octaved(
@@ -59,7 +61,7 @@ def deep_dream_octaved(
     OCTAVE_SCALE = 1.30
     img = tf.constant(np.array(img))
     float_base_shape = tf.cast(tf.shape(img)[:-1], tf.float32)
-    
+
     for n in range(-2, 3):
         new_shape = tf.cast(float_base_shape * (OCTAVE_SCALE**n), tf.int32)
         img = tf.image.resize(img, new_shape).numpy()
@@ -72,8 +74,9 @@ def deep_dream_octaved(
             duration=duration,
             mirror_video=mirror_video,
         )
-    
+
     return img
+
 
 @validate_dream
 def deep_dream_rolled(
@@ -89,30 +92,32 @@ def deep_dream_rolled(
     mirror_video=False,
 ):
     global config
-    
+
     base_shape = tf.shape(img)
     img = tf.keras.utils.img_to_array(img)
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     initial_shape = img.shape[:-1]
     img = tf.image.resize(img, initial_shape)
-    
+
     for octave in octaves:
-        new_size = tf.cast(tf.convert_to_tensor(base_shape[:-1]), tf.float32) * (octave_scale**octave)
+        new_size = tf.cast(tf.convert_to_tensor(base_shape[:-1]), tf.float32) * (
+            octave_scale**octave
+        )
         img = tf.image.resize(img, tf.cast(new_size, tf.int32))
-        
+
         for iteration in range(iterations):
             gradients = get_tiled_gradients(img, new_size)
             img = img + gradients * learning_rate
             img = tf.clip_by_value(img, -1, 1)
-            
+
             if iteration % 10 == 0:
                 display.clear_output(wait=True)
                 show(deprocess(img))
                 print("Octave {}, Iteration {}".format(octave, iteration))
-            
+
             if config.enable_framing and config.framer.continue_framing():
                 config.framer.add_to_frames(img)
-    
+
     return deprocess(img)
 
 
