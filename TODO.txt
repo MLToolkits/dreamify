@@ -1,4 +1,6 @@
 HIGH:
+0.  Remove eager tf execution to speed up dreams 
+    - (don't rely on global vars and use tf vars with functional programming)
 1.  Modularize and share code b/n dream and deepdream
 2.  Implement class for ImageToVideo converter                                                  # DONE
 3.  Implement optional backward loop for video                                                  # DONE
