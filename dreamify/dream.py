@@ -45,6 +45,7 @@ def generate_dream_image(
         feature_extractor=ft_ext,
         layer_settings=ft_ext.layer_settings,
         original_shape=original_shape,
+        save_video=save_video,
         enable_framing=save_video,
         max_frames_to_sample=iterations,
     )
@@ -72,10 +73,12 @@ def generate_dream_image(
         upscaled_shrunk_original_img = tf.image.resize(
             shrunk_original_img, successive_shapes[i]
         )
-        same_size_original = tf.image.resize(original_img, successive_shapes[i])
+        same_size_original = tf.image.resize(
+            original_img, successive_shapes[i])
         lost_detail = same_size_original - upscaled_shrunk_original_img
         img += lost_detail
-        shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
+        shrunk_original_img = tf.image.resize(
+            original_img, successive_shapes[i])
 
     img = deprocess(img)
     keras.utils.save_img(output_path, img)
@@ -84,7 +87,8 @@ def generate_dream_image(
     show(img)
 
     if save_video:
-        config.framer.to_video(output_path.stem + ".mp4", duration, mirror_video)
+        config.framer.to_video(output_path.stem + ".mp4",
+                               duration, mirror_video)
 
 
 def main():

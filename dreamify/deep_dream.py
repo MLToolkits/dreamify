@@ -79,6 +79,7 @@ def deep_dream_octaved(
         feature_extractor=dream_model,
         layer_settings=dream_model.model.layers,
         original_shape=img.shape[:-1],
+        save_video=False,
         enable_framing=save_video,
         max_frames_to_sample=iterations,
     )
@@ -88,6 +89,9 @@ def deep_dream_octaved(
     float_base_shape = tf.cast(tf.shape(img)[:-1], tf.float32)
 
     for n in range(-2, 3):
+        if config == 2:
+            config.save_video = True
+
         new_shape = tf.cast(float_base_shape * (OCTAVE_SCALE**n), tf.int32)
         img = tf.image.resize(img, new_shape).numpy()
         img = deep_dream_simple(
@@ -117,15 +121,6 @@ def deep_dream_rolled(
     mirror_video=False,
     config=None,
 ):
-
-    config = configure_settings(
-        feature_extractor=dream_model,
-        layer_settings=dream_model.model.layers,
-        original_shape=img.shape[:-1],
-        enable_framing=save_video,
-        max_frames_to_sample=iterations,
-    )
-
     base_shape = tf.shape(img)
     img = tf.keras.utils.img_to_array(img)
     img = tf.keras.applications.inception_v3.preprocess_input(img)

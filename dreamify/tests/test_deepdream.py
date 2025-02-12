@@ -42,6 +42,7 @@ def deepdream_inputs(request):
         feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
+        save_video=True,
         enable_framing=True,
         max_frames_to_sample=iterations,
     )

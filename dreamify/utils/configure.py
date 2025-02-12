@@ -24,6 +24,7 @@ class Config:
     feature_extractor: object = None
     layer_settings: object = None
     original_shape: object = None
+    save_video: bool = False
     enable_framing: bool = False
     max_frames_to_sample: int = 0
     framer: ImageToVideoConverter = None
