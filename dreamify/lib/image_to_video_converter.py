@@ -25,7 +25,7 @@ class ImageToVideoConverter:
     def to_video(self, output_path, duration, mirror_video, fps=60):
         self.upsample()
 
-        frames = [frame.numpy() for frame in self.frames_for_vid]
+        frames = [frame.numpy(dtype="float32") for frame in self.frames_for_vid]
         print(f"Number of images to frame: {len(frames)}")
 
         vid = DataVideoClip(frames, lambda x: x, fps=fps)
@@ -35,7 +35,7 @@ class ImageToVideoConverter:
         vid.write_videofile(output_path)
 
     def upsample(self):
-        NUM_FRAMES_TO_INSERT = 30
+        NUM_FRAMES_TO_INSERT = 15
 
         new_frames = []
 
