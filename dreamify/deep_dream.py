@@ -29,13 +29,14 @@ def deep_dream_simple(
 ):
     global config
 
-    config = configure_settings(
-        feature_extractor=dream_model,
-        layer_settings=dream_model.model.layers,
-        original_shape=img.shape[:-1],
-        enable_framing=save_video,
-        max_frames_to_sample=iterations,
-    )
+    if config is None:
+        config = configure_settings(
+            feature_extractor=dream_model,
+            layer_settings=dream_model.model.layers,
+            original_shape=img.shape[:-1],
+            enable_framing=save_video,
+            max_frames_to_sample=iterations,
+        )
 
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
@@ -72,6 +73,16 @@ def deep_dream_octaved(
     duration=3,
     mirror_video=False,
 ):
+    global config
+
+    config = configure_settings(
+        feature_extractor=dream_model,
+        layer_settings=dream_model.model.layers,
+        original_shape=img.shape[:-1],
+        enable_framing=save_video,
+        max_frames_to_sample=iterations,
+    )
+
     OCTAVE_SCALE = 1.30
     img = tf.constant(np.array(img))
     float_base_shape = tf.cast(tf.shape(img)[:-1], tf.float32)
@@ -106,6 +117,15 @@ def deep_dream_rolled(
     mirror_video=False,
     config=None,
 ):
+    global config
+
+    config = configure_settings(
+        feature_extractor=dream_model,
+        layer_settings=dream_model.model.layers,
+        original_shape=img.shape[:-1],
+        enable_framing=save_video,
+        max_frames_to_sample=iterations,
+    )
 
     base_shape = tf.shape(img)
     img = tf.keras.utils.img_to_array(img)

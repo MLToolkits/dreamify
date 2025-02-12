@@ -1,6 +1,7 @@
+import pytest
 import tensorflow as tf
 
-from dreamify.deep_dream import deep_dream_simple
+from dreamify.deep_dream import deep_dream_octaved, deep_dream_simple
 from dreamify.lib import DeepDream
 from dreamify.utils.common import show
 from dreamify.utils.configure import Config
@@ -13,7 +14,10 @@ def configure_settings(**kwargs):
     return config
 
 
-def test_mock_deepdream():
+@pytest.fixture
+def deepdream_inputs(request):
+    iterations = getattr(request, "param", 100)
+
     url = (
         "https://storage.googleapis.com/download.tensorflow.org/"
         "example_images/YellowLabradorLooking_new.jpg"
@@ -32,24 +36,44 @@ def test_mock_deepdream():
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    max_frames_to_sample = 100
-
-    global config
     config = configure_settings(
         feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
         enable_framing=True,
-        max_frames_to_sample=max_frames_to_sample,
+        max_frames_to_sample=iterations,
     )
 
     deepdream = DeepDream(dream_model, config)
+
+    return deepdream, original_img, iterations
+
+
+@pytest.mark.parametrize("deepdream_inputs", [10], indirect=True)
+def test_mock_deepdream(deepdream_inputs):
+    deepdream, original_img, iterations = deepdream_inputs
 
     # Single Octave
     deep_dream_simple(
         img=original_img,
         dream_model=deepdream,
-        iterations=max_frames_to_sample,
-        learning_rate=0.01,
+        iterations=iterations,
+        learning_rate=0.1,
         save_video=True,
+        output_path="deepdream_simple.mp4",
+    )
+
+
+@pytest.mark.parametrize("deepdream_inputs", [5], indirect=True)
+def test_mock_deepdream_octaved(deepdream_inputs):
+    deepdream, original_img, iterations = deepdream_inputs
+
+    # Multi-Octave
+    deep_dream_octaved(
+        img=original_img,
+        dream_model=deepdream,
+        iterations=iterations,
+        learning_rate=0.1,
+        save_video=True,
+        output_path="deepdream_octaved.mp4",
     )
