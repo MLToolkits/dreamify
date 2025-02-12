@@ -32,13 +32,15 @@ def test_mock_deepdream():
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
+    max_frames_to_sample = 100
+
     global config
     config = configure_settings(
         feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
         enable_framing=True,
-        max_frames_to_sample=100,
+        max_frames_to_sample=max_frames_to_sample,
     )
 
     deepdream = DeepDream(dream_model, config)
@@ -47,6 +49,7 @@ def test_mock_deepdream():
     deep_dream_simple(
         img=original_img,
         dream_model=deepdream,
-        iterations=5,
+        iterations=max_frames_to_sample,
         learning_rate=0.01,
+        save_video=True,
     )

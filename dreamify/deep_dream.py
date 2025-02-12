@@ -27,6 +27,16 @@ def deep_dream_simple(
     duration=3,
     mirror_video=False,
 ):
+    global config
+
+    config = configure_settings(
+        feature_extractor=dream_model,
+        layer_settings=dream_model.model.layers,
+        original_shape=img.shape[:-1],
+        enable_framing=save_video,
+        max_frames_to_sample=iterations,
+    )
+
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
 
@@ -38,11 +48,15 @@ def deep_dream_simple(
         iterations_remaining -= run_iterations
         iteration += run_iterations
 
-        loss, img = dream_model(img, run_iterations, tf.constant(learning_rate))
+        loss, img = dream_model.gradient_ascent_loop(
+            img, run_iterations, tf.constant(learning_rate), config
+        )
 
         display.clear_output(wait=True)
         show(deprocess(img))
         print("Iteration {}, loss {}".format(iteration, loss))
+
+    print(len(config.framer.frames_for_vid))
 
     return deprocess(img)
 
@@ -121,7 +135,7 @@ def deep_dream_rolled(
     return deprocess(img)
 
 
-def main():
+def main(save_video=False, duration=3, mirror_video=False):
     url = (
         "https://storage.googleapis.com/download.tensorflow.org/"
         "example_images/YellowLabradorLooking_new.jpg"
@@ -164,8 +178,11 @@ def main():
     img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
     show(img)
 
+    if save_video:
+        config.framer.to_video("dream.mp4", duration, mirror_video)
 
-def main2():
+
+def main2(save_video=False, duration=3, mirror_video=False):
     url = (
         "https://storage.googleapis.com/download.tensorflow.org/"
         "example_images/YellowLabradorLooking_new.jpg"
@@ -208,8 +225,11 @@ def main2():
     display.clear_output(wait=True)
     show(img)
 
+    if save_video:
+        config.framer.to_video("dream.mp4", duration, mirror_video)
 
-def main3():
+
+def main3(save_video=False, duration=3, mirror_video=False):
     url = (
         "https://storage.googleapis.com/download.tensorflow.org/"
         "example_images/YellowLabradorLooking_new.jpg"
@@ -250,6 +270,9 @@ def main3():
     img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
     display.clear_output(wait=True)
     show(img)
+
+    if save_video:
+        config.framer.to_video("dream.mp4", duration, mirror_video)
 
 
 if __name__ == "__main__":
