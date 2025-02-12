@@ -1,3 +1,4 @@
+imageio==2.37.0
 ipython
 matplotlib
 moviepy==2.1.2
