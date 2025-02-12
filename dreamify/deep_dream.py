@@ -117,7 +117,6 @@ def deep_dream_rolled(
     mirror_video=False,
     config=None,
 ):
-    global config
 
     config = configure_settings(
         feature_extractor=dream_model,

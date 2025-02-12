@@ -7,6 +7,8 @@ from dreamify.utils.common import show
 from dreamify.utils.configure import Config
 from dreamify.utils.deep_dream_utils import download
 
+config = None
+
 
 def configure_settings(**kwargs):
     global config
