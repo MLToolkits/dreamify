@@ -72,7 +72,8 @@ class DeepDream(tf.Module):
                 framer.add_to_frames(img)
 
         if config.enable_framing:
-            config.framer.to_video("examples/deepdream.mp4",
-                                   duration=3, mirror_video=False)
+            config.framer.to_video(
+                "examples/deepdream.mp4", duration=3, mirror_video=False
+            )
 
         return loss, img
