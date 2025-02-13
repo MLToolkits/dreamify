@@ -2,6 +2,13 @@
 
 A function that applies deep dream to an image using pre-trained CNNs trained on the ImageNet dataset.
 
+<p align="center" width="100%">
+  <img src="examples/doggy.gif" alt="Doggy" height="300px" />
+  <img src="examples/cat-optimized.gif" alt="Cat" height="300px" />
+</p>
+
+
+
 ## Testing it
 ``` bash
 dreamify
@@ -64,11 +71,7 @@ Dreamify supports the following models:
 | Xception               | `xception`             |
 | MobileNet-V2          | `mobilenet_v2`         |
 
-
-<p align="center">
-  <img src="examples/cat-optimized.gif" alt="Cat" width="100%" />
-</p>
-
+## Other Examples
 
 <p align="center" width="100%">
   <img src="examples/example0.jpg" width="49.5%" style="margin-right: 10px;" />
