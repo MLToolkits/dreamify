@@ -1,4 +1,4 @@
-import IPython.display as display
+# import IPython.display as display
 import numpy as np
 import tensorflow as tf
 
