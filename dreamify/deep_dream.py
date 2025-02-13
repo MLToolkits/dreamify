@@ -4,7 +4,7 @@ import tensorflow as tf
 
 from dreamify.lib import DeepDream, TiledGradients, validate_dream
 from dreamify.utils.common import deprocess, show
-from dreamify.utils.configure import ConfigSingleton
+from dreamify.utils.configure import Config #, ConfigSingleton
 from dreamify.utils.deep_dream_utils import download
 
 
@@ -20,14 +20,23 @@ def deep_dream_simple(
     mirror_video=False,
     config=None,
 ):
-    config = ConfigSingleton.get_config(
-        feature_extractor=dream_model,
-        layer_settings=dream_model.model.layers,
-        original_shape=img.shape[:-1],
-        enable_framing=save_video,
-        max_frames_to_sample=iterations,
-    )
-    print("SIMPLE CONFIG FRAMING:", config.enable_framing)
+    # config = ConfigSingleton.get_config(
+    #     feature_extractor=dream_model,
+    #     layer_settings=dream_model.model.layers,
+    #     original_shape=img.shape[:-1],
+    #     save_video=save_video,
+    #     enable_framing=save_video,
+    #     max_frames_to_sample=iterations,
+    # )
+    if config is None:
+        config = Config(
+            feature_extractor=dream_model,
+            layer_settings=dream_model.model.layers,
+            original_shape=img.shape[:-1],
+            save_video=save_video,
+            enable_framing=save_video,
+            max_frames_to_sample=iterations,
+        )
 
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
@@ -65,15 +74,22 @@ def deep_dream_octaved(
     duration=3,
     mirror_video=False,
 ):
-    config = ConfigSingleton.get_config(
+    # config = ConfigSingleton.get_config(
+    #     feature_extractor=dream_model,
+    #     layer_settings=dream_model.model.layers,
+    #     original_shape=img.shape[:-1],
+    #     save_video=save_video,
+    #     enable_framing=save_video,
+    #     max_frames_to_sample=iterations * 5,  # 5 octaves
+    # )
+    config = Config(
         feature_extractor=dream_model,
         layer_settings=dream_model.model.layers,
         original_shape=img.shape[:-1],
-        save_video=save_video,
+        save_video=False,
         enable_framing=save_video,
-        max_frames_to_sample=iterations,
+        max_frames_to_sample=iterations * 5,  # 5 octaves
     )
-    print("INITIAL CONFIG FRAMING:", config.enable_framing)
 
     OCTAVE_SCALE = 1.30
     img = tf.constant(np.array(img))
@@ -81,7 +97,7 @@ def deep_dream_octaved(
 
     for n in range(-2, 3):
         if n == 2:
-            config.save_video = True
+            config.save_video = save_video
 
         new_shape = tf.cast(float_base_shape * (OCTAVE_SCALE**n), tf.int32)
         img = tf.image.resize(img, new_shape).numpy()
@@ -154,7 +170,6 @@ def main(save_video=False, duration=3, mirror_video=False):
     )
 
     original_img = download(url, max_dim=500)
-    original_shape = original_img.shape[:-1]
     show(original_img)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -166,16 +181,7 @@ def main(save_video=False, duration=3, mirror_video=False):
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    config = ConfigSingleton.get_config(
-        feature_extractor=dream_model,
-        layer_settings=layers,
-        original_shape=original_shape,
-        save_video=save_video,
-        enable_framing=save_video,
-        max_frames_to_sample=100,
-    )
-
-    deepdream = DeepDream(dream_model, config)
+    deepdream = DeepDream(dream_model)
 
     # Single Octave
     img = deep_dream_simple(
@@ -198,7 +204,6 @@ def main2(save_video=False, duration=3, mirror_video=False):
     )
 
     original_img = download(url, max_dim=500)
-    original_shape = original_img.shape[:-1]
     show(original_img)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -210,16 +215,7 @@ def main2(save_video=False, duration=3, mirror_video=False):
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    config = ConfigSingleton.get_config(
-        feature_extractor=dream_model,
-        layer_settings=layers,
-        original_shape=original_shape,
-        save_video=save_video,
-        enable_framing=save_video,
-        max_frames_to_sample=50 * 5,  # 5 octaves
-    )
-
-    deepdream = DeepDream(dream_model, config)
+    deepdream = DeepDream(dream_model)
 
     # Multi-Octave
     img = deep_dream_octaved(
@@ -254,7 +250,16 @@ def main3(save_video=False, duration=3, mirror_video=False):
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    config = ConfigSingleton.get_config(
+    # config = ConfigSingleton.get_config(
+    #     feature_extractor=dream_model,
+    #     layer_settings=layers,
+    #     original_shape=original_shape,
+    #     save_video=save_video,
+    #     enable_framing=True,
+    #     max_frames_to_sample=100,
+    # )
+
+    config = Config(
         feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,

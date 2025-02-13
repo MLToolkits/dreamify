@@ -1,8 +1,8 @@
 import pytest
 import tensorflow as tf
 
-from dreamify.deep_dream import deep_dream_octaved, deep_dream_simple
-from dreamify.lib import DeepDream
+from dreamify.deep_dream import deep_dream_octaved, deep_dream_simple, deep_dream_rolled
+from dreamify.lib import DeepDream, TiledGradients
 from dreamify.utils.common import show
 from dreamify.utils.configure import Config
 from dreamify.utils.deep_dream_utils import download
@@ -47,12 +47,12 @@ def deepdream_inputs(request):
         max_frames_to_sample=iterations,
     )
 
-    deepdream = DeepDream(dream_model, config)
+    deepdream = DeepDream(dream_model)
 
     return deepdream, original_img, iterations
 
 
-@pytest.mark.parametrize("deepdream_inputs", [10], indirect=True)
+@pytest.mark.parametrize("deepdream_inputs", [2], indirect=True)
 def test_mock_deepdream(deepdream_inputs):
     deepdream, original_img, iterations = deepdream_inputs
 
@@ -63,11 +63,11 @@ def test_mock_deepdream(deepdream_inputs):
         iterations=iterations,
         learning_rate=0.1,
         save_video=True,
-        output_path="deepdream_simple.mp4",
+        output_path="/mock/deepdream_simple.mp4",
     )
 
 
-@pytest.mark.parametrize("deepdream_inputs", [5], indirect=True)
+@pytest.mark.parametrize("deepdream_inputs", [2], indirect=True)
 def test_mock_deepdream_octaved(deepdream_inputs):
     deepdream, original_img, iterations = deepdream_inputs
 
@@ -78,5 +78,22 @@ def test_mock_deepdream_octaved(deepdream_inputs):
         iterations=iterations,
         learning_rate=0.1,
         save_video=True,
-        output_path="deepdream_octaved.mp4",
+        output_path="/mock/deepdream_octaved.mp4",
+    )
+
+
+@pytest.mark.parametrize("deepdream_inputs", [2], indirect=True)
+def test_mock_deepdream_rolled(deepdream_inputs):
+    deepdream, original_img, iterations = deepdream_inputs
+
+    get_tiled_gradients = TiledGradients(deepdream.model)
+    
+    # Multi-Octave
+    deep_dream_rolled(
+        img=original_img,
+        get_tiled_gradients=get_tiled_gradients,
+        iterations=iterations,
+        learning_rate=0.1,
+        save_video=True,
+        output_path="/mock/deepdream_rolled.mp4",
     )

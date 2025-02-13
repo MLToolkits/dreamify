@@ -36,11 +36,17 @@ class Config:
             )
 
 
-class ConfigSingleton:
-    _config_instance: Config = None
+# class ConfigSingleton:
+#     _config_instance: Config = None
 
-    @classmethod
-    def get_config(cls, **kwargs):
-        if cls._config_instance is None:
-            cls._config_instance = Config(**kwargs)
-        return cls._config_instance
+#     @classmethod
+#     def get_config(cls, **kwargs):
+#         if cls._config_instance is None:
+#             cls._config_instance = Config(**kwargs)
+#         return cls._config_instance
+
+#     def reset_framer(self):
+#         self._config_instance.framer = ImageToVideoConverter(
+#                 dimensions=self._config_instance.original_shape,
+#                 max_frames_to_sample=self._config_instance.max_frames_to_sample,
+#             )

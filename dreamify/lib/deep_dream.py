@@ -40,9 +40,8 @@ from dreamify.utils.deep_dream_utils.utils import calc_loss
 
 
 class DeepDream(tf.Module):
-    def __init__(self, model, config):
+    def __init__(self, model):
         self.model = model
-        self.config = config
 
     @tf.function(
         input_signature=(

@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-import imageio
+import imageio.v2 as imageio
 import numpy as np
 import tensorflow as tf
 from moviepy.video.fx import AccelDecel, TimeSymmetrize
@@ -59,8 +59,10 @@ class ImageToVideoConverter:
         vid.write_videofile(output_path)
 
         # Clean up ops
+        print("BEFORE", self.total_frames, self.curr_frame_idx)
         self.curr_frame_idx = 0
         self.total_frames = 0
+        print("AFTER ", self.total_frames, self.curr_frame_idx)
         self.cleanup_temp_folder()
 
     def upsample(self, fps):
