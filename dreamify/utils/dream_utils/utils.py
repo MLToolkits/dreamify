@@ -3,17 +3,6 @@ import tensorflow as tf
 from tensorflow import keras
 from tqdm import trange
 
-from dreamify.utils.configure import Config
-
-config: Config = None
-
-
-def configure_settings(**kwargs):
-    global config
-    config = Config(**kwargs)
-
-    return config
-
 
 def preprocess_image(image_path):
     img = keras.utils.load_img(image_path)
@@ -23,7 +12,7 @@ def preprocess_image(image_path):
     return img
 
 
-def compute_loss(input_image):
+def compute_loss(input_image, config):
     features = config.feature_extractor(input_image)
     loss = tf.zeros(shape=())
     for name in features.keys():
@@ -34,10 +23,10 @@ def compute_loss(input_image):
 
 
 @tf.function
-def gradient_ascent_step(image, learning_rate):
+def gradient_ascent_step(image, learning_rate, config):
     with tf.GradientTape() as tape:
         tape.watch(image)
-        loss = compute_loss(image)
+        loss = compute_loss(image, config)
     grads = tape.gradient(loss, image)
     grads = tf.math.l2_normalize(grads)
     image += learning_rate * grads
@@ -45,13 +34,11 @@ def gradient_ascent_step(image, learning_rate):
     return loss, image
 
 
-def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
-    global config
-
+def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, config=None):
     for i in trange(
         iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
     ):
-        loss, image = gradient_ascent_step(image, learning_rate)
+        loss, image = gradient_ascent_step(image, learning_rate, config)
 
         if max_loss is not None and loss > max_loss:
             print(
@@ -68,7 +55,6 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None):
 
 
 __all__ = [
-    configure_settings,
     preprocess_image,
     gradient_ascent_loop,
 ]

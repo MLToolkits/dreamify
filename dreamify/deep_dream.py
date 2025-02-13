@@ -4,16 +4,8 @@ import tensorflow as tf
 
 from dreamify.lib import DeepDream, TiledGradients, validate_dream
 from dreamify.utils.common import deprocess, show
-from dreamify.utils.configure import Config
+from dreamify.utils.configure import ConfigSingleton
 from dreamify.utils.deep_dream_utils import download
-
-config: Config = None
-
-
-def configure_settings(**kwargs):
-    global config
-    config = Config(**kwargs)
-    return config
 
 
 @validate_dream
@@ -26,17 +18,16 @@ def deep_dream_simple(
     save_video=False,
     duration=3,
     mirror_video=False,
+    config=None,
 ):
-    global config
-
-    if config is None:
-        config = configure_settings(
-            feature_extractor=dream_model,
-            layer_settings=dream_model.model.layers,
-            original_shape=img.shape[:-1],
-            enable_framing=save_video,
-            max_frames_to_sample=iterations,
-        )
+    config = ConfigSingleton.get_config(
+        feature_extractor=dream_model,
+        layer_settings=dream_model.model.layers,
+        original_shape=img.shape[:-1],
+        enable_framing=save_video,
+        max_frames_to_sample=iterations,
+    )
+    print("SIMPLE CONFIG FRAMING:", config.enable_framing)
 
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
@@ -53,11 +44,12 @@ def deep_dream_simple(
             img, run_iterations, tf.constant(learning_rate), config
         )
 
-        display.clear_output(wait=True)
+        # display.clear_output(wait=True)
         show(deprocess(img))
         print("Iteration {}, loss {}".format(iteration, loss))
 
-    print(len(config.framer.frames_for_vid))
+    if save_video:
+        config.framer.to_video("examples/deepdream_simple.mp4", duration, mirror_video)
 
     return deprocess(img)
 
@@ -73,23 +65,22 @@ def deep_dream_octaved(
     duration=3,
     mirror_video=False,
 ):
-    global config
-
-    config = configure_settings(
+    config = ConfigSingleton.get_config(
         feature_extractor=dream_model,
         layer_settings=dream_model.model.layers,
         original_shape=img.shape[:-1],
-        save_video=False,
+        save_video=save_video,
         enable_framing=save_video,
         max_frames_to_sample=iterations,
     )
+    print("INITIAL CONFIG FRAMING:", config.enable_framing)
 
     OCTAVE_SCALE = 1.30
     img = tf.constant(np.array(img))
     float_base_shape = tf.cast(tf.shape(img)[:-1], tf.float32)
 
     for n in range(-2, 3):
-        if config == 2:
+        if n == 2:
             config.save_video = True
 
         new_shape = tf.cast(float_base_shape * (OCTAVE_SCALE**n), tf.int32)
@@ -99,10 +90,14 @@ def deep_dream_octaved(
             dream_model=dream_model,
             iterations=iterations,
             learning_rate=learning_rate,
-            save_video=save_video,
+            save_video=False,
             duration=duration,
             mirror_video=mirror_video,
+            config=config,
         )
+
+    if save_video:
+        config.framer.to_video("examples/deepdream_octaved.mp4", duration, mirror_video)
 
     return img
 
@@ -139,12 +134,15 @@ def deep_dream_rolled(
             img = tf.clip_by_value(img, -1, 1)
 
             if iteration % 10 == 0:
-                display.clear_output(wait=True)
+                # display.clear_output(wait=True)
                 show(deprocess(img))
                 print("Octave {}, Iteration {}".format(octave, iteration))
 
             if config.enable_framing and config.framer.continue_framing():
                 config.framer.add_to_frames(img)
+
+    if save_video:
+        config.framer.to_video("examples/deepdream_rolled.mp4", duration, mirror_video)
 
     return deprocess(img)
 
@@ -156,7 +154,7 @@ def main(save_video=False, duration=3, mirror_video=False):
     )
 
     original_img = download(url, max_dim=500)
-    original_shape = original_img.shape[1:3]
+    original_shape = original_img.shape[:-1]
     show(original_img)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -168,12 +166,12 @@ def main(save_video=False, duration=3, mirror_video=False):
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    global config
-    config = configure_settings(
+    config = ConfigSingleton.get_config(
         feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
-        enable_framing=True,
+        save_video=save_video,
+        enable_framing=save_video,
         max_frames_to_sample=100,
     )
 
@@ -192,9 +190,6 @@ def main(save_video=False, duration=3, mirror_video=False):
     img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
     show(img)
 
-    if save_video:
-        config.framer.to_video("dream.mp4", duration, mirror_video)
-
 
 def main2(save_video=False, duration=3, mirror_video=False):
     url = (
@@ -203,7 +198,7 @@ def main2(save_video=False, duration=3, mirror_video=False):
     )
 
     original_img = download(url, max_dim=500)
-    original_shape = original_img.shape[1:3]
+    original_shape = original_img.shape[:-1]
     show(original_img)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -215,13 +210,13 @@ def main2(save_video=False, duration=3, mirror_video=False):
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    global config
-    config = configure_settings(
+    config = ConfigSingleton.get_config(
         feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
-        enable_framing=True,
-        max_frames_to_sample=100,
+        save_video=save_video,
+        enable_framing=save_video,
+        max_frames_to_sample=50 * 5,  # 5 octaves
     )
 
     deepdream = DeepDream(dream_model, config)
@@ -236,11 +231,8 @@ def main2(save_video=False, duration=3, mirror_video=False):
     )
     img = tf.image.resize(img, original_img.shape[:-1])
     img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
-    display.clear_output(wait=True)
+    # display.clear_output(wait=True)
     show(img)
-
-    if save_video:
-        config.framer.to_video("dream.mp4", duration, mirror_video)
 
 
 def main3(save_video=False, duration=3, mirror_video=False):
@@ -250,7 +242,7 @@ def main3(save_video=False, duration=3, mirror_video=False):
     )
 
     original_img = download(url, max_dim=500)
-    original_shape = original_img.shape[1:3]
+    original_shape = original_img.shape[:-1]
     show(original_img)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -262,11 +254,11 @@ def main3(save_video=False, duration=3, mirror_video=False):
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    global config
-    config = configure_settings(
+    config = ConfigSingleton.get_config(
         feature_extractor=dream_model,
         layer_settings=layers,
         original_shape=original_shape,
+        save_video=save_video,
         enable_framing=True,
         max_frames_to_sample=100,
     )
@@ -282,11 +274,8 @@ def main3(save_video=False, duration=3, mirror_video=False):
     )
     img = tf.image.resize(img, original_img.shape[:-1])
     img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
-    display.clear_output(wait=True)
+    # display.clear_output(wait=True)
     show(img)
-
-    if save_video:
-        config.framer.to_video("dream.mp4", duration, mirror_video)
 
 
 if __name__ == "__main__":

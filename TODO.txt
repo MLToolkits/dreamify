@@ -2,17 +2,21 @@ HIGH:
 1.  Modularize and share code b/n dream and deepdream
 2.  Implement class for ImageToVideo converter                                                  # DONE
 3.  Implement optional backward loop for video                                                  # DONE
-4.  Implement video framing for deep dream
+4.  Implement video framing for deep dream                                                      # PARTIALLY (Left: DeepDreamRolled)
 5.  Handle unmatched dim sizes for dream                                                        # DONE
 6.  Implement validators as decorators for dream and deepdream                                  # DONE
 7.  Remove redundant or unnecessary type or numpy-tensor (and, vice versa) conversions
 8.  Add more comments. Duhh
-9.  Optimize loop of simple dream (seems to slowed down. YIKES!)
+9.  Optimize loop of simple dream (seems to slowed down. YIKES!)                                # DONE
+10. Optimize video making by insteading of buffering (in sys memory), save octave by octave
+        then concatenate the video (.mp4) files. N.b., keep the buffering method to support
+        CPU-only runtimes
 
 
 MEDIUM:
 1.  Compare different pre-trained models in generation
 2.  Optional seeded generations
+3.  Remove color artifacts in generated shallow dream
 
 
 LOW:

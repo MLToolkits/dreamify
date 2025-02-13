@@ -13,7 +13,6 @@
 
 
 ########################################################################
-
 from dataclasses import dataclass
 
 from dreamify.lib.image_to_video_converter import ImageToVideoConverter
@@ -35,3 +34,13 @@ class Config:
                 dimensions=self.original_shape,
                 max_frames_to_sample=self.max_frames_to_sample,
             )
+
+
+class ConfigSingleton:
+    _config_instance: Config = None
+
+    @classmethod
+    def get_config(cls, **kwargs):
+        if cls._config_instance is None:
+            cls._config_instance = Config(**kwargs)
+        return cls._config_instance
