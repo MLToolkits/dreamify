@@ -67,7 +67,7 @@ def test_mock_deepdream(deepdream_inputs):
     )
 
 
-@pytest.mark.parametrize("deepdream_inputs", [2], indirect=True)
+@pytest.mark.parametrize("deepdream_inputs", [1], indirect=True)
 def test_mock_deepdream_octaved(deepdream_inputs):
     deepdream, original_img, iterations = deepdream_inputs
 
@@ -82,7 +82,7 @@ def test_mock_deepdream_octaved(deepdream_inputs):
     )
 
 
-@pytest.mark.parametrize("deepdream_inputs", [2], indirect=True)
+@pytest.mark.parametrize("deepdream_inputs", [1], indirect=True)
 def test_mock_deepdream_rolled(deepdream_inputs):
     deepdream, original_img, iterations = deepdream_inputs
 

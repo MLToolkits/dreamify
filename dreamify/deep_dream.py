@@ -20,14 +20,6 @@ def deep_dream_simple(
     mirror_video=False,
     config=None,
 ):
-    # config = ConfigSingleton.get_config(
-    #     feature_extractor=dream_model,
-    #     layer_settings=dream_model.model.layers,
-    #     original_shape=img.shape[:-1],
-    #     save_video=save_video,
-    #     enable_framing=save_video,
-    #     max_frames_to_sample=iterations,
-    # )
     if config is None:
         config = Config(
             feature_extractor=dream_model,
@@ -74,14 +66,6 @@ def deep_dream_octaved(
     duration=3,
     mirror_video=False,
 ):
-    # config = ConfigSingleton.get_config(
-    #     feature_extractor=dream_model,
-    #     layer_settings=dream_model.model.layers,
-    #     original_shape=img.shape[:-1],
-    #     save_video=save_video,
-    #     enable_framing=save_video,
-    #     max_frames_to_sample=iterations * 5,  # 5 octaves
-    # )
     config = Config(
         feature_extractor=dream_model,
         layer_settings=dream_model.model.layers,
@@ -250,15 +234,6 @@ def main3(save_video=False, duration=3, mirror_video=False):
     layers = [base_model.get_layer(name).output for name in names]
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
-
-    # config = ConfigSingleton.get_config(
-    #     feature_extractor=dream_model,
-    #     layer_settings=layers,
-    #     original_shape=original_shape,
-    #     save_video=save_video,
-    #     enable_framing=True,
-    #     max_frames_to_sample=100,
-    # )
 
     config = Config(
         feature_extractor=dream_model,
