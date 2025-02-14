@@ -20,6 +20,7 @@ MEDIUM:
 2.  Optional seeded generations
 3.  Remove color artifacts in generated shallow dream
 4.  Add option to choose layer settings
+5.  Simplify imports 
 
 ======================================================================================================
 
