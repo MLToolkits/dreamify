@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import PIL.Image
 import tensorflow as tf
@@ -18,19 +20,29 @@ def deprocess(img):
     return tf.cast(img, tf.uint8)
 
 
-def download(url, max_dim=None):
-    """Download an image and load it as a NumPy array."""
-    name = url.split("/")[-1]
-    image_path = tf.keras.utils.get_file(name, origin=url)
-    img = PIL.Image.open(image_path)
+def get_image(source, max_dim=None):
+    """Retrieve an image from a URL or a local path and load it as a NumPy array."""
+
+    if source.startswith("http"):  # A URL to some image
+        name = source.split("/")[-1]
+        image_path = tf.keras.utils.get_file(name, origin=source)
+        img = PIL.Image.open(image_path)
+    else:  # A directory path to some image
+        if not os.path.isabs(source):
+            source = os.path.abspath(source)
+        img = tf.keras.utils.load_img(source)
+    
     if max_dim:
         img.thumbnail((max_dim, max_dim))
-    return np.array(img)
+    
+    img = np.array(img)
+    return img
+
 
 
 def preprocess_image(image_path):
-    img = keras.utils.load_img(image_path)
-    img = keras.utils.img_to_array(img)
-    img = np.expand_dims(img, axis=0)
-    img = keras.applications.inception_v3.preprocess_input(img)
+    img = tf.keras.utils.load_img(image_path)
+    img = tf.keras.utils.img_to_array(img)
+    img = tf.np.expand_dims(img, axis=0)
+    img = tf.keras.applications.inception_v3.preprocess_input(img)
     return img
