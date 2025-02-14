@@ -11,8 +11,8 @@ class ImageToVideoConverterNumpy:
         self.frames_for_vid: list = []
         self.max_frames_to_sample: int = max_frames_to_sample
         self.curr_frame_idx: int = 0
-        self.num_frames_to_insert:int = 0
-        self.FPS:int = 30
+        self.num_frames_to_insert: int = 0
+        self.FPS: int = 30
 
     def add_to_frames(self, frame):
         frame = tf.image.resize(frame, self.dimensions)
@@ -24,7 +24,13 @@ class ImageToVideoConverterNumpy:
     def continue_framing(self):
         return self.curr_frame_idx < self.max_frames_to_sample - 1
 
-    def to_video(self, output_path="dream.mp4", duration=3, extend_ending=False, mirror_video=False):
+    def to_video(
+        self,
+        output_path="dream.mp4",
+        duration=3,
+        extend_ending=False,
+        mirror_video=False,
+    ):
         self.duration = duration
         self.num_frames_to_insert = self.calculate_num_frames_to_insert()
 
@@ -50,7 +56,9 @@ class ImageToVideoConverterNumpy:
             # Add original frame
             new_frames.append(self.frames_for_vid[i])
 
-            interpolated = self.interpolate_frames(frame1, frame2, self.num_frames_to_insert)
+            interpolated = self.interpolate_frames(
+                frame1, frame2, self.num_frames_to_insert
+            )
             new_frames.extend(interpolated)
 
         if extend_ending:
@@ -72,12 +80,12 @@ class ImageToVideoConverterNumpy:
 
     def calculate_num_frames_to_insert(self):
         """
-        Calculate the number of frames to interpolate to ensure 30fps of the video
+        Calculate the number of frames to interpolate to ensure video smoothness of 30fps
 
-        Derivation: 
+        Derivation:
                 30 = (max_frames_to_sample * num_frames_to_insert) // duration
              => 30 * duration = max_frames_to_sample * num_frames_to_insert
              => 30 * duration // max_frames_to_sample = num_frames_to_insert
-             ≡ num_frames_to_insert = (30 * duration) // max_frames_to_sample 
+             ≡ num_frames_to_insert = (30 * duration) // max_frames_to_sample
         """
         return (self.FPS * self.duration) // self.max_frames_to_sample
