@@ -6,7 +6,7 @@ from tensorflow import keras
 
 from dreamify.lib import FeatureExtractor, validate_dream
 from dreamify.utils.common import deprocess, get_image, show
-from dreamify.utils.configure import ConfigSingleton
+from dreamify.utils.configure import Config
 from dreamify.utils.dream_utils import gradient_ascent_loop
 
 # from dreamify.utils.compare import main
@@ -40,7 +40,7 @@ def generate_dream_image(
     original_img = keras.applications.inception_v3.preprocess_input(img)
     original_shape = original_img.shape[1:3]
 
-    config = ConfigSingleton.get_config(
+    config = Config(
         feature_extractor=ft_ext,
         layer_settings=ft_ext.layer_settings,
         original_shape=original_shape,
