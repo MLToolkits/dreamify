@@ -4,7 +4,7 @@ import tensorflow as tf
 
 from dreamify.lib import DeepDream, TiledGradients, validate_dream
 from dreamify.utils.common import deprocess, show
-from dreamify.utils.configure import Config #, ConfigSingleton
+from dreamify.utils.configure import Config  # , ConfigSingleton
 from dreamify.utils.deep_dream_utils import download
 
 
@@ -121,7 +121,7 @@ def deep_dream_rolled(
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     initial_shape = img.shape[:-1]
     img = tf.image.resize(img, initial_shape)
-    
+
     for octave in octaves:
         new_size = tf.cast(tf.convert_to_tensor(base_shape[:-1]), tf.float32) * (
             octave_scale**octave

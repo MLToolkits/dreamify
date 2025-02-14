@@ -11,7 +11,6 @@ from dreamify.utils.common import deprocess
 
 
 class ImageToVideoConverter:
-    # TODO (PROPERLY RESET THE FRAME INDECES)
     def __init__(self, dimensions, max_frames_to_sample):
         self.dimensions = dimensions
         self.max_frames_to_sample = max_frames_to_sample
