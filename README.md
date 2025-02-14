@@ -3,8 +3,8 @@
 A function that applies deep dream to an image using pre-trained CNNs trained on the ImageNet dataset.
 
 <p align="center" width="100%">
-  <img src="examples/doggy.gif" alt="Doggy" height="300px" />
-  <img src="examples/cat-optimized.gif" alt="Cat" height="300px" />
+  <img src="examples/doggy.gif" alt="Doggy" height="250px" />
+  <img src="examples/cat-optimized.gif" alt="Cat" height="250px" />
 </p>
 
 
