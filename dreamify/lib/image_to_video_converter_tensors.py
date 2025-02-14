@@ -24,11 +24,11 @@ class ImageToVideoConverterNumpy:
     def continue_framing(self):
         return self.curr_frame_idx < self.max_frames_to_sample - 1
 
-    def to_video(self, output_path="dream.mp4", duration=3, mirror_video=False):
+    def to_video(self, output_path="dream.mp4", duration=3, extend_ending=False, mirror_video=False):
         self.duration = duration
         self.num_frames_to_insert = self.calculate_num_frames_to_insert()
 
-        self.upsample()
+        self.upsample(extend_ending)
 
         frames = [frame.numpy() for frame in self.frames_for_vid]
         print(f"Number of images to frame: {len(frames)}")
@@ -39,7 +39,7 @@ class ImageToVideoConverterNumpy:
         vid = AccelDecel(new_duration=duration).apply(vid)
         vid.write_videofile(output_path)
 
-    def upsample(self):
+    def upsample(self, extend_ending):
         new_frames = []
 
         # Upsample via frame-frame interpolation
@@ -53,9 +53,10 @@ class ImageToVideoConverterNumpy:
             interpolated = self.interpolate_frames(frame1, frame2, self.num_frames_to_insert)
             new_frames.extend(interpolated)
 
-        new_frames.extend(
-            [self.frames_for_vid[-1]] * 60 * 3
-        )  # Lengthen end frame by 3 frames
+        if extend_ending:
+            new_frames.extend(
+                [self.frames_for_vid[-1]] * self.FPS * 3
+            )  # Lengthen end frame by 3 units
         self.frames_for_vid = new_frames
 
     def interpolate_frames(self, frame1, frame2, num_frames):
