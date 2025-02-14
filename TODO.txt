@@ -12,6 +12,7 @@ HIGH:
         then concatenate the video (.mp4) files. N.b., keep the buffering method to support
         CPU-only runtimes
 11. Adaptive frames to interpolate to ensure 30fps
+12. Modularize deepdream
 
 ======================================================================================================
 
