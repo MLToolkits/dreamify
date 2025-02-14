@@ -63,8 +63,8 @@ class ImageToVideoConverterNumpy:
 
         if extend_ending:
             new_frames.extend(
-                [self.frames_for_vid[-1]] * self.FPS * 3
-            )  # Lengthen end frame by 3 units
+                [self.frames_for_vid[-1]] * self.FPS * 60
+            )  # Lengthen end frame by 60 units
         self.frames_for_vid = new_frames
 
     def interpolate_frames(self, frame1, frame2, num_frames):

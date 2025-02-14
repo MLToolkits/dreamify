@@ -31,9 +31,6 @@ class DeepDream(tf.Module):
 
             framer = config.framer
 
-            print("Current Frame Index: ", framer.curr_frame_idx)
-            print("Max Frames to Sample: ", framer.max_frames_to_sample)
-
             if config.enable_framing and framer.continue_framing():
                 framer.add_to_frames(img)
 
