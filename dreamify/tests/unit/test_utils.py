@@ -1,5 +1,6 @@
 from dreamify.utils.common import get_image, show
 
+
 def test_get_image_by_URL():
     url = (
         "https://storage.googleapis.com/download.tensorflow.org/"
@@ -19,4 +20,3 @@ def test_get_image_by_path():
 
     img = get_image(path)
     show(img)
-

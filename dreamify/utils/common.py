@@ -31,13 +31,12 @@ def get_image(source, max_dim=None):
         if not os.path.isabs(source):
             source = os.path.abspath(source)
         img = tf.keras.utils.load_img(source)
-    
+
     if max_dim:
         img.thumbnail((max_dim, max_dim))
-    
+
     img = np.array(img)
     return img
-
 
 
 def preprocess_image(image_path):

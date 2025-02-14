@@ -5,7 +5,7 @@ import tensorflow as tf
 from tensorflow import keras
 
 from dreamify.lib import FeatureExtractor, validate_dream
-from dreamify.utils.common import deprocess, show, get_image
+from dreamify.utils.common import deprocess, get_image, show
 from dreamify.utils.configure import ConfigSingleton
 from dreamify.utils.dream_utils import gradient_ascent_loop
 

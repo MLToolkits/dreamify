@@ -84,7 +84,7 @@ model_layer_settings = {
 }
 
 
-def get_layer_settings(model_name: ModelType, layer_settings=None):
+def get_layer_settings(model_name: ModelType, dream_style, layer_settings):
     if layer_settings is None:
         layer_settings = model_layer_settings.get(model_name)
         if not layer_settings:
@@ -92,13 +92,13 @@ def get_layer_settings(model_name: ModelType, layer_settings=None):
     return layer_settings
 
 
-def choose_model(model_name: str = None):
+def choose_model(model_name: str = None, dream_style="deep", layer_settings=None):
     if model_name in ["random", "any"]:
         model_name = random.choice([model.value for model in ModelType])
 
     model_name_enum = ModelType[model_name.upper()]
 
-    layer_settings = get_layer_settings(model_name_enum)
+    layer_settings = get_layer_settings(model_name_enum, dream_style, layer_settings)
 
     match model_name_enum:
         case ModelType.VGG19:
