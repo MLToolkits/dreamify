@@ -62,7 +62,7 @@ class ImageToVideoConverter:
         print(f"Number of images to frame: {len(frames)}")
 
         # Create the video
-        vid = DataVideoClip(frames, lambda x: x, fps=fps)
+        vid = DataVideoClip(frames, lambda x: x, fps=self.FPS)
         if mirror_video:
             vid = TimeSymmetrize().apply(vid)
         vid = AccelDecel(new_duration=duration).apply(vid)
