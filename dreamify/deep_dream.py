@@ -1,29 +1,49 @@
 # import IPython.display as display
+from pathlib import Path
+
 import numpy as np
 import tensorflow as tf
 
 from dreamify.lib import DeepDream, TiledGradients, validate_dream
 from dreamify.utils.common import deprocess, get_image, show
-from dreamify.utils.configure import Config  # , ConfigSingleton
+from dreamify.utils.configure import Config
 
 
 @validate_dream
 def deep_dream_simple(
-    img,
-    dream_model,
+    image_path,
     output_path="dream.png",
-    iterations=100,
+    model_name="inception_v3",
     learning_rate=0.01,
+    iterations=100,
     save_video=False,
     duration=3,
     mirror_video=False,
     config=None,
 ):
+    base_image_path = Path(image_path)
+    output_path = Path(output_path)
+
+    base_model = tf.keras.applications.InceptionV3(
+        include_top=False, weights="imagenet"
+    )
+
+    names = ["mixed3", "mixed5"]
+    layers = [base_model.get_layer(name).output for name in names]
+
+    ft_ext = tf.keras.Model(inputs=base_model.input, outputs=layers)
+    dream_model = DeepDream(ft_ext)
+
+    img = get_image(base_image_path)
+    img = np.expand_dims(img, axis=0)
+    img = keras.applications.inception_v3.preprocess_input(img)
+    img_shape = original_img.shape[1:3]
+
     if config is None:
         config = Config(
             feature_extractor=dream_model,
             layer_settings=dream_model.model.layers,
-            original_shape=img.shape[:-1],
+            original_shape=img_shape,
             save_video=save_video,
             enable_framing=save_video,
             max_frames_to_sample=iterations,
@@ -48,27 +68,48 @@ def deep_dream_simple(
         show(deprocess(img))
         print("Iteration {}, loss {}".format(iteration, loss))
 
-    if save_video:
-        config.framer.to_video("examples/deepdream_simple.mp4", duration, mirror_video)
+    tf.keras.utils.save_img(output_path, img)
+    print(f"Dream image saved to {output_path}")
 
-    return deprocess(img)
+    if save_video:
+        config.framer.to_video(output_path.stem + ".mp4", duration, mirror_video)
+
+    return img
 
 
 @validate_dream
 def deep_dream_octaved(
-    img,
-    dream_model,
+    image_path,
     output_path="dream.png",
-    iterations=100,
+    model_name="inception_v3",
     learning_rate=0.01,
+    iterations=100,
     save_video=False,
     duration=3,
     mirror_video=False,
 ):
+    base_image_path = Path(image_path)
+    output_path = Path(output_path)
+
+    base_model = tf.keras.applications.InceptionV3(
+        include_top=False, weights="imagenet"
+    )
+
+    names = ["mixed3", "mixed5"]
+    layers = [base_model.get_layer(name).output for name in names]
+
+    ft_ext = tf.keras.Model(inputs=base_model.input, outputs=layers)
+    dream_model = DeepDream(ft_ext)
+
+    img = get_image(base_image_path)
+    img = np.expand_dims(img, axis=0)
+    img = keras.applications.inception_v3.preprocess_input(img)
+    img_shape = original_img.shape[1:3]
+
     config = Config(
         feature_extractor=dream_model,
         layer_settings=dream_model.model.layers,
-        original_shape=img.shape[:-1],
+        original_shape=img_shape,
         save_video=False,
         enable_framing=save_video,
         max_frames_to_sample=iterations * 5,  # 5 octaves
@@ -95,16 +136,18 @@ def deep_dream_octaved(
             config=config,
         )
 
+    tf.keras.utils.save_img(output_path, img)
+    print(f"Dream image saved to {output_path}")
+
     if save_video:
-        config.framer.to_video("examples/deepdream_octaved.mp4", duration, mirror_video)
+        config.framer.to_video(output_path.stem + ".mp4", duration, mirror_video)
 
     return img
 
 
 @validate_dream
 def deep_dream_rolled(
-    img,
-    get_tiled_gradients,
+    image_path,
     output_path="dream.png",
     iterations=100,
     learning_rate=0.01,
@@ -113,13 +156,34 @@ def deep_dream_rolled(
     save_video=False,
     duration=3,
     mirror_video=False,
-    config=None,
 ):
+    base_image_path = Path(image_path)
+    output_path = Path(output_path)
+
+    base_model = tf.keras.applications.InceptionV3(
+        include_top=False, weights="imagenet"
+    )
+
+    names = ["mixed3", "mixed5"]
+    layers = [base_model.get_layer(name).output for name in names]
+
+    ft_ext = tf.keras.Model(inputs=base_model.input, outputs=layers)
+    get_tiled_gradients = TiledGradients(ft_ext)
+
     base_shape = tf.shape(img)
-    img = tf.keras.utils.img_to_array(img)
-    img = tf.keras.applications.inception_v3.preprocess_input(img)
-    initial_shape = img.shape[:-1]
-    img = tf.image.resize(img, initial_shape)
+    img = get_image(base_image_path)
+    img = np.expand_dims(img, axis=0)
+    img = keras.applications.inception_v3.preprocess_input(img)
+    img_shape = original_img.shape[1:3]
+
+    config = Config(
+        feature_extractor=dream_model,
+        layer_settings=layers,
+        original_shape=img_shape,
+        save_video=save_video,
+        enable_framing=True,
+        max_frames_to_sample=100,
+    )
 
     for octave in octaves:
         new_size = tf.cast(tf.convert_to_tensor(base_shape[:-1]), tf.float32) * (
@@ -141,10 +205,13 @@ def deep_dream_rolled(
             if config.enable_framing and config.framer.continue_framing():
                 config.framer.add_to_frames(img)
 
-    if save_video:
-        config.framer.to_video("examples/deepdream_rolled.mp4", duration, mirror_video)
+    tf.keras.utils.save_img(output_path, img)
+    print(f"Dream image saved to {output_path}")
 
-    return deprocess(img)
+    if save_video:
+        config.framer.to_video(output_path.stem + ".mp4", duration, mirror_video)
+
+    return img
 
 
 def main(save_video=False, duration=3, mirror_video=False):
@@ -153,32 +220,17 @@ def main(save_video=False, duration=3, mirror_video=False):
         "example_images/YellowLabradorLooking_new.jpg"
     )
 
-    original_img = get_image(url, max_dim=500)
-    show(original_img)
-
-    base_model = tf.keras.applications.InceptionV3(
-        include_top=False, weights="imagenet"
-    )
-
-    names = ["mixed3", "mixed5"]
-    layers = [base_model.get_layer(name).output for name in names]
-
-    dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
-
-    deepdream = DeepDream(dream_model)
-
     # Single Octave
-    img = deep_dream_simple(
-        img=original_img,
-        dream_model=deepdream,
+    deep_dream_simple(
+        image_path=url,
         iterations=100,
-        learning_rate=0.01,
-        save_video=True,
+        save_video=save_video,
     )
 
-    img = tf.image.resize(img, original_img.shape[:-1])
-    img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
-    show(img)
+    # img = tf.image.resize(img, original_img.shape[:-1])
+    # img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
+    # display.clear_output(wait=True)
+    # show(img)
 
 
 def main2(save_video=False, duration=3, mirror_video=False):
@@ -187,32 +239,16 @@ def main2(save_video=False, duration=3, mirror_video=False):
         "example_images/YellowLabradorLooking_new.jpg"
     )
 
-    original_img = get_image(url, max_dim=500)
-    show(original_img)
-
-    base_model = tf.keras.applications.InceptionV3(
-        include_top=False, weights="imagenet"
-    )
-
-    names = ["mixed3", "mixed5"]
-    layers = [base_model.get_layer(name).output for name in names]
-
-    dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
-
-    deepdream = DeepDream(dream_model)
-
     # Multi-Octave
-    img = deep_dream_octaved(
-        img=original_img,
-        dream_model=deepdream,
+    deep_dream_octaved(
+        image_path=url,
         iterations=50,
-        learning_rate=0.01,
-        save_video=True,
+        save_video=save_video,
     )
-    img = tf.image.resize(img, original_img.shape[:-1])
-    img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
+    # img = tf.image.resize(img, original_img.shape[:-1])
+    # img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
     # display.clear_output(wait=True)
-    show(img)
+    # show(img)
 
 
 def main3(save_video=False, duration=3, mirror_video=False):
@@ -221,41 +257,14 @@ def main3(save_video=False, duration=3, mirror_video=False):
         "example_images/YellowLabradorLooking_new.jpg"
     )
 
-    original_img = get_image(url, max_dim=500)
-    original_shape = original_img.shape[:-1]
-    show(original_img)
-
-    base_model = tf.keras.applications.InceptionV3(
-        include_top=False, weights="imagenet"
-    )
-
-    names = ["mixed3", "mixed5"]
-    layers = [base_model.get_layer(name).output for name in names]
-
-    dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
-
-    config = Config(
-        feature_extractor=dream_model,
-        layer_settings=layers,
-        original_shape=original_shape,
+    deep_dream_rolled(
+        image_path=url,
         save_video=save_video,
-        enable_framing=True,
-        max_frames_to_sample=100,
     )
-
-    # Rolling/Multi-Octave with Tiling
-    get_tiled_gradients = TiledGradients(dream_model)
-    img = deep_dream_rolled(
-        img=original_img,
-        get_tiled_gradients=get_tiled_gradients,
-        learning_rate=0.01,
-        save_video=True,
-        config=config,
-    )
-    img = tf.image.resize(img, original_img.shape[:-1])
-    img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
+    # img = tf.image.resize(img, original_img.shape[:-1])
+    # img = tf.image.convert_image_dtype(img / 255.0, dtype=tf.uint8)
     # display.clear_output(wait=True)
-    show(img)
+    # show(img)
 
 
 if __name__ == "__main__":

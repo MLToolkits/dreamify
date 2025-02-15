@@ -18,7 +18,7 @@ class ImageToVideoConverter:
         self.total_frames = 0
         self.num_frames_to_insert: int = 0
         self.FPS: int = 30
-        
+
         self.temp_folder = tempfile.mkdtemp()
         print(f"Temporary folder created at {self.temp_folder}")
 
@@ -93,7 +93,9 @@ class ImageToVideoConverter:
             new_frames.extend(interpolated)
 
         if extend_ending:
-            new_frames.extend([frame2] * self.FPS * 60)  # Lengthen end frame by 60 units
+            new_frames.extend(
+                [frame2] * self.FPS * 60
+            )  # Lengthen end frame by 60 units
         # Save the upsampled frames back to disk
         self.save_upsampled_frames(new_frames)
 
