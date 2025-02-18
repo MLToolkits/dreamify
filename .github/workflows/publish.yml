@@ -93,9 +93,9 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true' # Only install if poetry cache is missed
 
       - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
           poetry install --no-root --no-interaction
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
 
       - name: Use cached dependencies
         run: |
