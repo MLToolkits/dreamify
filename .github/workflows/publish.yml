@@ -78,6 +78,10 @@ jobs:
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
+          path: |
+            ~/.cache/pypoetry
+            ~/.virtualenvs
+            ~/.venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
