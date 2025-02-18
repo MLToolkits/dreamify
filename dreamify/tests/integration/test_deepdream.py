@@ -2,9 +2,6 @@ import pytest
 
 from dreamify.deepdream import deepdream
 
-# deep_dream_octaved,
-# , deep_dream_simple
-
 
 @pytest.fixture
 def deepdream_fixture(request):
@@ -28,35 +25,5 @@ def test_mock_deepdream(deepdream_fixture):
         iterations=iterations,
         learning_rate=0.1,
         save_video=True,
-        output_path="deepdream.png",
+        output_path="examples/deepdream.png",
     )
-
-
-# LEGACY
-
-# @pytest.mark.parametrize("deepdream_fixture", [2], indirect=True)
-# def test_mock_deepdream(deepdream_fixture):
-#     img_src, output_dir, iterations = deepdream_fixture
-
-#     # Single Octave
-#     deep_dream_simple(
-#         image_path=img_src,
-#         iterations=iterations,
-#         learning_rate=0.1,
-#         save_video=True,
-#         output_path=f"deepdream_simple.png",
-#     )
-
-
-# @pytest.mark.parametrize("deepdream_fixture", [1], indirect=True)
-# def test_mock_deepdream_octaved(deepdream_fixture):
-#     img_src, iterations = deepdream_fixture
-
-#     # Multi-Octave
-#     deep_dream_octaved(
-#         image_path=img_src,
-#         iterations=iterations,
-#         learning_rate=0.1,
-#         save_video=True,
-#         output_path=f"deepdream_octaved.png",
-#     )

@@ -38,7 +38,7 @@ def deepdream(
     img = get_image(base_image_path)
     base_shape = tf.shape(img)
     img = tf.keras.applications.inception_v3.preprocess_input(img)
-    img_shape = img.shape[1:3]
+    img_shape = img.shape[:-1]
 
     config = Config(
         feature_extractor=dream_model,
@@ -46,7 +46,7 @@ def deepdream(
         original_shape=img_shape,
         save_video=save_video,
         enable_framing=True,
-        max_frames_to_sample=100,
+        max_frames_to_sample=iterations * len(octaves),
     )
 
     for octave in octaves:

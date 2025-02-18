@@ -48,7 +48,7 @@ class ImageToVideoConverter:
         self.duration = duration
         self.num_frames_to_insert = self.calculate_num_frames_to_insert()
 
-        self.upsample(extend_ending)
+        self.upsample()
 
         output_dir = os.path.dirname(output_path)
         if output_dir != "" and not os.path.exists(output_dir):
@@ -71,7 +71,7 @@ class ImageToVideoConverter:
         # Clean up ops
         self.cleanup_temp_folder()
 
-    def upsample(self, extend_ending):
+    def upsample(self):
         new_frames = []
 
         # Upsample via frame-frame interpolation
@@ -92,11 +92,6 @@ class ImageToVideoConverter:
             )
             new_frames.extend(interpolated)
 
-        if extend_ending:
-            new_frames.extend(
-                [frame2] * self.FPS * 60
-            )  # Lengthen end frame by 60 units
-        # Save the upsampled frames back to disk
         self.save_upsampled_frames(new_frames)
 
     def interpolate_frames(self, frame1, frame2, num_frames):
