@@ -39,7 +39,3 @@ htmlcov/
 # Ignore workspace config
 .codesandbox
 .devcontainer
-
-# Ignore Poetry files
-poetry.lock
-.cache/
