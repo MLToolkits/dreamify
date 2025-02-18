@@ -19,3 +19,6 @@ class Config:
                 dimensions=self.original_shape,
                 max_frames_to_sample=self.max_frames_to_sample,
             )
+
+    def __hash__(self):
+        return hash("config")
