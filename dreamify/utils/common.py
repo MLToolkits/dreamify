@@ -1,5 +1,3 @@
-import os
-
 import numpy as np
 import PIL.Image
 import tensorflow as tf
@@ -23,13 +21,13 @@ def deprocess(img):
 def get_image(source, max_dim=None):
     """Retrieve an image from a URL or a local path and load it as a NumPy array."""
 
-    if str(source).startswith("http"):  # A URL to some image
+    source = str(source)
+
+    if source.startswith("http"):  # A URL to some image
         name = source.split("/")[-1]
         image_path = tf.keras.utils.get_file(name, origin=source)
         img = PIL.Image.open(image_path)
     else:  # A directory path to some image
-        if not os.path.isabs(source):
-            source = os.path.abspath(source)
         img = tf.keras.utils.load_img(source)
 
     if max_dim:

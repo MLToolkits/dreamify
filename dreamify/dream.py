@@ -1,6 +1,7 @@
 import warnings
 from pathlib import Path
 
+import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
@@ -36,8 +37,8 @@ def generate_dream_image(
     ft_ext = FeatureExtractor(model_name)
 
     original_img = get_image(base_image_path)
-    original_img = np.expand_dims(img, axis=0)
-    original_img = keras.applications.inception_v3.preprocess_input(img)
+    original_img = np.expand_dims(original_img, axis=0)
+    original_img = keras.applications.inception_v3.preprocess_input(original_img)
     original_shape = original_img.shape[1:3]
 
     config = Config(
