@@ -9,7 +9,7 @@ from dreamify.utils.configure import Config
 
 
 @validate_dream
-def deep_dream(
+def deepdream(
     image_path,
     output_path="dream.png",
     iterations=100,
@@ -84,7 +84,7 @@ def main(save_video=False, duration=3, mirror_video=False):
         "example_images/YellowLabradorLooking_new.jpg"
     )
 
-    deep_dream(
+    deepdream(
         image_path=url,
         save_video=save_video,
     )

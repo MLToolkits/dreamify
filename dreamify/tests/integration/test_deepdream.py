@@ -1,6 +1,6 @@
 import pytest
 
-from dreamify.deep_dream import deep_dream
+from dreamify.deepdream import deepdream
 
 # deep_dream_octaved,
 # , deep_dream_simple
@@ -23,7 +23,7 @@ def test_mock_deepdream(deepdream_fixture):
     img_src, iterations = deepdream_fixture
 
     # Rolled
-    deep_dream(
+    deepdream(
         image_path=img_src,
         iterations=iterations,
         learning_rate=0.1,
