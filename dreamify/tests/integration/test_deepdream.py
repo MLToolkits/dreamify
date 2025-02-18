@@ -29,4 +29,5 @@ def test_mock_deepdream(deepdream_fixture):
         save_video=True,
         output_path="mock.png",
     )
-    Path("deepdream.mp4").unlink(missing_ok=True)
+    Path("mock.png").unlink(missing_ok=True)
+    Path("mock.mp4").unlink(missing_ok=True)
