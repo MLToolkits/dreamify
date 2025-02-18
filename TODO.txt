@@ -28,7 +28,8 @@ MEDIUM:
 4.  Add option to choose layer settings
 5.  Simplify imports 
 6.  Remove redundancy in ImageToVideoConverter by using the Factory design pattern
-7.  Support single channel images via channel (C) repetition, since pre-trained models expect RGB-Cs
+7.  Support single channel images via channel (C) repetition, 
+        since pre-trained models expect RGB-Cs
 
 ======================================================================================================
 
