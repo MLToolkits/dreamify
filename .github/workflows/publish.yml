@@ -81,7 +81,6 @@ jobs:
           path: |
             ~/.cache/pypoetry
             ~/.virtualenvs
-            ~/.venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
@@ -95,7 +94,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry config virtualenvs.in-project true
           poetry install --no-root --no-interaction
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
 
