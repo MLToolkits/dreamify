@@ -13,9 +13,8 @@ def deepdream_fixture(request):
         "https://storage.googleapis.com/download.tensorflow.org/"
         "example_images/YellowLabradorLooking_new.jpg"
     )
-    mock_output_dir = "dreamify/examples/mock/"
 
-    return url, mock_output_dir, iterations
+    return url, iterations
 
 
 # @pytest.mark.parametrize("deepdream_fixture", [2], indirect=True)
@@ -28,13 +27,13 @@ def deepdream_fixture(request):
 #         iterations=iterations,
 #         learning_rate=0.1,
 #         save_video=True,
-#         output_path=f"{output_dir}deepdream_simple.png",
+#         output_path=f"deepdream_simple.png",
 #     )
 
 
 # @pytest.mark.parametrize("deepdream_fixture", [1], indirect=True)
 # def test_mock_deepdream_octaved(deepdream_fixture):
-#     img_src, output_dir, iterations = deepdream_fixture
+#     img_src, iterations = deepdream_fixture
 
 #     # Multi-Octave
 #     deep_dream_octaved(
@@ -42,16 +41,14 @@ def deepdream_fixture(request):
 #         iterations=iterations,
 #         learning_rate=0.1,
 #         save_video=True,
-#         output_path=f"{output_dir}deepdream_octaved.png",
+#         output_path=f"deepdream_octaved.png",
 #     )
 
-#     import os 
-#     print(os.getcwd())
 
 
 @pytest.mark.parametrize("deepdream_fixture", [1], indirect=True)
 def test_mock_deepdream(deepdream_fixture):
-    img_src, output_dir, iterations = deepdream_fixture
+    img_src, iterations = deepdream_fixture
 
     # Rolled
     deep_dream(
@@ -59,5 +56,5 @@ def test_mock_deepdream(deepdream_fixture):
         iterations=iterations,
         learning_rate=0.1,
         save_video=True,
-        # output_path=f"{output_dir}deepdream.png",
+        output_path=f"deepdream.png",
     )
