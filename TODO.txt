@@ -15,6 +15,8 @@ HIGH:
 12. Modularize deepdream
 13. Consider the mirror_video option on the duration by dividing the duration 
         by half (as mirroring doubles)
+14. Support custom models and layers
+15. Support gif creation
 
 ======================================================================================================
 
@@ -25,6 +27,7 @@ MEDIUM:
 4.  Add option to choose layer settings
 5.  Simplify imports 
 6.  Remove redundancy in ImageToVideoConverter by using the Factory design pattern
+7.  Support single channel images via channel (C) repetition, since pre-trained models expect RGB-Cs
 
 ======================================================================================================
 
