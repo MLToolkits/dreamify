@@ -78,29 +78,18 @@ jobs:
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.cache/pypoetry
-            ~/.virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
 
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          export PATH="$HOME/.local/bin:$PATH"
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true' # Only install if poetry cache is missed
-
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        if: steps.cache-dependencies.cache-hit != 'true'
         run: |
-          poetry install --no-root --no-interaction
-
-      - name: Use cached dependencies
-        run: |
-          echo "Using cached Poetry dependencies."
-        if: steps.cached-poetry-dependencies.outputs.cache-hit == 'true'
+          python -m pip install -U pip poetry
+          poetry --version
+          poetry check --no-interaction
+          poetry config virtualenvs.in-project true
+          poetry install --no-interaction
 
       - name: Authenticate on PyPI using poetry
         run: poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
