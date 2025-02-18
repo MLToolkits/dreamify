@@ -18,7 +18,7 @@ warnings.filterwarnings(
 
 
 @validate_dream
-def generate_dream_image(
+def dream(
     image_path,
     output_path="dream.png",
     model_name="inception_v3",
@@ -90,7 +90,7 @@ def generate_dream_image(
 
 
 def main():
-    generate_dream_image("examples/example0.jpg", octaves=2, iterations=10)
+    dream("examples/example0.jpg", octaves=2, iterations=10)
 
 
 # Compares all models and layer settings on an image
