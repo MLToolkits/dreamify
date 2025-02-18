@@ -136,6 +136,5 @@ class ImageToVideoConverter:
         """
         return (self.FPS * self.duration) // self.max_frames_to_sample
 
-
     def __hash__(self):
         return hash(self.name)
