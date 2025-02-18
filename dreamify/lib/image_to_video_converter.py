@@ -53,6 +53,7 @@ class ImageToVideoConverter:
         output_dir = os.path.dirname(output_path)
         if output_dir != "" and not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
+        output_path = os.path.join(output_dir, output_path)
 
         # Read buffered frames from disk
         frames = [

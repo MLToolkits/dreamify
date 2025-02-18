@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from dreamify.deepdream import deepdream
@@ -25,5 +27,6 @@ def test_mock_deepdream(deepdream_fixture):
         iterations=iterations,
         learning_rate=0.1,
         save_video=True,
-        output_path="examples/deepdream.png",
+        output_path="mock.png",
     )
+    Path("deepdream.mp4").unlink(missing_ok=True)
