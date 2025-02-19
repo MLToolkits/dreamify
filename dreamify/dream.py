@@ -26,6 +26,7 @@ def dream(
     octave_scale=1.4,
     max_loss=15.0,
     save_video=False,
+    save_gif=False,
     duration=3,
     mirror_video=False,
 ):
@@ -84,9 +85,13 @@ def dream(
 
     if save_video:
         config.framer.to_video(output_path.stem + ".mp4", duration, mirror_video)
+    if save_gif:
+        config.framer.to_gif(output_path.stem + ".gif", duration, mirror_video)
+
+    return img
 
 
-def main(img_path, save_video=False, duration=3, mirror_video=False):
+def main(img_path, save_video=False, save_gif=False, duration=3, mirror_video=False):
     if img_path is None:
         img_path = (
             "https://storage.googleapis.com/download.tensorflow.org/"
@@ -96,6 +101,7 @@ def main(img_path, save_video=False, duration=3, mirror_video=False):
     dream(
         image_path=img_path,
         save_video=save_video,
+        save_gif=save_gif,
         duration=duration,
         mirror_video=mirror_video,
     )
