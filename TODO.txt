@@ -28,7 +28,7 @@ MEDIUM:
 3.  Remove color artifacts in generated shallow dream
 4.  Add option to choose layer settings
 5.  Simplify imports 
-6.  Remove redundancy in ImageToVideoConverter by using the Factory design pattern
+6.  Remove redundancy in ImageToVideoConverter by using the Factory design pattern              # UNNEEDED
 7.  Support single channel images via channel (C) repetition, 
         since pre-trained models expect RGB-Cs
 8.  Pass max_dim to get_image
@@ -40,3 +40,4 @@ LOW:
 1.  Optimize cicd pipeline
 2.  Update README
 3.  Implement progress bar (TQDM) in deep dream
+4.  Add license
