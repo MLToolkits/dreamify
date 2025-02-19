@@ -16,7 +16,7 @@ HIGH:
 13. Consider the mirror_video option on the duration by dividing the duration                   # DONE
         by half (as mirroring doubles)
 14. Support custom models and layers
-15. Support gif creation
+15. Support gif creation                                                                        # DONE
 16. Legacify deep_dream_simple & deep_dream_octaved                                             # DONE
 17. Dynamic image preprocessor based on the model
 
