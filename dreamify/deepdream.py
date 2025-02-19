@@ -8,10 +8,11 @@ from dreamify.utils.common import deprocess_image, get_image, preprocess_image, 
 from dreamify.utils.configure import Config
 
 
-@validate_dream
+@validate_dream_params
 def deepdream(
     image_path,
     output_path="dream.png",
+    model_name="inception_v3",
     iterations=100,
     learning_rate=0.01,
     octaves=range(-2, 3),

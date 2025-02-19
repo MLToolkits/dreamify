@@ -2,7 +2,6 @@ import warnings
 from pathlib import Path
 
 import tensorflow as tf
-from tensorflow import keras
 
 from dreamify.lib import FeatureExtractor, validate_dream
 from dreamify.utils.common import deprocess_image, get_image, preprocess_image, show
@@ -12,11 +11,11 @@ from dreamify.utils.dream_utils import gradient_ascent_loop
 # from dreamify.utils.compare import main
 
 warnings.filterwarnings(
-    "ignore", category=UserWarning, module="keras.src.models.functional"
+    "ignore", category=UserWarning, module="tf.keras.src.models.functional"
 )
 
 
-@validate_dream
+@validate_dream_params
 def dream(
     image_path,
     output_path="dream.png",
@@ -78,7 +77,7 @@ def dream(
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
     img = deprocess_image(img)
-    keras.utils.save_img(output_path, img)
+    tf.keras.utils.save_img(output_path, img)
     print(f"Dream image saved to {output_path}")
 
     show(img)

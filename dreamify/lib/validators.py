@@ -20,7 +20,7 @@ def validate_positive(value, name, allow_zero=True, value_type=(int, float)):
         )
 
 
-def validate_dream(func):
+def validate_dream_params(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         validate_positive(kwargs.get("learning_rate"), "learning_rate", allow_zero=True)
@@ -44,4 +44,4 @@ def validate_dream(func):
     return wrapper
 
 
-__all__ = [validate_dream]
+__all__ = [validate_dream_params]
