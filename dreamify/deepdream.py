@@ -77,15 +77,18 @@ def deepdream(
     return img
 
 
-def main(save_video=False, duration=3, mirror_video=False):
-    url = (
-        "https://storage.googleapis.com/download.tensorflow.org/"
-        "example_images/YellowLabradorLooking_new.jpg"
-    )
+def main(img_path, save_video=False, duration=3, mirror_video=False):
+    if img_path is None:
+        img_path = (
+            "https://storage.googleapis.com/download.tensorflow.org/"
+            "example_images/YellowLabradorLooking_new.jpg"
+        )
 
     deepdream(
-        image_path=url,
+        image_path=img_path,
         save_video=save_video,
+        duration=duration,
+        mirror_video=mirror_video,
     )
 
 

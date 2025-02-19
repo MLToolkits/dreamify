@@ -11,12 +11,11 @@ from dreamify.utils.common import deprocess
 
 
 class ImageToVideoConverterHybrid:
-    def __init__(self, dimensions, max_frames_to_sample, duration):
+    def __init__(self, dimensions, max_frames_to_sample):
         self.dimensions = dimensions
         self.current_chunk: list = []
         self.max_frames_to_sample: int = max_frames_to_sample
         self.curr_frame_idx: int = 0
-        self.duration: int = duration
 
         self.FPS: int = 30
         self.MAX_FRAMES_IN_MEM: int = 50
@@ -59,7 +58,7 @@ class ImageToVideoConverterHybrid:
         )
         clip.write_videofile(chunk_path, logger=None)
         clip.close()
-        
+
         self.chunk_files.append(chunk_path)
         self.current_chunk = []
 
@@ -69,13 +68,15 @@ class ImageToVideoConverterHybrid:
         duration=3,
         mirror_video=False,
     ):
-        self.duration = duration
         self.flush_chunk()
 
         clips = [VideoFileClip(chunk) for chunk in self.chunk_files]
+
         final_clip = CompositeVideoClip.concatenate_videoclips(clips)
+
         if mirror_video:
             final_clip = TimeSymmetrize().apply(final_clip)
+
         final_clip = AccelDecel(new_duration=duration).apply(final_clip)
         final_clip.write_videofile(output_path, logger=None)
         final_clip.close()

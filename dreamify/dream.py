@@ -88,11 +88,22 @@ def dream(
         config.framer.to_video(output_path.stem + ".mp4", duration, mirror_video)
 
 
-def main():
-    dream("examples/example0.jpg", octaves=2, iterations=10)
+def main(img_path, save_video=False, duration=3, mirror_video=False):
+    if img_path is None:
+        img_path = (
+            "https://storage.googleapis.com/download.tensorflow.org/"
+            "example_images/YellowLabradorLooking_new.jpg"
+        )
+
+    dream(
+        image_path=img_path,
+        save_video=save_video,
+        duration=duration,
+        mirror_video=mirror_video,
+    )
 
 
-# Compares all models and layer settings on an image
 if __name__ == "__main__":
+    # Compares all models and layer settings on an image
     # main()  # current implementation of comparison,py has circular import
     pass
