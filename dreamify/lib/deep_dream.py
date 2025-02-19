@@ -17,7 +17,7 @@ class DeepDream(tf.Module):
         with tf.GradientTape() as tape:
             tape.watch(img)
             loss = calc_loss(img, self.model)
-            gradients = tape.gradient(loss, img)
+        gradients = tape.gradient(loss, img)
         gradients /= tf.math.reduce_std(gradients) + 1e-8
         img = img + gradients * step_size
         img = tf.clip_by_value(img, -1, 1)
