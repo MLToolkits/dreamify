@@ -27,7 +27,7 @@ class ImageToVideoConverter:
     def add_to_frames(self, frame):
         frame = tf.image.resize(frame, self.dimensions)
         frame = deprocess_image(frame)
-        self.current_chunk.append(frame.numpy())
+        self.current_chunk.append(frame)
         self.curr_frame_idx += 1
 
         if len(self.current_chunk) >= self.MAX_FRAMES_IN_MEM:
@@ -80,6 +80,7 @@ class ImageToVideoConverter:
         final_clip = AccelDecel(new_duration=duration).apply(final_clip)
         final_clip.write_videofile(output_path, logger=None)
         final_clip.close()
+
 
     def interpolate_frames(self, frame1, frame2, num_frames):
         alphas = tf.linspace(0.0, 1.0, num_frames + 2)[1:-1]

@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from dreamify.lib import FeatureExtractor, validate_dream
+from dreamify.lib import FeatureExtractor, validate_dream_params
 from dreamify.utils.common import deprocess_image, get_image, preprocess_image, show
 from dreamify.utils.configure import Config
 from dreamify.utils.dream_utils import gradient_ascent_loop

@@ -13,7 +13,7 @@ HIGH:
         CPU-only runtimes
 11. Adaptive frames to interpolate to ensure 30fps                                              # DONE BUT UNNEEDED
 12. Modularize deepdream
-13. Consider the mirror_video option on the duration by dividing the duration 
+13. Consider the mirror_video option on the duration by dividing the duration                   # DONE
         by half (as mirroring doubles)
 14. Support custom models and layers
 15. Support gif creation

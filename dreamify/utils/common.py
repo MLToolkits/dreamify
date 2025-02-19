@@ -15,7 +15,7 @@ def show(img):
 
 def preprocess_image(img):
     img = tf.keras.utils.img_to_array(img)
-    img = tf.np.expand_dims(img, axis=0)
+    img = tf.expand_dims(img, axis=0)
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     return img
 
@@ -36,8 +36,8 @@ def get_image(source, max_dim=None):
         image_path = tf.keras.utils.get_file(name, origin=source)
         img = PIL.Image.open(image_path)
     else:  # A directory path to some image
-        source = Path(image_path)
-        img = tf.keras.utils.load_img(source)
+        image_path = Path(source)
+        img = tf.keras.utils.load_img(image_path)
 
     if max_dim:
         img.thumbnail((max_dim, max_dim))

@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from dreamify.lib import TiledGradients, validate_dream
+from dreamify.lib import TiledGradients, validate_dream_params
 from dreamify.utils.common import deprocess_image, get_image, preprocess_image, show
 from dreamify.utils.configure import Config
 
@@ -56,7 +56,7 @@ def deepdream(
         img = tf.image.resize(img, tf.cast(new_size, tf.int32))
 
         for iteration in range(iterations):
-            gradients = get_tiled_gradients(img, new_size)
+            gradients = get_tiled_gradients(tf.squeeze(img), new_size)
             img = img + gradients * learning_rate
             img = tf.clip_by_value(img, -1, 1)
 
@@ -68,6 +68,7 @@ def deepdream(
             if config.enable_framing and config.framer.continue_framing():
                 config.framer.add_to_frames(img)
 
+    img = deprocess_image(img)
     tf.keras.utils.save_img(output_path, img)
     print(f"Dream image saved to {output_path}")
 
