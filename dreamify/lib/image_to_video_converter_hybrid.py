@@ -16,7 +16,6 @@ class ImageToVideoConverterHybrid:
         self.current_chunk: list = []
         self.max_frames_to_sample: int = max_frames_to_sample
         self.curr_frame_idx: int = 0
-        self.num_frames_to_insert: int = 0
         self.duration: int = duration
 
         self.FPS: int = 30
@@ -59,6 +58,8 @@ class ImageToVideoConverterHybrid:
             self.temp_folder, f"chunk_{len(self.chunk_files)}.mp4"
         )
         clip.write_videofile(chunk_path, logger=None)
+        clip.close()
+        
         self.chunk_files.append(chunk_path)
         self.current_chunk = []
 
@@ -70,12 +71,14 @@ class ImageToVideoConverterHybrid:
     ):
         self.duration = duration
         self.flush_chunk()
+
         clips = [VideoFileClip(chunk) for chunk in self.chunk_files]
         final_clip = CompositeVideoClip.concatenate_videoclips(clips)
         if mirror_video:
             final_clip = TimeSymmetrize().apply(final_clip)
         final_clip = AccelDecel(new_duration=duration).apply(final_clip)
         final_clip.write_videofile(output_path, logger=None)
+        final_clip.close()
 
     def interpolate_frames(self, frame1, frame2, num_frames):
         alphas = tf.linspace(0.0, 1.0, num_frames + 2)[1:-1]
@@ -83,15 +86,3 @@ class ImageToVideoConverterHybrid:
             :, None, None, None
         ] * frame2
         return tf.cast(interpolated_frames, tf.uint8)
-
-    def calculate_num_frames_to_insert(self):
-        """
-        Calculate the number of frames to interpolate to ensure video smoothness of 30fps
-
-        Derivation:
-                30 = (max_frames_to_sample * num_frames_to_insert) // duration
-             => 30 * duration = max_frames_to_sample * num_frames_to_insert
-             => 30 * duration // max_frames_to_sample = num_frames_to_insert
-             ≡ num_frames_to_insert = (30 * duration) // max_frames_to_sample
-        """
-        return (self.FPS * self.duration) // self.max_frames_to_sample
