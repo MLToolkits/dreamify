@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 
-from dreamify.lib.image_to_video_converter_hybrid import ImageToVideoConverterHybrid
-
-# from dreamify.lib.image_to_video_converter import ImageToVideoConverter
+from dreamify.lib.image_to_video_converter import ImageToVideoConverter
 
 
 @dataclass
@@ -13,11 +11,11 @@ class Config:
     save_video: bool = False
     enable_framing: bool = False
     max_frames_to_sample: int = 0
-    framer: ImageToVideoConverterHybrid = None
+    framer: ImageToVideoConverter = None
 
     def __post_init__(self):
         if self.framer is None:
-            self.framer = ImageToVideoConverterHybrid(
+            self.framer = ImageToVideoConverter(
                 dimensions=self.original_shape,
                 max_frames_to_sample=self.max_frames_to_sample,
             )
