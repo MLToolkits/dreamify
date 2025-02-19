@@ -18,6 +18,7 @@ HIGH:
 14. Support custom models and layers
 15. Support gif creation
 16. Legacify deep_dream_simple & deep_dream_octaved                                             # DONE
+17. Dynamic image preprocessor based on the model
 
 ======================================================================================================
 
