@@ -20,7 +20,6 @@ def deepdream(
     duration=3,
     mirror_video=False,
 ):
-    base_image_path = Path(image_path)
     output_path = Path(output_path)
 
     base_model = tf.keras.applications.InceptionV3(
@@ -35,7 +34,7 @@ def deepdream(
 
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
-    img = get_image(base_image_path)
+    img = get_image(image_path)
     base_shape = tf.shape(img)
     img = tf.keras.applications.inception_v3.preprocess_input(img)
     img_shape = img.shape[:-1]

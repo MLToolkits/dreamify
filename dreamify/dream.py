@@ -31,12 +31,11 @@ def dream(
     duration=3,
     mirror_video=False,
 ):
-    base_image_path = Path(image_path)
     output_path = Path(output_path)
 
     ft_ext = FeatureExtractor(model_name)
 
-    original_img = get_image(base_image_path)
+    original_img = get_image(image_path)
     original_img = np.expand_dims(original_img, axis=0)
     original_img = keras.applications.inception_v3.preprocess_input(original_img)
     original_shape = original_img.shape[1:3]
