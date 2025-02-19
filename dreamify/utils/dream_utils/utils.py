@@ -1,15 +1,5 @@
-import numpy as np
 import tensorflow as tf
-from tensorflow import keras
 from tqdm import trange
-
-
-def preprocess_image(image_path):
-    img = keras.utils.load_img(image_path)
-    img = keras.utils.img_to_array(img)
-    img = np.expand_dims(img, axis=0)
-    img = keras.applications.inception_v3.preprocess_input(img)
-    return img
 
 
 def compute_loss(input_image, config):
@@ -55,6 +45,5 @@ def gradient_ascent_loop(image, iterations, learning_rate, max_loss=None, config
 
 
 __all__ = [
-    preprocess_image,
     gradient_ascent_loop,
 ]

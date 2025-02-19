@@ -7,7 +7,7 @@ from moviepy.video.compositing import CompositeVideoClip
 from moviepy.video.fx import AccelDecel, TimeSymmetrize
 from moviepy.video.VideoClip import DataVideoClip
 
-from dreamify.utils.common import deprocess
+from dreamify.utils.common import deprocess_image
 
 
 class ImageToVideoConverter:
@@ -26,7 +26,7 @@ class ImageToVideoConverter:
 
     def add_to_frames(self, frame):
         frame = tf.image.resize(frame, self.dimensions)
-        frame = deprocess(frame)
+        frame = deprocess_image(frame)
         self.current_chunk.append(frame.numpy())
         self.curr_frame_idx += 1
 

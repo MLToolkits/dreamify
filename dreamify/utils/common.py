@@ -13,11 +13,18 @@ def show(img):
     display.display(PIL.Image.fromarray(img))
 
 
-def deprocess(img):
+def deprocess_image(img):
     """Normalize image for display."""
     img = np.squeeze(img)
     img = 255 * (img + 1.0) / 2.0
     img = np.clip(img, 0, 255).astype("uint8")
+    return img
+
+
+def preprocess_image(img):
+    img = tf.keras.utils.img_to_array(img)
+    img = tf.np.expand_dims(img, axis=0)
+    img = tf.keras.applications.inception_v3.preprocess_input(img)
     return img
 
 
@@ -36,12 +43,4 @@ def get_image(source, max_dim=None):
         img.thumbnail((max_dim, max_dim))
 
     img = np.array(img)
-    return img
-
-
-def preprocess_image(image_path):
-    img = tf.keras.utils.load_img(image_path)
-    img = tf.keras.utils.img_to_array(img)
-    img = tf.np.expand_dims(img, axis=0)
-    img = tf.keras.applications.inception_v3.preprocess_input(img)
     return img

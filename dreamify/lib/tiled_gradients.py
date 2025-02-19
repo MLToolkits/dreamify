@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-from dreamify.utils.deep_dream_utils.utils import calc_loss
+from dreamify.utils.deep_dream_utils import calc_loss
 
 
 def random_roll(img, maxroll):

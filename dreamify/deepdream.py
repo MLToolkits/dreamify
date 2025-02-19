@@ -4,7 +4,7 @@ from pathlib import Path
 import tensorflow as tf
 
 from dreamify.lib import TiledGradients, validate_dream
-from dreamify.utils.common import deprocess, get_image, show
+from dreamify.utils.common import deprocess_image, get_image, preprocess_image, show
 from dreamify.utils.configure import Config
 
 
@@ -35,21 +35,21 @@ def deepdream(
     dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
     img = get_image(image_path)
-    base_shape = tf.shape(img)
-    img = tf.keras.applications.inception_v3.preprocess_input(img)
-    img_shape = img.shape[:-1]
+    img = preprocess_image(img)
+
+    original_shape = img.shape[1:-1]
 
     config = Config(
         feature_extractor=dream_model,
         layer_settings=layers,
-        original_shape=img_shape,
+        original_shape=original_shape,
         save_video=save_video,
         enable_framing=True,
         max_frames_to_sample=iterations * len(octaves),
     )
 
     for octave in octaves:
-        new_size = tf.cast(tf.convert_to_tensor(base_shape[:-1]), tf.float32) * (
+        new_size = tf.cast(tf.convert_to_tensor(original_shape), tf.float32) * (
             octave_scale**octave
         )
         new_size = tf.cast(new_size, tf.int32)
@@ -62,7 +62,7 @@ def deepdream(
 
             if iteration % 10 == 0:
                 # display.clear_output(wait=True)
-                show(deprocess(img))
+                show(deprocess_image(img))
                 print("Octave {}, Iteration {}".format(octave, iteration))
 
             if config.enable_framing and config.framer.continue_framing():

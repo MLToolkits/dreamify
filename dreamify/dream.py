@@ -1,12 +1,11 @@
 import warnings
 from pathlib import Path
 
-import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
 from dreamify.lib import FeatureExtractor, validate_dream
-from dreamify.utils.common import deprocess, get_image, show
+from dreamify.utils.common import deprocess_image, get_image, preprocess_image, show
 from dreamify.utils.configure import Config
 from dreamify.utils.dream_utils import gradient_ascent_loop
 
@@ -36,9 +35,9 @@ def dream(
     ft_ext = FeatureExtractor(model_name)
 
     original_img = get_image(image_path)
-    original_img = np.expand_dims(original_img, axis=0)
-    original_img = keras.applications.inception_v3.preprocess_input(original_img)
-    original_shape = original_img.shape[1:3]
+    original_img = preprocess_image(original_img)
+
+    original_shape = original_img.shape[1:-1]
 
     config = Config(
         feature_extractor=ft_ext,
@@ -78,7 +77,7 @@ def dream(
         img += lost_detail
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
-    img = deprocess(img)
+    img = deprocess_image(img)
     keras.utils.save_img(output_path, img)
     print(f"Dream image saved to {output_path}")
 
