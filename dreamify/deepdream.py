@@ -12,7 +12,6 @@ from dreamify.utils.configure import Config
 def deepdream(
     image_path,
     output_path="dream.png",
-    model_name="inception_v3",
     iterations=100,
     learning_rate=0.01,
     octaves=range(-2, 3),

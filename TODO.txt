@@ -8,10 +8,10 @@ HIGH:
 7.  Remove redundant or unnecessary type or numpy-tensor (and, vice versa) conversions
 8.  Add more comments. Duhh
 9.  Optimize loop of simple dream (seems to slowed down. YIKES!)                                # DONE
-10. Optimize video making by insteading of buffering (in sys memory), save octave by octave
+10. Optimize video making by insteading of buffering (in sys memory), save octave by octave     # DONE
         then concatenate the video (.mp4) files. N.b., keep the buffering method to support
         CPU-only runtimes
-11. Adaptive frames to interpolate to ensure 30fps                                              # DONE
+11. Adaptive frames to interpolate to ensure 30fps                                              # DONE BUT UNNEEDED
 12. Modularize deepdream
 13. Consider the mirror_video option on the duration by dividing the duration 
         by half (as mirroring doubles)
