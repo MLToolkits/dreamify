@@ -1,15 +1,6 @@
 import tensorflow as tf
 
 
-def random_roll(img, maxroll):
-    # Randomly shift the image to avoid tiled boundaries.
-    shift = tf.random.uniform(
-        shape=[2], minval=-maxroll, maxval=maxroll, dtype=tf.int32
-    )
-    img_rolled = tf.roll(img, shift=shift, axis=[0, 1])
-    return shift, img_rolled
-
-
 class TiledGradients(tf.Module):
     def __init__(self, model):
         self.model = model
@@ -22,7 +13,7 @@ class TiledGradients(tf.Module):
         )
     )
     def __call__(self, img, img_size, tile_size=512):
-        shift, img_rolled = random_roll(img, tile_size)
+        shift, img_rolled = TiledGradients.random_roll(img, tile_size)
 
         # Initialize the image gradients to zero.
         gradients = tf.zeros_like(img_rolled)
@@ -67,6 +58,15 @@ class TiledGradients(tf.Module):
             layer_activations = [layer_activations]
 
         return tf.reduce_sum([tf.math.reduce_mean(act) for act in layer_activations])
+
+    @staticmethod
+    def random_roll(img, maxroll):
+        # Randomly shift the image to avoid tiled boundaries.
+        shift = tf.random.uniform(
+            shape=[2], minval=-maxroll, maxval=maxroll, dtype=tf.int32
+        )
+        img_rolled = tf.roll(img, shift=shift, axis=[0, 1])
+        return shift, img_rolled
 
 
 __all__ = [TiledGradients]
