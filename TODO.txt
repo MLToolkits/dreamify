@@ -20,6 +20,7 @@ HIGH:
 16. Legacify deep_dream_simple & deep_dream_octaved                                             # DONE
 17. Dynamic image preprocessor based on the model
 18. Implement class-based dream and deepdream
+19. Decouple Config to DreamConfig and OutputConfig
 
 ======================================================================================================
 
