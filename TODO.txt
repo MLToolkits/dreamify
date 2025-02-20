@@ -32,7 +32,7 @@ MEDIUM:
 6.  Remove redundancy in ImageToVideoConverter by using the Factory design pattern              # UNNEEDED
 7.  Support single channel images via channel (C) repetition, 
         since pre-trained models expect RGB-Cs
-8.  Pass max_dim to get_image
+8.  Pass max_dim to get_image                                                                   # REQS: HIGH 18
 9.  Fix pathing support in save video
 
 ======================================================================================================
