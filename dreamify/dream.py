@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from dreamify.lib import FeatureExtractor, validate_dream_params
+from dreamify.lib import Config, FeatureExtractor, validate_dream_params
 from dreamify.utils import (
     deprocess_image,
     get_image,
@@ -11,7 +11,6 @@ from dreamify.utils import (
     save_output,
     show,
 )
-from dreamify.utils.configure import Config
 from dreamify.utils.dream_utils import gradient_ascent_loop
 
 # from dreamify.utils.compare import main
@@ -112,5 +111,5 @@ def main(img_path, save_video=False, save_gif=False, duration=3, mirror_video=Fa
 
 if __name__ == "__main__":
     # Compares all models and layer settings on an image
-    # main()  # current implementation of comparison,py has circular import
-    pass
+    # main()  # current implementation of comparison.py has circular import
+    main()

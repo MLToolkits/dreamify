@@ -123,7 +123,7 @@ def choose_model(model_name: str = None, dream_style="deep", layer_settings=None
             return ResNet152V2(weights="imagenet", include_top=False), layer_settings
         case ModelType.XCEPTION:
             return Xception(weights="imagenet", include_top=False), layer_settings
-        case ModelType.MOBILENET_V2:  # New case for MobileNetV2
+        case ModelType.MOBILENET_V2:
             return MobileNetV2(weights="imagenet", include_top=False), layer_settings
         case _:
             raise ValueError(f"Invalid model name: {model_name_enum}")
