@@ -4,7 +4,13 @@ from pathlib import Path
 import tensorflow as tf
 
 from dreamify.lib import FeatureExtractor, validate_dream_params
-from dreamify.utils.common import deprocess_image, get_image, preprocess_image, show
+from dreamify.utils.common import (
+    deprocess_image,
+    get_image,
+    preprocess_image,
+    save_output,
+    show,
+)
 from dreamify.utils.configure import Config
 from dreamify.utils.dream_utils import gradient_ascent_loop
 
@@ -44,7 +50,10 @@ def dream(
         layer_settings=ft_ext.layer_settings,
         original_shape=original_shape,
         save_video=save_video,
+        save_gif=save_gif,
         enable_framing=save_video,
+        duration=duration,
+        mirror_video=mirror_video,
         max_frames_to_sample=iterations,
     )
 
@@ -78,15 +87,9 @@ def dream(
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
     img = deprocess_image(img)
-    tf.keras.utils.save_img(output_path, img)
-    print(f"Dream image saved to {output_path}")
-
     show(img)
 
-    if save_video:
-        config.framer.to_video(output_path.stem + ".mp4", duration, mirror_video)
-    if save_gif:
-        config.framer.to_gif(output_path.stem + ".gif", duration, mirror_video)
+    save_output(img, output_path, config)
 
     return img
 

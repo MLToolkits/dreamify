@@ -44,3 +44,15 @@ def get_image(source, max_dim=None):
 
     img = np.array(img)
     return img
+
+
+def save_output(img, output_path, config):
+    tf.keras.utils.save_img(output_path, img)
+    print(f"Dream image saved to {output_path}")
+
+    framer = config.framer
+
+    if config.save_video:
+        framer.to_video(output_path.stem + ".mp4", config.duration, config.mirror_video)
+    if config.save_gif:
+        framer.to_gif(output_path.stem + ".gif", config.duration, config.mirror_video)
