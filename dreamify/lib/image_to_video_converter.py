@@ -74,10 +74,11 @@ class ImageToVideoConverter:
 
         final_clip = CompositeVideoClip.concatenate_videoclips(clips)
 
+        final_clip = AccelDecel(new_duration=duration).apply(final_clip)
+
         if mirror_video:
             final_clip = TimeSymmetrize().apply(final_clip)
 
-        final_clip = AccelDecel(new_duration=duration).apply(final_clip)
         final_clip.write_videofile(output_path, logger=None)
         final_clip.close()
 
@@ -93,13 +94,13 @@ class ImageToVideoConverter:
 
         final_clip = CompositeVideoClip.concatenate_videoclips(clips)
 
+        final_clip = AccelDecel(new_duration=duration).apply(final_clip)
+
         if mirror_video:
             final_clip = TimeSymmetrize().apply(final_clip)
 
-        final_clip = AccelDecel(new_duration=duration).apply(final_clip)
         final_clip.write_gif(output_path, fps=30, logger=None)
         final_clip.close()
-
 
     @tf.function
     def interpolate_frames(self, frame1, frame2, num_frames):

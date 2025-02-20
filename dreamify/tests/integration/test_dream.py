@@ -10,10 +10,20 @@ from dreamify.dream import dream
 )
 def test_mock_dream():
     img_path = "examples/example0.jpg"
-    out_path = "examples/mock_dream.jpg"
 
-    dream(img_path, output_path=out_path, octaves=1, iterations=5, learning_rate=15.0)
-    Path(out_path).unlink(missing_ok=True)
+    dream(
+        img_path,
+        output_path="mock_dream.png",
+        octaves=1,
+        iterations=5,
+        learning_rate=15.0,
+        save_video=True,
+        save_gif=True,
+        mirror_video=True,
+    )
+    Path("mock_dream.png").unlink(missing_ok=True)
+    Path("mock_dream.mp4").unlink(missing_ok=True)
+    Path("mock_dream.gif").unlink(missing_ok=True)
 
 
 def test_dream_validator():
