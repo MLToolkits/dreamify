@@ -100,6 +100,7 @@ class ImageToVideoConverter:
         final_clip.write_gif(output_path, fps=30, logger=None)
         final_clip.close()
 
+
     @tf.function
     def interpolate_frames(self, frame1, frame2, num_frames):
         alphas = tf.linspace(0.0, 1.0, num_frames + 2)[1:-1]

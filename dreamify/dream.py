@@ -17,7 +17,7 @@ from dreamify.utils.dream_utils import gradient_ascent_loop
 # from dreamify.utils.compare import main
 
 warnings.filterwarnings(
-    "ignore", category=UserWarning, module="tf.keras.src.models.functional"
+    "ignore", category=UserWarning, module="keras.src.models.functional"
 )
 
 
