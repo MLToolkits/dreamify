@@ -26,7 +26,7 @@ HIGH:
 MEDIUM:
 1.  Compare different pre-trained models in generation
 2.  Optional seeded generations
-3.  Remove color artifacts in generated shallow dream
+3.  Remove color artifacts in generated shallow dream                                           # DONE
 4.  Add option to choose layer settings
 5.  Simplify imports 
 6.  Remove redundancy in ImageToVideoConverter by using the Factory design pattern              # UNNEEDED
