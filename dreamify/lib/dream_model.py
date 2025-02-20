@@ -14,7 +14,7 @@ class DreamModel(tf.Module):
     def __call__(self, image, learning_rate, config):
         with tf.GradientTape() as tape:
             tape.watch(image)
-            loss = compute_loss(image, config)
+            loss = DreamModel.compute_loss(image, config)
         grads = tape.gradient(loss, image)
         grads = tf.math.l2_normalize(grads)
         image += learning_rate * grads
@@ -42,7 +42,8 @@ class DreamModel(tf.Module):
 
         return image
 
-    def compute_loss(self, input_image, config):
+    @staticmethod
+    def compute_loss(input_image, config):
         features = config.feature_extractor(input_image)
         loss = tf.zeros(shape=())
         for name in features.keys():

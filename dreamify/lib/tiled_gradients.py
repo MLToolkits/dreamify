@@ -2,8 +2,8 @@ import tensorflow as tf
 
 
 class TiledGradients(tf.Module):
-    def __init__(self, model):
-        self.model = model
+    def __init__(self, feature_extractor):
+        self.feature_extractor = feature_extractor
 
     @tf.function(
         input_signature=(
@@ -36,7 +36,7 @@ class TiledGradients(tf.Module):
 
                     # Extract a tile out of the image.
                     img_tile = img_rolled[y : y + tile_size, x : x + tile_size]
-                    loss = TiledGradients.calc_loss(img_tile, self.model)
+                    loss = TiledGradients.calc_loss(img_tile, self.feature_extractor)
 
                 # Update the image gradients for this tile.
                 gradients = gradients + tape.gradient(loss, img_rolled)
@@ -50,10 +50,10 @@ class TiledGradients(tf.Module):
         return gradients
 
     @staticmethod
-    def calc_loss(img, model):
+    def calc_loss(img, feature_extractor):
         """Calculate the DeepDream loss by maximizing activations."""
         img_batch = tf.expand_dims(img, axis=0)
-        layer_activations = model(img_batch)
+        layer_activations = feature_extractor(img_batch)
         if len(layer_activations) == 1:
             layer_activations = [layer_activations]
 
