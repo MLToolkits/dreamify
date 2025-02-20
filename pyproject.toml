@@ -23,7 +23,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 dreamify = "dreamify.dream:main"
-dreamify_deep = "dreamify.deep_dream:main"
+dreamify_deep = "dreamify.deepdream:main"
 
 
 [tool.poetry.group.dev.dependencies]

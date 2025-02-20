@@ -1,7 +1,5 @@
 import tensorflow as tf
 
-from dreamify.utils.deep_dream_utils import calc_loss
-
 
 def random_roll(img, maxroll):
     # Randomly shift the image to avoid tiled boundaries.
@@ -47,7 +45,7 @@ class TiledGradients(tf.Module):
 
                     # Extract a tile out of the image.
                     img_tile = img_rolled[y : y + tile_size, x : x + tile_size]
-                    loss = calc_loss(img_tile, self.model)
+                    loss = TiledGradients.calc_loss(img_tile, self.model)
 
                 # Update the image gradients for this tile.
                 gradients = gradients + tape.gradient(loss, img_rolled)
@@ -59,6 +57,16 @@ class TiledGradients(tf.Module):
         gradients /= tf.math.reduce_std(gradients) + 1e-8
 
         return gradients
+
+    @staticmethod
+    def calc_loss(img, model):
+        """Calculate the DeepDream loss by maximizing activations."""
+        img_batch = tf.expand_dims(img, axis=0)
+        layer_activations = model(img_batch)
+        if len(layer_activations) == 1:
+            layer_activations = [layer_activations]
+
+        return tf.reduce_sum([tf.math.reduce_mean(act) for act in layer_activations])
 
 
 __all__ = [TiledGradients]
