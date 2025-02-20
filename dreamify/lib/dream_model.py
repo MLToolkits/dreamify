@@ -43,11 +43,11 @@ class DreamModel(tf.Module):
         return image
 
     @staticmethod
-    def compute_loss(input_image, config):
-        features = config.feature_extractor(input_image)
+    def compute_loss(input_image, feature_extractor):
+        features = feature_extractor(input_image)
         loss = tf.zeros(shape=())
         for name in features.keys():
-            coeff = config.layer_settings[name]
+            coeff = feature_extractor.layer_settings[name]
             activation = features[name]
             loss += coeff * tf.reduce_mean(tf.square(activation[:, 2:-2, 2:-2, :]))
         return loss

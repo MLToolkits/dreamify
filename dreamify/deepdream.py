@@ -38,7 +38,7 @@ def deepdream(
     ft_ext = tf.keras.Model(inputs=base_model.input, outputs=layers)
     get_tiled_gradients = TiledGradients(ft_ext)
 
-    dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
+    deepdream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
     img = get_image(image_path)
     img = preprocess_image(img)
@@ -46,7 +46,7 @@ def deepdream(
     original_shape = img.shape[1:-1]
 
     config = Config(
-        feature_extractor=dream_model,
+        feature_extractor=deepdream_model,
         layer_settings=layers,
         original_shape=original_shape,
         save_video=save_video,
