@@ -24,7 +24,7 @@ def test_mock_deepdream(deepdream_fixture):
     # Rolled
     deepdream(
         image_path=img_src,
-        output_path="mock.png",
+        output_path="mock_deepdream.png",
         iterations=iterations,
         learning_rate=0.1,
         save_video=True,
@@ -33,3 +33,4 @@ def test_mock_deepdream(deepdream_fixture):
     )
     Path("mock_deepdream.png").unlink(missing_ok=True)
     Path("mock_deepdream.mp4").unlink(missing_ok=True)
+    Path("mock_deepdream.gif").unlink(missing_ok=True)
