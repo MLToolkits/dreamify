@@ -13,8 +13,6 @@ from dreamify.utils import (
 )
 from dreamify.utils.dream_utils import gradient_ascent_loop
 
-# from dreamify.utils.compare import main
-
 warnings.filterwarnings(
     "ignore", category=UserWarning, module="keras.src.models.functional"
 )
@@ -110,6 +108,4 @@ def main(img_path, save_video=False, save_gif=False, duration=3, mirror_video=Fa
 
 
 if __name__ == "__main__":
-    # Compares all models and layer settings on an image
-    # main()  # current implementation of comparison.py has circular import
     main()
