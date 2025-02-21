@@ -11,12 +11,12 @@ class FeatureExtractor:
         )
 
         if isinstance(self.layer_settings, list):
-            # When layer_settings is a list, assume it contains layer names.
+            # A list of layers
             outputs = [
                 self.model.get_layer(name).output for name in self.layer_settings
             ]
         else:
-            # Otherwise, assume layer_settings is a dict and its keys are layer names.
+            # A dict of layers and its activation coefficient
             outputs = {
                 layer.name: layer.output
                 for layer in [
