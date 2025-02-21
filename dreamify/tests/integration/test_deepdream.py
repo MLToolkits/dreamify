@@ -17,6 +17,7 @@ def deepdream_fixture(request):
     return url, iterations
 
 
+@pytest.mark.filterwarnings("ignore::UserWarning")
 @pytest.mark.parametrize("deepdream_fixture", [1], indirect=True)
 def test_mock_deepdream(deepdream_fixture):
     img_src, iterations = deepdream_fixture

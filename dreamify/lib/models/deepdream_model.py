@@ -11,21 +11,21 @@ class DeepDreamModel(tf.Module):
             tf.TensorSpec(shape=[], dtype=tf.float32),
         )
     )
-    def __call__(self, img, step_size):
+    def __call__(self, img, learning_rate):
         with tf.GradientTape() as tape:
             tape.watch(img)
             loss = DeepDreamModel.calc_loss(img, self.model)
         gradients = tape.gradient(loss, img)
         gradients /= tf.math.reduce_std(gradients) + 1e-8
-        img = img + gradients * step_size
+        img = img + gradients * learning_rate
         img = tf.clip_by_value(img, -1, 1)
         return loss, img
 
-    def gradient_ascent_loop(self, img, steps, step_size, config):
+    def gradient_ascent_loop(self, img, iterations, learning_rate, config):
         print("Tracing DeepDream computation graph...")
         loss = tf.constant(0.0)
-        for _ in tf.range(steps):
-            loss, img = self.__call__(img, step_size)
+        for _ in tf.range(iterations):
+            loss, img = self.__call__(img, learning_rate)
 
             framer = config.framer
 

@@ -5,9 +5,7 @@ import pytest
 from dreamify.dream import dream
 
 
-@pytest.mark.filterwarnings(
-    "ignore:The structure of `inputs` doesn't match the expected structure"
-)
+@pytest.mark.filterwarnings("ignore::UserWarning")
 def test_mock_dream():
     img_path = "examples/example0.jpg"
 
