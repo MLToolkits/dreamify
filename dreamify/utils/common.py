@@ -18,6 +18,10 @@ def show(img):
 def preprocess_image(img, model_name: "inception_v3"):
     """Dynamically applies the correct preprocessing function based on the model."""
     img = tf.keras.utils.img_to_array(img)
+
+    if img.ndim == 3 and img.shape[-1] == 1:  # Grayscale images
+        img = tf.repeat(img, 3, axis=-1)
+
     img = tf.expand_dims(img, axis=0)
 
     try:
