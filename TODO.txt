@@ -35,6 +35,7 @@ MEDIUM:
         since pre-trained models expect RGB-Cs
 8.  Pass max_dim to get_image                                                                   # REQS: HIGH 18
 9.  Fix pathing support in save video
+10. Ensure Dream behavior is as expected
 
 ======================================================================================================
 
