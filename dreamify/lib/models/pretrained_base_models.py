@@ -128,7 +128,7 @@ def choose_base_model(model_name: str, dream_style="deep", layer_settings=None):
     base_model = model_fn(weights="imagenet", include_top=False)
 
     layer_settings = get_layer_settings(model_name, dream_style, layer_settings)
-    
+
     return base_model, layer_settings
 
     # match model_name_enum:

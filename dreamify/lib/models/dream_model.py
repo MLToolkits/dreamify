@@ -12,10 +12,10 @@ class DreamModel(tf.Module):
             tf.TensorSpec(shape=[], dtype=tf.float32),
         )
     )
-    def __call__(self, image, learning_rate, config):
+    def __call__(self, image, learning_rate, feature_extractor):
         with tf.GradientTape() as tape:
             tape.watch(image)
-            loss = DreamModel.compute_loss(image, config)
+            loss = DreamModel.compute_loss(image, feature_extractor)
         grads = tape.gradient(loss, image)
         grads = tf.math.l2_normalize(grads)
         image += learning_rate * grads
@@ -28,7 +28,7 @@ class DreamModel(tf.Module):
         for i in trange(
             iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
         ):
-            loss, image = gradient_ascent_step(image, learning_rate, config)
+            loss, image = gradient_ascent_step(image, learning_rate, config.feature_extractor)
 
             if max_loss is not None and loss > max_loss:
                 print(

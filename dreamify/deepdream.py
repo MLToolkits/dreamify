@@ -3,7 +3,8 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from dreamify.lib import Config, FeatureExtractor, TiledGradients, validate_dream_params
+from dreamify.lib import Config, FeatureExtractor, validate_dream_params
+from dreamify.lib.models import TiledGradients
 from dreamify.utils import (
     deprocess_image,
     get_image,
