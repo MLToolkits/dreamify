@@ -67,6 +67,3 @@ class TiledGradients(tf.Module):
         )
         img_rolled = tf.roll(img, shift=shift, axis=[0, 1])
         return shift, img_rolled
-
-
-__all__ = [TiledGradients]
