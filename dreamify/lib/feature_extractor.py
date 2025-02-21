@@ -16,7 +16,7 @@ class FeatureExtractor:
                 self.model.get_layer(name).output for name in self.layer_settings
             ]
         else:
-            # A dict of layers and its activation coefficient
+            # A dict of layers and its activation coefficients
             outputs = {
                 layer.name: layer.output
                 for layer in [
