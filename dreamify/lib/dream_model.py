@@ -1,4 +1,5 @@
 import tensorflow as tf
+from tqdm import trange
 
 
 class DreamModel(tf.Module):

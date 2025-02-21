@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from dreamify.lib import Config, TiledGradients, validate_dream_params
+from dreamify.lib import Config, FeatureExtractor, TiledGradients, validate_dream_params
 from dreamify.utils import (
     deprocess_image,
     get_image,
@@ -28,17 +28,13 @@ def deepdream(
 ):
     output_path = Path(output_path)
 
-    base_model = tf.keras.applications.InceptionV3(
-        include_top=False, weights="imagenet"
-    )
+    img = get_image(image_path)
+    img = preprocess_image(img)
 
-    names = ["mixed3", "mixed5"]
-    layers = [base_model.get_layer(name).output for name in names]
+    original_shape = img.shape[1:-1]
 
-    ft_ext = tf.keras.Model(inputs=base_model.input, outputs=layers)
-    get_tiled_gradients = TiledGradients(ft_ext)
-
-    deepdream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
+    ft_ext = FeatureExtractor("inception_v3", dream_style="deep", layer_settings=None)
+    get_tiled_gradients = TiledGradients(ft_ext.feature_extractor)
 
     img = get_image(image_path)
     img = preprocess_image(img)
@@ -46,8 +42,8 @@ def deepdream(
     original_shape = img.shape[1:-1]
 
     config = Config(
-        feature_extractor=deepdream_model,
-        layer_settings=layers,
+        feature_extractor=ft_ext,
+        layer_settings=ft_ext.layer_settings,
         original_shape=original_shape,
         save_video=save_video,
         save_gif=save_gif,

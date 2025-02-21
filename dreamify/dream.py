@@ -4,6 +4,7 @@ from pathlib import Path
 import tensorflow as tf
 
 from dreamify.lib import Config, FeatureExtractor, validate_dream_params
+# from dreamify.lib.dream_model import DreamModel
 from dreamify.utils import (
     deprocess_image,
     get_image,
@@ -35,7 +36,9 @@ def dream(
 ):
     output_path = Path(output_path)
 
-    ft_ext = FeatureExtractor(model_name)
+    ft_ext = FeatureExtractor(
+        model_name=model_name, dream_style="shallow", layer_settings=None
+    )
 
     original_img = get_image(image_path)
     original_img = preprocess_image(original_img)
