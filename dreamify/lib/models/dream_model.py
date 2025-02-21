@@ -28,7 +28,9 @@ class DreamModel(tf.Module):
         for i in trange(
             iterations, desc="Gradient Ascent", unit="step", ncols=75, mininterval=0.1
         ):
-            loss, image = gradient_ascent_step(image, learning_rate, config.feature_extractor)
+            loss, image = gradient_ascent_step(
+                image, learning_rate, config.feature_extractor
+            )
 
             if max_loss is not None and loss > max_loss:
                 print(
