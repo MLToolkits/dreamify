@@ -34,7 +34,7 @@ MEDIUM:
 7.  Support single channel images via channel (C) repetition, 
         since pre-trained models expect RGB-Cs
 8.  Pass max_dim to get_image                                                                   # UNNEEDED
-9.  Fix pathing support in save video
+9.  Fix pathing support in save video                                                           # DONE
 10. Ensure Dream behavior is as expected
 
 ======================================================================================================

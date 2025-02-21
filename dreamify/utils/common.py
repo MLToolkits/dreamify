@@ -66,10 +66,9 @@ def save_output(img, output_path, config):
     framer = config.framer
 
     if config.save_video:
-        framer.to_video(
-            output_path.stem + ".mp4", config.vid_duration, config.mirror_video
-        )
+        video_path = output_path.parent / (output_path.stem + ".mp4")
+        framer.to_video(video_path, config.vid_duration, config.mirror_video)
+
     if config.save_gif:
-        framer.to_gif(
-            output_path.stem + ".gif", config.gif_duration, config.mirror_video
-        )
+        gif_path = output_path.parent / (output_path.stem + ".gif")
+        framer.to_gif(gif_path, config.gif_duration, config.mirror_video)
