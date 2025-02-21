@@ -9,12 +9,14 @@ from dreamify.lib.models import TiledGradients
 from dreamify.utils import (
     deprocess_image,
     get_image,
+    optional_global_determinism,
     preprocess_image,
     save_output,
     show,
 )
 
 
+@optional_global_determinism
 @validate_dream_params
 def deepdream(
     image_path,
@@ -30,6 +32,7 @@ def deepdream(
     vid_duration=3,
     gif_duration=3,
     mirror_video=False,
+    seed=None,
 ):
     output_path = Path(output_path)
 

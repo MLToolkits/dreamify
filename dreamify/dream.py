@@ -10,6 +10,7 @@ from dreamify.lib.misc import validate_dream_params
 from dreamify.utils import (
     deprocess_image,
     get_image,
+    optional_global_determinism,
     preprocess_image,
     save_output,
     show,
@@ -21,6 +22,7 @@ warnings.filterwarnings(
 )
 
 
+@optional_global_determinism
 @validate_dream_params
 def dream(
     image_path,
@@ -37,6 +39,7 @@ def dream(
     vid_duration=3,
     gif_duration=3,
     mirror_video=False,
+    seed=None,
 ):
     output_path = Path(output_path)
 
