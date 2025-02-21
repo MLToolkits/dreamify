@@ -3,7 +3,8 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from dreamify.lib import Config, FeatureExtractor, validate_dream_params
+from dreamify.lib import Config, FeatureExtractor
+from dreamify.lib.misc import validate_dream_params
 
 # from dreamify.lib.dream_model import DreamModel
 from dreamify.utils import (

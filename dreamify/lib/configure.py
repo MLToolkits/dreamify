@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from dreamify.lib.image_to_video_converter import ImageToVideoConverter
+from dreamify.lib.misc import ImageToVideoConverter
 
 
 @dataclass
