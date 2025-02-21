@@ -3,13 +3,12 @@ from pathlib import Path
 import IPython.display as display
 import tensorflow as tf
 
+from dreamify.decorators import optional_global_determinism, validate_dream_params
 from dreamify.lib import Config, FeatureExtractor
-from dreamify.lib.misc import validate_dream_params
 from dreamify.lib.models import TiledGradients
 from dreamify.utils import (
     deprocess_image,
     get_image,
-    optional_global_determinism,
     preprocess_image,
     save_output,
     show,

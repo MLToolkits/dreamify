@@ -1,4 +1,3 @@
-import random
 from pathlib import Path
 
 import numpy as np
@@ -73,20 +72,3 @@ def save_output(img, output_path, config):
     if config.save_gif:
         gif_path = output_path.parent / (output_path.stem + ".gif")
         framer.to_gif(gif_path, config.gif_duration, config.mirror_video)
-
-
-def optional_global_determinism(func):
-    def wrapper(*args, **kwargs):
-        seed = kwargs.get(
-            "seed", None
-        )  # Get seed from keyword arguments, default to None
-        if seed is not None:
-            # Set the environment variable and seed values for repeatable results
-            os.environ["PYTHONHASHSEED"] = str(seed)
-            tf.random.set_seed(seed)
-            np.random.seed(seed)
-            random.seed(seed)
-
-        return func(*args, **kwargs)
-
-    return wrapper
