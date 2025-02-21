@@ -1,5 +1,5 @@
 HIGH:
-1.  Modularize and share code b/n dream and deepdream
+1.  Modularize and share code b/n dream and deepdream                                           # DONE
 2.  Implement class for ImageToVideo converter                                                  # DONE
 3.  Implement optional backward loop for video                                                  # DONE
 4.  Implement video framing for deep dream                                                      # DONE
@@ -9,13 +9,13 @@ HIGH:
 8.  Add more comments. Duhh
 9.  Optimize loop of simple dream (seems to slowed down. YIKES!)                                # DONE
 10. Optimize video making by insteading of buffering (in sys memory), save octave by octave     # DONE
-        then concatenate the video (.mp4) files. N.b., keep the buffering method to support
-        CPU-only runtimes
+        then concatenate the video (.mp4) files. N.b., keep the buffering method to support     # ^^^^
+        CPU-only runtimes                                                                       # ^^^^
 11. Adaptive frames to interpolate to ensure 30fps                                              # DONE BUT UNNEEDED
-12. Modularize deepdream
+12. Modularize deepdream                                                                        # DONE
 13. Consider the mirror_video option on the duration by dividing the duration                   # DONE
-        by half (as mirroring doubles)
-14. Support custom models and layers
+        by half (as mirroring doubles)                                                          # ^^^^
+14. Support custom models and layers                                                            # ^^^^
 15. Support gif creation                                                                        # DONE
 16. Legacify deep_dream_simple & deep_dream_octaved                                             # DONE
 17. Dynamic image preprocessor based on the model
