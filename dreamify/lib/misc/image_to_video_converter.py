@@ -56,7 +56,12 @@ class ImageToVideoConverter:
         chunk_path = os.path.join(
             self.temp_folder, f"chunk_{len(self.chunk_files)}.mp4"
         )
-        clip.write_videofile(chunk_path, logger=None)
+        clip.write_videofile(
+            chunk_path,
+            logger=None,
+            ffmpeg_params=["-loglevel", "quiet", "-hide_banner"],
+        )
+
         clip.close()
 
         self.chunk_files.append(chunk_path)
@@ -71,7 +76,6 @@ class ImageToVideoConverter:
         self.flush_chunk()
 
         clips = [VideoFileClip(chunk) for chunk in self.chunk_files]
-
         final_clip = CompositeVideoClip.concatenate_videoclips(clips)
 
         final_clip = AccelDecel(new_duration=duration).apply(final_clip)
@@ -79,7 +83,11 @@ class ImageToVideoConverter:
         if mirror_video:
             final_clip = TimeSymmetrize().apply(final_clip)
 
-        final_clip.write_videofile(output_path, logger=None)
+        final_clip.write_videofile(
+            output_path,
+            logger=None,
+            ffmpeg_params=["-loglevel", "quiet", "-hide_banner"],
+        )
         final_clip.close()
 
     def to_gif(

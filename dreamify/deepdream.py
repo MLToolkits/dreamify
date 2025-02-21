@@ -1,6 +1,6 @@
-# import IPython.display as display
 from pathlib import Path
 
+import IPython.display as display
 import tensorflow as tf
 
 from dreamify.lib import Config, FeatureExtractor
@@ -71,7 +71,7 @@ def deepdream(
             img = tf.clip_by_value(img, -1, 1)
 
             if iteration % 10 == 0:
-                # display.clear_output(wait=True)
+                display.clear_output(wait=True)
                 show(deprocess_image(img))
                 print("Octave {}, Iteration {}".format(octave, iteration))
 
