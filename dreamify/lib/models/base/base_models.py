@@ -28,3 +28,6 @@ def choose_base_model(model_name: str, dream_style="deep", layer_settings=None):
         layer_settings = get_layer_settings(model_name_enum, dream_style)
 
     return base_model, layer_settings
+
+
+__all__ = [choose_base_model]

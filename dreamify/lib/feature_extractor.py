@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 
-from dreamify.lib.models.base.base_models import choose_base_model
+from dreamify.lib.models.base import choose_base_model
 
 
 class FeatureExtractor:
