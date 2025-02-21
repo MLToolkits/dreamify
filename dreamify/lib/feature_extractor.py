@@ -10,19 +10,17 @@ class FeatureExtractor:
             model_name, dream_style, layer_settings
         )
 
-        if isinstance(self.layer_settings, list):
-            # A list of layers
-            outputs = [
-                self.model.get_layer(name).output for name in self.layer_settings
-            ]
-        else:
-            # A dict of layers and its activation coefficients
-            outputs = {
-                layer.name: layer.output
-                for layer in [
-                    self.model.get_layer(name) for name in self.layer_settings.keys()
-                ]
+        # outputs is either:
+        # - A list of layer outputs (for DeepDream)
+        # - A dictionary of layer outputs with activation coefficients (for Dream)
+        outputs = (
+            [self.model.get_layer(name).output for name in self.layer_settings]
+            if isinstance(self.layer_settings, list)
+            else {
+                name: self.model.get_layer(name).output for name in self.layer_settings
             }
+        )
+
         self.feature_extractor = Model(inputs=self.model.inputs, outputs=outputs)
 
     @tf.function
