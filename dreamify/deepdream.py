@@ -19,6 +19,7 @@ from dreamify.utils import (
 def deepdream(
     image_path,
     output_path="dream.png",
+    model_name="inception_v3",
     iterations=100,
     learning_rate=0.01,
     octaves=range(-2, 3),
@@ -30,11 +31,11 @@ def deepdream(
 ):
     output_path = Path(output_path)
 
-    ft_ext = FeatureExtractor("inception_v3", dream_style="deep", layer_settings=None)
+    ft_ext = FeatureExtractor(model_name, dream_style="deep", layer_settings=None)
     get_tiled_gradients = TiledGradients(ft_ext.feature_extractor)
 
     img = get_image(image_path)
-    img = preprocess_image(img, "inception_v3")
+    img = preprocess_image(img, model_name)
 
     original_shape = img.shape[1:-1]
 
