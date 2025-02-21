@@ -18,7 +18,7 @@ from dreamify.utils import (
 @validate_dream_params
 def deepdream(
     image_path,
-    output_path="dream.png",
+    output_path="deepdream.png",
     model_name="inception_v3",
     iterations=100,
     learning_rate=0.01,
