@@ -43,7 +43,7 @@ def dream(
     )
 
     original_img = get_image(image_path)
-    original_img = preprocess_image(original_img)
+    original_img = preprocess_image(original_img, model_name)
 
     original_shape = original_img.shape[1:-1]
 

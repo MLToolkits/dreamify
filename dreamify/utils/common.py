@@ -5,6 +5,8 @@ import PIL.Image
 import tensorflow as tf
 from IPython import display
 
+from dreamify.lib.models.base.constants import PREPROCESSORS, ModelType
+
 
 def show(img):
     """Display an image."""
@@ -13,11 +15,22 @@ def show(img):
     display.display(PIL.Image.fromarray(img))
 
 
-def preprocess_image(img):
+def preprocess_image(img, model_name: "inception_v3"):
+    """Dynamically applies the correct preprocessing function based on the model."""
     img = tf.keras.utils.img_to_array(img)
     img = tf.expand_dims(img, axis=0)
-    img = tf.keras.applications.inception_v3.preprocess_input(img)
-    return img
+
+    try:
+        model_enum = ModelType[model_name.upper()]
+    except KeyError:
+        raise ValueError(f"Model '{model_name}' not found in preprocessing map.")
+
+    preprocess_fn = PREPROCESSORS().get(model_enum, None)
+
+    if preprocess_fn is None:
+        raise ValueError(f"Preprocessing function for '{model_name}' not found.")
+
+    return preprocess_fn(img)
 
 
 def deprocess_image(img):

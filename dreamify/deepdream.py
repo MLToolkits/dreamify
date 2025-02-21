@@ -30,16 +30,11 @@ def deepdream(
 ):
     output_path = Path(output_path)
 
-    img = get_image(image_path)
-    img = preprocess_image(img)
-
-    original_shape = img.shape[1:-1]
-
     ft_ext = FeatureExtractor("inception_v3", dream_style="deep", layer_settings=None)
     get_tiled_gradients = TiledGradients(ft_ext.feature_extractor)
 
     img = get_image(image_path)
-    img = preprocess_image(img)
+    img = preprocess_image(img, "inception_v3")
 
     original_shape = img.shape[1:-1]
 
