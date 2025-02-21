@@ -4,6 +4,4 @@ from dreamify.lib.feature_extractor import FeatureExtractor
 __all__ = [
     "Config",
     "FeatureExtractor",
-    "ImageToVideoConverter",
-    "validate_dream_params",
 ]
