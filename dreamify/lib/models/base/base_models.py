@@ -1,34 +1,10 @@
 import random
 
-from tensorflow.keras.applications import (
-    VGG19,
-    ConvNeXtXLarge,
-    DenseNet121,
-    EfficientNetV2L,
-    InceptionResNetV2,
-    InceptionV3,
-    MobileNetV2,
-    ResNet152V2,
-    Xception,
-)
-
+from dreamify.lib.models.base.constants import MODEL_MAP, ModelType
 from dreamify.lib.models.base.layer_settings import (
     DeepDreamModelLayerSettings,
-    ModelType,
     ShallowDreamModelLayerSettings,
 )
-
-MODEL_MAP = {
-    ModelType.VGG19: VGG19,
-    ModelType.CONVNEXT_XL: ConvNeXtXLarge,
-    ModelType.DENSENET121: DenseNet121,
-    ModelType.EFFICIENTNET_V2L: EfficientNetV2L,
-    ModelType.INCEPTION_RESNET_V2: InceptionResNetV2,
-    ModelType.INCEPTION_V3: InceptionV3,
-    ModelType.RESNET152V2: ResNet152V2,
-    ModelType.XCEPTION: Xception,
-    ModelType.MOBILENET_V2: MobileNetV2,
-}
 
 
 def get_layer_settings(model_name_enum: ModelType, dream_style="deep"):

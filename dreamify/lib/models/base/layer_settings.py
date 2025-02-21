@@ -1,18 +1,6 @@
 from enum import Enum
 
 
-class ModelType(Enum):
-    VGG19 = "vgg19"
-    CONVNEXT_XL = "convnext_xl"
-    DENSENET121 = "densenet121"
-    EFFICIENTNET_V2L = "efficientnet_v2l"
-    INCEPTION_RESNET_V2 = "inception_resnet_v2"
-    INCEPTION_V3 = "inception_v3"
-    RESNET152V2 = "resnet152v2"
-    XCEPTION = "xception"
-    MOBILENET_V2 = "mobilenet_v2"
-
-
 class ShallowDreamModelLayerSettings(Enum):
     INCEPTION_V3 = {
         "mixed4": 1.0,
