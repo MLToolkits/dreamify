@@ -1,7 +1,6 @@
 from enum import Enum
 
-# Preprocessor of the base models
-# Models
+# Models and its corresponding preprocessors
 from tensorflow.keras.applications import (
     VGG19,
     ConvNeXtXLarge,
