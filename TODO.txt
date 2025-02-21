@@ -36,7 +36,7 @@ MEDIUM:
 8.  Pass max_dim to get_image                                                                   # UNNEEDED
 9.  Fix pathing support in save video                                                           # DONE
 10. Ensure Dream behavior is as expected
-
+11. Reduce verbosity of clip concatenator
 
 ======================================================================================================
 
