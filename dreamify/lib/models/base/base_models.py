@@ -1,18 +1,17 @@
 import random
 
 from dreamify.lib.models.base.constants import MODEL_MAP, ModelType
-from dreamify.lib.models.base.layer_settings import (
-    DeepDreamModelLayerSettings,
-    ShallowDreamModelLayerSettings,
-)
+from dreamify.lib.models.base.layer_settings import ModelLayerSettings
 
 
 def get_layer_settings(model_name_enum: ModelType, dream_style="deep"):
-    if dream_style == "deep":
-        return DeepDreamModelLayerSettings[model_name_enum.name].value
-    elif dream_style == "shallow":
-        return ShallowDreamModelLayerSettings[model_name_enum.name].value
-    raise NotImplementedError()
+    try:
+        model_settings = ModelLayerSettings[model_name_enum.name]
+        return model_settings.deep if dream_style == "deep" else model_settings.shallow
+    except KeyError:
+        raise NotImplementedError(
+            f"Layer settings for {model_name_enum.name} with style {dream_style} not implemented."
+        )
 
 
 def choose_base_model(model_name: str, dream_style="deep", layer_settings=None):
