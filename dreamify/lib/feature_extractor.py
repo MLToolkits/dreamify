@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow import keras
+from tensorflow.keras import Model
 
 from dreamify.lib.models.base import choose_base_model
 
@@ -23,7 +23,7 @@ class FeatureExtractor:
                     self.model.get_layer(name) for name in self.layer_settings.keys()
                 ]
             }
-        self.feature_extractor = keras.Model(inputs=self.model.inputs, outputs=outputs)
+        self.feature_extractor = Model(inputs=self.model.inputs, outputs=outputs)
 
     @tf.function
     def __call__(self, input):
