@@ -37,7 +37,9 @@ def validate_dream_params(func):
             kwargs.get("iterations"), "iterations", allow_zero=False, value_type=(int,)
         )
         validate_positive(kwargs.get("max_loss"), "max_loss", allow_zero=False)
-        validate_positive(kwargs.get("duration"), "duration", allow_zero=True)
+        validate_positive(kwargs.get("vid_duration"), "vid_duration", allow_zero=False)
+        validate_positive(kwargs.get("gif_duration"), "gif_duration", allow_zero=False)
+        validate_positive(kwargs.get("duration"), "duration", allow_zero=False)
 
         return func(*args, **kwargs)
 

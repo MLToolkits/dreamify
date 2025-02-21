@@ -27,6 +27,8 @@ def deepdream(
     save_video=False,
     save_gif=False,
     duration=3,
+    vid_duration=3,
+    gif_duration=3,
     mirror_video=False,
 ):
     output_path = Path(output_path)
@@ -47,6 +49,8 @@ def deepdream(
         save_gif=save_gif,
         enable_framing=True,
         duration=duration,
+        vid_duration=vid_duration,
+        gif_duration=gif_duration,
         mirror_video=mirror_video,
         max_frames_to_sample=iterations * len(octaves),
     )
