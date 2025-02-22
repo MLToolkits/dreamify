@@ -21,6 +21,7 @@ HIGH:
 17. Dynamic image preprocessor based on the model                                               # DONE
 18. Implement class-based dream and deepdream or instead use polymorphism for a compromise      # NO: MEMORY ISSUES
 19. Decouple Config to DreamConfig and OutputConfig
+20. Deprecate/Delete broken versions
 
 ======================================================================================================
 
