@@ -3,6 +3,8 @@ import tempfile
 
 import tensorflow as tf
 from moviepy import VideoFileClip
+
+# from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.compositing import CompositeVideoClip
 from moviepy.video.fx import AccelDecel, TimeSymmetrize
 from moviepy.video.VideoClip import DataVideoClip
@@ -59,7 +61,7 @@ class ImageToVideoConverter:
         clip.write_videofile(
             chunk_path,
             logger=None,
-            ffmpeg_params=["-loglevel", "quiet", "-hide_banner"],
+            ffmpeg_params=["-loglevel", "panic", "-hide_banner"],
         )
 
         clip.close()
@@ -86,7 +88,7 @@ class ImageToVideoConverter:
         final_clip.write_videofile(
             output_path,
             logger=None,
-            ffmpeg_params=["-loglevel", "quiet", "-hide_banner"],
+            ffmpeg_params=["-loglevel", "panic", "-hide_banner"],
         )
         final_clip.close()
 
