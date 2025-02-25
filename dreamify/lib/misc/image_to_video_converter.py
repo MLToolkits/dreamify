@@ -3,7 +3,6 @@ import tempfile
 
 import tensorflow as tf
 from moviepy import VideoFileClip
-
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.compositing import CompositeVideoClip
 from moviepy.video.fx import AccelDecel, TimeSymmetrize
@@ -12,6 +11,7 @@ from moviepy.video.VideoClip import DataVideoClip
 from dreamify.utils.common import deprocess_image
 
 os.environ["IMAGEIO_FFMPEG_LOG_LEVEL"] = "quiet"
+
 
 class ImageToVideoConverter:
     def __init__(self, dimensions, max_frames_to_sample):

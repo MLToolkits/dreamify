@@ -1,6 +1,6 @@
 [project]
 name = "dreamify"
-version = "0.30.1"
+version = "0.31.1"
 description = ""
 authors = [
     {name = "kenny",email = "97374837+kankenny@users.noreply.github.com"}
