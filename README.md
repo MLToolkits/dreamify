@@ -25,33 +25,37 @@ pip install dreamify
 To apply Dreamify to an image, use the following Python script:
 
 ```python
-from dreamify.dream import generate_dream_image
+from dreamify.deepdream import deepdream
 
 
 image_path = "example.jpg"
 
-generate_dream_image(image_path):
+deepdream(image_path)
 ```
 
 You may customize the behavior of the dreamifyer by selecting a different pre-trained model, saving it as a video, etc.:
 
 ```python
-from dreamify.dream import generate_dream_image
+from dreamify.deepdream import deepdream
 
 
 image_path = "example.jpg"
 
-generate_dream_image(
+deepdream(
     image_path,
-    output_path="dream.png",
+    output_path="deepdream.png",
     model_name="inception_v3",
-    learning_rate=5.0,
-    num_octave=5,
-    octave_scale=1.3,
     iterations=100,
-    max_loss=15.0,
+    learning_rate=0.01,
+    octaves=range(-2, 3),
+    octave_scale=1.3,
     save_video=False,
-    duration=10,
+    save_gif=False,
+    duration=3,
+    vid_duration=3,
+    gif_duration=3,
+    mirror_video=False,
+    seed=None,
 )
 ```
 
