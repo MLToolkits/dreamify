@@ -101,6 +101,57 @@ def dream(
 
     return img
 
+class Dream:
+    def __init__(
+        self,
+        image_path,
+        output_path="dream.png",
+        model_name="inception_v3",
+        learning_rate=20.0,
+        iterations=30,
+        octaves=3,
+        octave_scale=1.4,
+        max_loss=15.0,
+        seed=None,
+    ):
+        self.image_path = image_path
+        self.output_path = output_path
+        self.model_name = model_name
+        self.learning_rate = learning_rate
+        self.iterations = iterations
+        self.octaves = octaves
+        self.octave_scale = octave_scale
+        self.max_loss = max_loss
+        self.seed = seed
+
+    def __call__(
+        self,
+        output_path=None,
+        save_video=False,
+        save_gif=False,
+        duration=None,
+        vid_duration=None,
+        gif_duration=None,
+        mirror_video=False,
+    ):
+        params = vars(self).copy()
+        params.update(
+            output_path=output_path or self.output_path,
+            save_video=save_video,
+            save_gif=save_gif,
+            duration=duration,
+            vid_duration=vid_duration,
+            gif_duration=gif_duration,
+            mirror_video=mirror_video,
+        )
+        return dream(**params)
+
+    def save_video(self, output_path, duration, vid_duration, mirror_video):
+        return self(output_path=output_path, save_video=True, duration=duration, vid_duration=vid_duration, mirror_video=mirror_video)
+
+    def save_gif(self, output_path, duration, gif_duration, mirror_video):
+        return self(output_path=output_path, save_gif=True, duration=duration, gif_duration=gif_duration, mirror_video=mirror_video)
+
 
 def main(img_path, save_video=False, save_gif=False, duration=3, mirror_video=False):
     if img_path is None:
