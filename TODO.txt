@@ -22,6 +22,7 @@ HIGH:
 18. Implement class-based dream and deepdream or instead use polymorphism for a compromise      # DONE
 19. Decouple Config to DreamConfig and OutputConfig
 20. Yank broken versions in PyPI
+21. Add option of audio in media outputs
 
 ======================================================================================================
 
