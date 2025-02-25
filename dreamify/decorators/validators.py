@@ -20,14 +20,6 @@ def validate_positive(value, name, allow_zero=True, value_type=(int, float)):
         )
 
 
-def validate_save_media(will_save_name, will_save_val, duration_name, duration_val):
-    if duration_val != 0 and will_save_val is False:
-        raise ValueError(
-            f"{will_save_name} is set to False while {duration_name} is set to {duration_val}. \
-            Set {will_save_name} to True."
-        )
-
-
 def validate_dream_params(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -48,19 +40,6 @@ def validate_dream_params(func):
         validate_positive(kwargs.get("vid_duration"), "vid_duration", allow_zero=False)
         validate_positive(kwargs.get("gif_duration"), "gif_duration", allow_zero=False)
         validate_positive(kwargs.get("duration"), "duration", allow_zero=False)
-
-        validate_save_media(
-            "save_video",
-            kwargs.get("save_video"),
-            "vid_duration",
-            kwargs.get("vid_duration"),
-        )
-        validate_save_media(
-            "save_gif",
-            kwargs.get("save_gif"),
-            "gif_duration",
-            kwargs.get("gif_duration"),
-        )
 
         return func(*args, **kwargs)
 

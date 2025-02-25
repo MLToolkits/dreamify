@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from dreamify.dream import dream
+from dreamify.dream import Dream, dream
 
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
@@ -37,3 +37,13 @@ def test_dream_validator():
             learning_rate=15.0,
         )
         print("Handled negative")
+
+
+@pytest.mark.filterwarnings("ignore::UserWarning")
+def test_classed_dream():
+    img_path = "examples/example0.jpg"
+
+    dream = Dream(iterations=1)
+
+    dream(img_path)
+    Path("dream.png").unlink(missing_ok=True)

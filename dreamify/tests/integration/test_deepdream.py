@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from dreamify.deepdream import deepdream
+from dreamify.deepdream import DeepDream, deepdream
 
 
 @pytest.fixture
@@ -35,3 +35,14 @@ def test_mock_deepdream(deepdream_fixture):
     Path("mock_deepdream.png").unlink(missing_ok=True)
     Path("mock_deepdream.mp4").unlink(missing_ok=True)
     Path("mock_deepdream.gif").unlink(missing_ok=True)
+
+
+@pytest.mark.filterwarnings("ignore::UserWarning")
+@pytest.mark.parametrize("deepdream_fixture", [1], indirect=True)
+def test_classed_deepdream(deepdream_fixture):
+    img_src, iterations = deepdream_fixture
+
+    deepdream = DeepDream(iterations=iterations)
+
+    deepdream(img_src)
+    Path("deepdream.png").unlink(missing_ok=True)

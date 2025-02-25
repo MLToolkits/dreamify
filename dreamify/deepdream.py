@@ -88,8 +88,6 @@ def deepdream(
 class DeepDream:
     def __init__(
         self,
-        image_path,
-        output_path="dream.png",
         model_name="inception_v3",
         iterations=100,
         learning_rate=0.01,
@@ -97,19 +95,17 @@ class DeepDream:
         octave_scale=1.3,
         seed=None,
     ):
-        self.image_path = image_path
-        self.output_path = output_path
         self.model_name = model_name
         self.learning_rate = learning_rate
         self.iterations = iterations
         self.octaves = octaves
         self.octave_scale = octave_scale
-        self.max_loss = max_loss
         self.seed = seed
 
     def __call__(
         self,
-        output_path=None,
+        image_path,
+        output_path="deepdream.png",
         save_video=False,
         save_gif=False,
         duration=None,
@@ -119,7 +115,8 @@ class DeepDream:
     ):
         params = vars(self).copy()
         params.update(
-            output_path=output_path or self.output_path,
+            image_path=image_path,
+            output_path=output_path,
             save_video=save_video,
             save_gif=save_gif,
             duration=duration,
