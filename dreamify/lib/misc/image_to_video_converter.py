@@ -3,7 +3,8 @@ import tempfile
 
 import tensorflow as tf
 from moviepy import VideoFileClip
-from moviepy.audio.io.AudioFileClip import AudioFileClip
+
+# from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.compositing import CompositeVideoClip
 from moviepy.video.fx import AccelDecel, TimeSymmetrize
 from moviepy.video.VideoClip import DataVideoClip
@@ -86,7 +87,7 @@ class ImageToVideoConverter:
         if mirror_video:
             final_clip = TimeSymmetrize().apply(final_clip)
 
-        final_clip.with_audio(AudioFileClip("dreamify/assets/flight.wav"))
+        # final_clip.with_audio(AudioFileClip("dreamify/assets/flight.wav"))
 
         final_clip.write_videofile(
             output_path,
