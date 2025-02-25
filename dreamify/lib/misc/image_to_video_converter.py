@@ -24,7 +24,7 @@ class ImageToVideoConverter:
         self.MAX_FRAMES_IN_MEM: int = 50
 
         self.chunk_files: list = []
-        self.temp_folder = tempfile.mkdtemp(prefix="buffer")
+        self.temp_folder = tempfile.mkdtemp(prefix="buffer_")
         print(f"Temporary folder created at {self.temp_folder}")
 
     def add_to_frames(self, frame):
