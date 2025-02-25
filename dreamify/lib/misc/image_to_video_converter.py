@@ -11,6 +11,7 @@ from moviepy.video.VideoClip import DataVideoClip
 
 from dreamify.utils.common import deprocess_image
 
+os.environ["IMAGEIO_FFMPEG_LOG_LEVEL"] = "quiet"
 
 class ImageToVideoConverter:
     def __init__(self, dimensions, max_frames_to_sample):
@@ -23,7 +24,7 @@ class ImageToVideoConverter:
         self.MAX_FRAMES_IN_MEM: int = 50
 
         self.chunk_files: list = []
-        self.temp_folder = tempfile.mkdtemp()
+        self.temp_folder = tempfile.mkdtemp(prefix="buffer")
         print(f"Temporary folder created at {self.temp_folder}")
 
     def add_to_frames(self, frame):
@@ -61,7 +62,7 @@ class ImageToVideoConverter:
         clip.write_videofile(
             chunk_path,
             logger=None,
-            ffmpeg_params=["-loglevel", "panic", "-hide_banner"],
+            ffmpeg_params=["-loglevel", "quiet", "-hide_banner", "-nostats"],
         )
 
         clip.close()
@@ -88,7 +89,7 @@ class ImageToVideoConverter:
         final_clip.write_videofile(
             output_path,
             logger=None,
-            ffmpeg_params=["-loglevel", "panic", "-hide_banner"],
+            ffmpeg_params=["-loglevel", "quiet", "-hide_banner", "-nostats"],
         )
         final_clip.close()
 

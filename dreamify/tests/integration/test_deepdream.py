@@ -9,10 +9,7 @@ from dreamify.deepdream import DeepDream, deepdream
 def deepdream_fixture(request):
     iterations = getattr(request, "param", 100)
 
-    url = (
-        "https://storage.googleapis.com/download.tensorflow.org/"
-        "example_images/YellowLabradorLooking_new.jpg"
-    )
+    url = "examples/mock_example.jpg"
 
     return url, iterations
 
