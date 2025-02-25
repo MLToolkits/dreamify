@@ -101,6 +101,7 @@ def dream(
 
     return img
 
+
 class Dream:
     def __init__(
         self,
@@ -147,10 +148,22 @@ class Dream:
         return dream(**params)
 
     def save_video(self, output_path, duration, vid_duration, mirror_video):
-        return self(output_path=output_path, save_video=True, duration=duration, vid_duration=vid_duration, mirror_video=mirror_video)
+        return self(
+            output_path=output_path,
+            save_video=True,
+            duration=duration,
+            vid_duration=vid_duration,
+            mirror_video=mirror_video,
+        )
 
     def save_gif(self, output_path, duration, gif_duration, mirror_video):
-        return self(output_path=output_path, save_gif=True, duration=duration, gif_duration=gif_duration, mirror_video=mirror_video)
+        return self(
+            output_path=output_path,
+            save_gif=True,
+            duration=duration,
+            gif_duration=gif_duration,
+            mirror_video=mirror_video,
+        )
 
 
 def main(img_path, save_video=False, save_gif=False, duration=3, mirror_video=False):
