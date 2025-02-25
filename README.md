@@ -83,7 +83,7 @@ Dreamify supports the following models:
   <img src="examples/exampledeepdream.png" width="49.5%" />
 </p>
 
-###### Dream (shallow)
+###### Dream (shallow) -- See documentation of [dream (shallow)](https://github.com/MLToolkits/dreamify/blob/3d3f3354b23d00a269427d2f50720874fa10f663/dreamify/dream.py#L26).
 <p align="center" width="100%">
   <img src="examples/example0.jpg" width="49.5%" style="margin-right: 10px;" />
   <img src="examples/dream0.png" width="49.5%" />
