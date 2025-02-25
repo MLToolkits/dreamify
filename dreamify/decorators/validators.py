@@ -48,7 +48,7 @@ def validate_dream_params(func):
         validate_positive(kwargs.get("gif_duration"), "gif_duration", allow_zero=False)
         validate_positive(kwargs.get("duration"), "duration", allow_zero=False)
 
-        validate_save_media("save_vid", kwargs.get("save_vid"), "vid_duration", kwargs.get("vid_duration"))
+        validate_save_media("save_video", kwargs.get("save_video"), "vid_duration", kwargs.get("vid_duration"))
         validate_save_media("save_gif", kwargs.get("save_gif"), "gif_duration", kwargs.get("gif_duration"))
         
         return func(*args, **kwargs)
