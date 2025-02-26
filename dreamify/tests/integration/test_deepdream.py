@@ -9,7 +9,7 @@ from dreamify.deepdream import DeepDream, deepdream
 def deepdream_fixture(request):
     iterations = getattr(request, "param", 100)
 
-    url = "examples/mock_example.jpg"
+    url = "examples/mock_rgb.jpg"
 
     return url, iterations
 

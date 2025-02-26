@@ -7,7 +7,7 @@ from dreamify.dream import Dream, dream
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_mock_dream_rgb():
-    img_path = "examples/mock_example.jpg"
+    img_path = "examples/mock_rgb.jpg"
 
     dream(
         img_path,
@@ -43,7 +43,7 @@ def test_mock_dream_grayscale():
     Path("mock_dream.gif").unlink(missing_ok=True)
 
 def test_dream_validator():
-    img_path = "examples/mock_example.jpg"
+    img_path = "examples/mock_rgb.jpg"
     out_path = "examples/mock_dream.jpg"
 
     with pytest.raises(ValueError):
@@ -59,7 +59,7 @@ def test_dream_validator():
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_classed_dream():
-    img_path = "examples/mock_example.jpg"
+    img_path = "examples/mock_rgb.jpg"
 
     dream = Dream(iterations=1, octaves=1)
 
