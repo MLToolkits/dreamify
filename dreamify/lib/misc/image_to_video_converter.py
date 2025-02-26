@@ -63,8 +63,8 @@ class ImageToVideoConverter:
         for i in range(len(self.current_chunk) - 1):
             chunk_frames.append(self.current_chunk[i])
             interpolated = self.interpolate_frames(
-                tf.cast(self.current_chunk[i], tf.float32),
-                tf.cast(self.current_chunk[i + 1], tf.float32),
+                tf.cast(self.current_chunk[i], tf.float16),
+                tf.cast(self.current_chunk[i + 1], tf.float16),
                 tf.constant(self.FRAMES_TO_LERP),
             )
             chunk_frames.extend(interpolated)
@@ -133,7 +133,7 @@ class ImageToVideoConverter:
 
     @tf.function
     def interpolate_frames(self, frame1, frame2, num_frames):
-        alphas = tf.linspace(0.0, 1.0, num_frames + 2)[1:-1]
+        alphas = tf.cast(tf.linspace(0.0, 1.0, num_frames + 2)[1:-1], tf.float16)
         interpolated_frames = (1 - alphas[:, None, None, None]) * frame1 + alphas[
             :, None, None, None
         ] * frame2
