@@ -90,6 +90,10 @@ Dreamify supports the following models:
   <img src="examples/exampledeep1.jpg" width="49.5%" style="margin-right: 10px;" />
   <img src="examples/exampledeepdream1.png" width="49.5%" />
 </p>
+<p align="center">
+  <img src="examples/grayscale.jpg" width="49.5%" style="margin-right: 10px;" />
+  <img src="examples/dream_grayscale.png" width="49.5%" />
+</p>
 
 ###### Dream (shallow) -- See documentation of [dream (shallow)](https://github.com/MLToolkits/dreamify/blob/3d3f3354b23d00a269427d2f50720874fa10f663/dreamify/dream.py#L26).
 <p align="center" width="100%">
