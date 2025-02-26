@@ -16,7 +16,7 @@ def deepdream_fixture(request):
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
 @pytest.mark.parametrize("deepdream_fixture", [1], indirect=True)
-def test_mock_deepdream(deepdream_fixture):
+def test_mock_deepdream_rgb(deepdream_fixture):
     img_src, iterations = deepdream_fixture
 
     # Rolled
@@ -32,6 +32,29 @@ def test_mock_deepdream(deepdream_fixture):
     Path("mock_deepdream.png").unlink(missing_ok=True)
     Path("mock_deepdream.mp4").unlink(missing_ok=True)
     Path("mock_deepdream.gif").unlink(missing_ok=True)
+
+
+@pytest.mark.filterwarnings("ignore::UserWarning")
+@pytest.mark.parametrize("deepdream_fixture", [1], indirect=True)
+def test_mock_deepdream_grayscale(deepdream_fixture):
+    _, iterations = deepdream_fixture
+
+    img_src = "examples/mock_grayscale.jpg"
+
+    # Rolled
+    deepdream(
+        image_path=img_src,
+        output_path="mock_deepdream.png",
+        iterations=iterations,
+        learning_rate=0.1,
+        save_video=True,
+        save_gif=True,
+        mirror_video=True,
+    )
+    Path("mock_deepdream.png").unlink(missing_ok=True)
+    Path("mock_deepdream.mp4").unlink(missing_ok=True)
+    Path("mock_deepdream.gif").unlink(missing_ok=True)
+
 
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
