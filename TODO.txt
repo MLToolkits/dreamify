@@ -46,5 +46,5 @@ MEDIUM:
 LOW:
 1.  Optimize cicd pipeline
 2.  Update README                                                                               # DONE
-3.  Implement progress bar (TQDM) in deep dream
+3.  Implement progress bar (TQDM) in deep dream                                                 # UNNEEDED
 4.  Add license                                                                                 # DONE
