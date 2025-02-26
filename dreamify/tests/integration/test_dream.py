@@ -42,6 +42,7 @@ def test_mock_dream_grayscale():
     Path("mock_dream.mp4").unlink(missing_ok=True)
     Path("mock_dream.gif").unlink(missing_ok=True)
 
+
 def test_dream_validator():
     img_path = "examples/mock_rgb.jpg"
     out_path = "examples/mock_dream.jpg"

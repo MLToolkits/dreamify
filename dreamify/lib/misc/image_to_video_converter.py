@@ -1,5 +1,6 @@
 import os
 import tempfile
+
 import psutil
 import tensorflow as tf
 from moviepy import VideoFileClip
@@ -23,7 +24,9 @@ class ImageToVideoConverter:
 
         self.FPS: int = 30
         self.MAX_FRAMES_IN_MEM: int = self.calculate_max_frames_to_cache()
-        self.FRAMES_TO_LERP = 10 if self.dimensions[0] * self.dimensions[1] >= 921_600 else 30  # 1980 x 720 = 921,600 image is 'standard', as they say
+        self.FRAMES_TO_LERP = (
+            10 if self.dimensions[0] * self.dimensions[1] >= 921_600 else 30
+        )  # 1980 x 720 = 921,600 image is 'standard', as they say
 
         self.chunk_files: list = []
         self.temp_folder = tempfile.mkdtemp(prefix="buffer_")
@@ -35,7 +38,7 @@ class ImageToVideoConverter:
         frame_size = h * w * 3
 
         available_memory = psutil.virtual_memory().available * 0.6
-        
+
         max_frames = available_memory // frame_size
 
         return max(10, min(50, int(max_frames)))

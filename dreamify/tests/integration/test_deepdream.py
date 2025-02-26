@@ -56,7 +56,6 @@ def test_mock_deepdream_grayscale(deepdream_fixture):
     Path("mock_deepdream.gif").unlink(missing_ok=True)
 
 
-
 @pytest.mark.filterwarnings("ignore::UserWarning")
 @pytest.mark.parametrize("deepdream_fixture", [1], indirect=True)
 def test_classed_deepdream(deepdream_fixture):
