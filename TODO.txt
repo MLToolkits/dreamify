@@ -40,6 +40,7 @@ MEDIUM:
 10. Ensure Dream behavior is as expected
 11. Reduce verbosity of clip concatenator
 12. Implement masking
+13. If grayscale image is passed ensure output is grayscale as well?
 
 ======================================================================================================
 
