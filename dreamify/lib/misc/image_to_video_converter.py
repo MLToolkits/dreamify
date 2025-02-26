@@ -1,6 +1,6 @@
 import os
 import tempfile
-
+import psutil
 import tensorflow as tf
 from moviepy import VideoFileClip
 
@@ -22,11 +22,22 @@ class ImageToVideoConverter:
         self.curr_frame_idx: int = 0
 
         self.FPS: int = 30
-        self.MAX_FRAMES_IN_MEM: int = 50
+        self.MAX_FRAMES_IN_MEM: int = self.calculate_max_frames_to_cache()
 
         self.chunk_files: list = []
         self.temp_folder = tempfile.mkdtemp(prefix="buffer_")
         print(f"Temporary folder created at {self.temp_folder}")
+
+    def calculate_max_frames_to_cache(self):
+        """Calculate the number of frames that can be stored in memory."""
+        h, w = self.dimensions
+        frame_size = h * w * 3
+
+        available_memory = psutil.virtual_memory().available * 0.6
+        
+        max_frames = available_memory // frame_size
+
+        return max(10, min(50, int(max_frames)))
 
     def add_to_frames(self, frame):
         frame = tf.image.resize(frame, self.dimensions)
