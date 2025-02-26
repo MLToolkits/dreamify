@@ -1,6 +1,6 @@
 # Dreamify
 
-A function that applies deep dream to an image using pre-trained CNNs trained on the ImageNet dataset.
+A function that applies deep dream to an image using a pre-trained CNN trained on the ImageNet dataset.
 
 <p align="center" width="100%">
   <img src="examples/doggy.gif" alt="Doggy" height="250px" />
