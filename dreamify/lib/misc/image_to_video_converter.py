@@ -23,6 +23,7 @@ class ImageToVideoConverter:
 
         self.FPS: int = 30
         self.MAX_FRAMES_IN_MEM: int = self.calculate_max_frames_to_cache()
+        self.FRAMES_TO_LERP = 10 if self.dimensions[0] * self.dimensions[1] >= 921_600 else 30  # 1980 x 720 = 921,600 image is 'standard', as they say
 
         self.chunk_files: list = []
         self.temp_folder = tempfile.mkdtemp(prefix="buffer_")
@@ -61,7 +62,7 @@ class ImageToVideoConverter:
             interpolated = self.interpolate_frames(
                 tf.cast(self.current_chunk[i], tf.float32),
                 tf.cast(self.current_chunk[i + 1], tf.float32),
-                tf.constant(30),
+                tf.constant(self.FRAMES_TO_LERP),
             )
             chunk_frames.extend(interpolated)
 
