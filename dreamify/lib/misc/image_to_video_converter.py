@@ -10,6 +10,7 @@ from moviepy.video.compositing import CompositeVideoClip
 from moviepy.video.fx import AccelDecel, TimeSymmetrize
 from moviepy.video.VideoClip import DataVideoClip
 
+from dreamify.decorators import suppress_logs
 from dreamify.utils.common import deprocess_image
 
 os.environ["IMAGEIO_FFMPEG_LOG_LEVEL"] = "quiet"
@@ -86,6 +87,7 @@ class ImageToVideoConverter:
         self.chunk_files.append(chunk_path)
         self.current_chunk = []
 
+    @suppress_logs
     def to_video(
         self,
         output_path="dream.mp4",
@@ -116,6 +118,7 @@ class ImageToVideoConverter:
         audio_clip.close()
         final_clip.close()
 
+    @suppress_logs
     def to_gif(
         self,
         output_path="dream.gif",
@@ -133,7 +136,7 @@ class ImageToVideoConverter:
         if mirror_video:
             final_clip = TimeSymmetrize().apply(final_clip)
 
-        final_clip.write_gif(output_path, fps=30, logger=None)
+        final_clip.write_gif(output_path, logger=None, fps=30)
         final_clip.close()
 
     @tf.function
