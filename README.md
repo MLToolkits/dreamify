@@ -1,4 +1,6 @@
-# Dreamify
+<p align="center">
+  <img src="examples/logo.png" alt="Dreamify" />
+</p>
 
 A function that applies deep dream to an image using a pre-trained CNN trained on the ImageNet dataset.
 
