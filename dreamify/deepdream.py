@@ -78,6 +78,7 @@ def deepdream(
                 config.framer.add_to_frames(img)
 
     img = deprocess_image(img)
+    display.clear_output(wait=True)
     show(img)
 
     save_output(img, output_path, config)

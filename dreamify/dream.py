@@ -1,6 +1,7 @@
 import warnings
 from pathlib import Path
 
+import IPython.display as display
 import tensorflow as tf
 
 from dreamify.decorators import optional_global_determinism, validate_dream_params
@@ -95,6 +96,7 @@ def dream(
         shrunk_original_img = tf.image.resize(original_img, successive_shapes[i])
 
     img = deprocess_image(img)
+    display.clear_output(wait=True)
     show(img)
 
     save_output(img, output_path, config)
