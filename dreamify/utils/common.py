@@ -1,7 +1,8 @@
-from pathlib import Path
-import time
 import itertools
 import threading
+import time
+from pathlib import Path
+
 import numpy as np
 import PIL.Image
 import tensorflow as tf
@@ -68,7 +69,7 @@ def get_image(source, max_dim=None):
 def loading_animation(message="Saving video", cycles=10, delay=0.5):
     states = itertools.cycle([".", "..", "..."])
 
-    for _ in range(cycles):  
+    for _ in range(cycles):
         print(f"\r{message}{next(states)}", end="", flush=True)
         time.sleep(delay)
     print()
@@ -82,14 +83,13 @@ def save_output(img, output_path, config):
 
     if config.save_video:
         video_path = output_path.parent / (output_path.stem + ".mp4")
-        
+
         anim_thread = threading.Thread(target=loading_animation, args=("Saving video",))
         anim_thread.start()
 
         framer.to_video(video_path, config.vid_duration, config.mirror_video)
 
         anim_thread.join()
-
 
     if config.save_gif:
         gif_path = output_path.parent / (output_path.stem + ".gif")
