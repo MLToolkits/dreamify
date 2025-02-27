@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="examples/logo.png" alt="Dreamify" />
+  <img src="examples/logo.png" alt="Dreamify" width="600"/>
 </p>
 
 A function that applies deep dream to an image using a pre-trained CNN trained on the ImageNet dataset.
