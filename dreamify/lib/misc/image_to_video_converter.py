@@ -1,11 +1,11 @@
 import os
 import tempfile
+from pathlib import Path
 
 import psutil
 import tensorflow as tf
 from moviepy import VideoFileClip
-
-# from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.compositing import CompositeVideoClip
 from moviepy.video.fx import AccelDecel, TimeSymmetrize
 from moviepy.video.VideoClip import DataVideoClip
@@ -102,13 +102,18 @@ class ImageToVideoConverter:
         if mirror_video:
             final_clip = TimeSymmetrize().apply(final_clip)
 
-        # final_clip.with_audio(AudioFileClip("dreamify/assets/flight.wav"))
+        audio_path = Path(__file__).parent / "flight.wav"
+        audio_duration = duration * 2 if mirror_video else duration
+        audio_clip = AudioFileClip(str(audio_path)).with_duration(audio_duration)
 
+        final_clip = final_clip.with_audio(audio_clip)
         final_clip.write_videofile(
             output_path,
             logger=None,
             ffmpeg_params=["-hide_banner", "-loglevel", "quiet", "-nostats"],
         )
+
+        audio_clip.close()
         final_clip.close()
 
     def to_gif(
