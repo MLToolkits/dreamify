@@ -43,7 +43,7 @@ MEDIUM:
 11. Reduce verbosity of clip concatenator                                                       # DONE
 12. Implement masking
 13. If grayscale image is passed ensure output is grayscale as well?
-14. Modularize asset (flight.wav)
+14. Modularize asset (flight.wav)                                                               # UNNEEDED
 
 ======================================================================================================
 
