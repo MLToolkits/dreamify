@@ -65,4 +65,6 @@ def test_classed_dream():
     dream = Dream(iterations=1, octaves=1)
 
     dream(img_path)
+    dream.save_video()
+    dream.save_gif()
     Path("dream.png").unlink(missing_ok=True)

@@ -19,11 +19,10 @@ class Config:
     framer: ImageToVideoConverter = None
 
     def __post_init__(self):
-        if self.framer is None:
-            self.framer = ImageToVideoConverter(
-                dimensions=self.original_shape,
-                max_frames_to_sample=self.max_frames_to_sample,
-            )
+        self.framer = ImageToVideoConverter(
+            dimensions=self.original_shape,
+            max_frames_to_sample=self.max_frames_to_sample,
+        )
 
         # Set `self.duration` based on `vid_duration` and `gif_duration` if `duration` is not provided
         if self.duration == 0:

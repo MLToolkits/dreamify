@@ -23,7 +23,7 @@ HIGH:
 19. Decouple Config to DreamConfig and OutputConfig
 20. Yank broken versions in PyPI
 21. Add option of audio in media outputs                                                        # DONE
-22. Constrain package versions 
+22. Constrain package versions                                                                  # DONE
 23. Implement class based dream integration tests
 
 ======================================================================================================

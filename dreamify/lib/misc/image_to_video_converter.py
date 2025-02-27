@@ -54,7 +54,7 @@ class ImageToVideoConverter:
             self.flush_chunk()
 
     def continue_framing(self):
-        return self.curr_frame_idx < self.max_frames_to_sample - 1
+        return self.curr_frame_idx < self.max_frames_to_sample
 
     def flush_chunk(self):
         if not self.current_chunk:

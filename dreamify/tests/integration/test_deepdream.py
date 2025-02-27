@@ -64,4 +64,6 @@ def test_classed_deepdream(deepdream_fixture):
     deepdream = DeepDream(iterations=iterations)
 
     deepdream(img_src)
+    deepdream.save_video()
+    deepdream.save_gif()
     Path("deepdream.png").unlink(missing_ok=True)

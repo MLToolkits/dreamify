@@ -109,12 +109,17 @@ class DeepDream:
         output_path="deepdream.png",
         save_video=False,
         save_gif=False,
-        duration=None,
-        vid_duration=None,
-        gif_duration=None,
+        duration=3,
+        vid_duration=3,
+        gif_duration=3,
         mirror_video=False,
     ):
+        self.image_path = image_path
+        self.extension = Path(image_path).suffix
+
         params = vars(self).copy()
+        params.pop("extension", None)
+
         params.update(
             image_path=image_path,
             output_path=output_path,
@@ -125,25 +130,30 @@ class DeepDream:
             gif_duration=gif_duration,
             mirror_video=mirror_video,
         )
+
         return deepdream(**params)
 
-    def save_video(self, output_path, duration, vid_duration, mirror_video):
+    def save_video(self, output_path="deepdream.mp4", duration=3, mirror_video=False):
         return self(
-            output_path=output_path,
+            image_path=self.image_path,
+            output_path=self.revert_output_path(output_path),
             save_video=True,
             duration=duration,
-            vid_duration=vid_duration,
             mirror_video=mirror_video,
         )
 
-    def save_gif(self, output_path, duration, gif_duration, mirror_video):
+    def save_gif(self, output_path="deepdream.gif", duration=3, mirror_video=False):
         return self(
-            output_path=output_path,
+            image_path=self.image_path,
+            output_path=self.revert_output_path(output_path),
             save_gif=True,
             duration=duration,
-            gif_duration=gif_duration,
             mirror_video=mirror_video,
         )
+
+    def revert_output_path(self, output_path):
+        output_path = Path(output_path)
+        return str(output_path.with_suffix(self.extension))
 
 
 def main(img_path, save_video=False, save_gif=False, duration=3, mirror_video=False):
