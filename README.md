@@ -10,17 +10,18 @@ A function that applies deep dream to an image using a pre-trained CNN trained o
 </p>
 
 
+## Installation
+
+``` bash
+pip install dreamify
+```
+
 
 ## Testing it
 ``` bash
 dreamify
 ```
 
-## Installation
-
-``` bash
-pip install dreamify
-```
 
 ## Usage
 
@@ -59,6 +60,31 @@ deepdream(
     mirror_video=False,
     seed=None,
 )
+```
+
+You may also use an object oriented approach for fine-grained behavior:
+
+```python
+from dreamify.deepdream import DeepDream
+
+# Default settings
+
+image_path1 = "example1.jpg"
+
+deepdream = DeepDream()  
+deepdream(image_path1)
+deepdream.save_video(output_path=dream1.mp4, duration=42, mirror_video=False)
+deepdream.save_gif(output_path=dream1.gif, duration=69, mirror_video=True)
+
+##############################################################################
+
+# Configured settings
+
+image_path2 = "example2.jpg"
+deepdream = DeepDream(iterations=50, learning_rate=0.1)  
+deepdream(image_path2)
+deepdream.save_video(output_path=dream2.mp4, duration=42, mirror_video=False)
+deepdream.save_gif(output_path=dream2.gif, duration=69, mirror_video=True)
 ```
 
 ## Available Models
