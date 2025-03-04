@@ -21,7 +21,7 @@ class ModelLayerSettings(Enum):
         [f"block2_conv{i}" for i in range(1, 3)] + 
         [f"block3_conv{i}" for i in range(1, 6)] + 
         [f"block4_conv{i}" for i in range(1, 6)] + 
-        [f"block5_conv{i}" for i in range(1, 6)] + 
+        [f"block5_conv{i}" for i in range(1, 6)]
     )
     DENSENET121 = (
         ["conv5_block16_1_conv", "conv4_block24_1_conv"],

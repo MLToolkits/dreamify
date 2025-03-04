@@ -5,7 +5,7 @@ from dreamify.lib.models.base.layer_settings import ModelLayerSettings
 
 
 def get_layer_settings(model_name_enum: ModelType, dream_style="deep"):
-    
+
     model_settings = ModelLayerSettings[model_name_enum.name]
     if dream_style == "deep":
         return model_settings.deep
