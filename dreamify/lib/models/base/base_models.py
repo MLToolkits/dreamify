@@ -1,10 +1,10 @@
 import random
 
 from dreamify.lib.models.base.constants import MODEL_MAP, ModelType
-from dreamify.lib.models.base.layer_settings import ModelLayerNames
+from dreamify.lib.models.base.layer_names import ModelLayerNames
 
 
-def get_layer_settings(model_name_enum: ModelType, dream_style="deep"):
+def get_layer_names(model_name_enum: ModelType, dream_style="deep"):
     model_settings = ModelLayerNames[model_name_enum.name]
     if dream_style == "deep":
         return model_settings.deep

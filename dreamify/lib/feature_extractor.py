@@ -5,10 +5,11 @@ from dreamify.lib.models.base import choose_base_model
 
 
 class FeatureExtractor:
-    def __init__(self, model_name, dream_style, layer_settings):
+    def __init__(self, model_name, dream_style, layer_settings, channel_settings):
         self.model, self.layer_settings = choose_base_model(
             model_name, dream_style, layer_settings
         )
+        self.channel_settings = channel_settings
 
         # outputs is either:
         # - A list of layer outputs (for DeepDream)
