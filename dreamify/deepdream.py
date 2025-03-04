@@ -21,6 +21,7 @@ def deepdream(
     image_path,
     output_path="deepdream.png",
     model_name="inception_v3",
+    layer_settings=None,
     iterations=100,
     learning_rate=0.01,
     octaves=range(-2, 3),

@@ -78,4 +78,3 @@ def save_output(img, output_path, config):
         gif_path = output_path.parent / (output_path.stem + ".gif")
         framer.to_gif(gif_path, config.gif_duration, config.mirror_video)
         print(f"Dream gif saved to {gif_path}")
-

@@ -28,6 +28,7 @@ def dream(
     image_path,
     output_path="dream.png",
     model_name="inception_v3",
+    layer_settings=None,
     learning_rate=20.0,
     iterations=30,
     octaves=3,
