@@ -4,7 +4,7 @@ from dreamify.lib.models.base.constants import MODEL_MAP, ModelType
 from dreamify.lib.models.base.layer_names import ModelLayerNames
 
 
-def get_layer_names(model_name_enum: ModelType, dream_style="deep"):
+def get_layer_names(model_name_enum: ModelType, dream_style):
     model_settings = ModelLayerNames[model_name_enum.name]
     if dream_style == "deep":
         return model_settings.deep
@@ -27,7 +27,7 @@ def choose_base_model(model_name: str, dream_style="deep", layer_settings=None):
     model_fn = MODEL_MAP[model_name_enum]
     base_model = model_fn(weights="imagenet", include_top=False)
 
-    layer_names = get_layer_settings(model_name_enum, dream_style)
+    layer_names = get_layer_names(model_name_enum, dream_style)
 
     if layer_settings is not None:
         if layers_settings == "all":
