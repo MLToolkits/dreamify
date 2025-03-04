@@ -5,10 +5,15 @@ from dreamify.lib.models.base.layer_settings import ModelLayerSettings
 
 
 def get_layer_settings(model_name_enum: ModelType, dream_style="deep"):
-    try:
-        model_settings = ModelLayerSettings[model_name_enum.name]
-        return model_settings.deep if dream_style == "deep" else model_settings.shallow
-    except ValueError:
+    
+    model_settings = ModelLayerSettings[model_name_enum.name]
+    if dream_style == "deep":
+        return model_settings.deep
+    elif dream_style == "shallow":
+        return model_settings.deep
+    elif dream_style == "classic":
+        return model_settings.classic
+    else:
         raise NotImplementedError(
             f"Layer settings for {model_name_enum.name} with style {dream_style} not implemented."
         )

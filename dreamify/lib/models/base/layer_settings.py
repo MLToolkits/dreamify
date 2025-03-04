@@ -10,12 +10,18 @@ class ModelLayerSettings(Enum):
     INCEPTION_V3 = (
         ["mixed3", "mixed5"],
         generate_shallow_settings(["mixed4", "mixed5", "mixed6", "mixed7"]),
+        [f"mixed_{i}" for i in range(1, 12)]
     )
     VGG19 = (
         ["block5_conv3", "block5_conv2"],
         generate_shallow_settings(
             ["block5_conv3", "block5_conv2", "block4_conv3", "block3_conv3"]
         ),
+        [f"block1_conv{i}" for i in range(1, 3)] + 
+        [f"block2_conv{i}" for i in range(1, 3)] + 
+        [f"block3_conv{i}" for i in range(1, 6)] + 
+        [f"block4_conv{i}" for i in range(1, 6)] + 
+        [f"block5_conv{i}" for i in range(1, 6)] + 
     )
     DENSENET121 = (
         ["conv5_block16_1_conv", "conv4_block24_1_conv"],
@@ -27,6 +33,7 @@ class ModelLayerSettings(Enum):
                 "conv2_block12_1_conv",
             ]
         ),
+        []
     )
     EFFICIENTNET_V2L = (
         ["block7a_project_bn", "block6a_expand_activation"],
@@ -38,10 +45,12 @@ class ModelLayerSettings(Enum):
                 "block4a_expand_activation",
             ]
         ),
+        []
     )
     INCEPTION_RESNET_V2 = (
         ["mixed_7a", "mixed_6a"],
         generate_shallow_settings(["mixed_7a", "mixed_6a", "mixed_5a", "mixed_4a"]),
+        []
     )
     RESNET152V2 = (
         ["conv5_block3_out", "conv4_block6_out"],
@@ -53,6 +62,7 @@ class ModelLayerSettings(Enum):
                 "conv2_block3_out",
             ]
         ),
+        []
     )
     XCEPTION = (
         ["block14_sepconv2_act", "block13_sepconv2_act"],
@@ -64,6 +74,7 @@ class ModelLayerSettings(Enum):
                 "block11_sepconv2_act",
             ]
         ),
+        []
     )
     CONVNEXT_XL = (
         ["stage4_block2_depthwise_conv", "stage3_block2_depthwise_conv"],
@@ -75,6 +86,7 @@ class ModelLayerSettings(Enum):
                 "stage1_block2_depthwise_conv",
             ]
         ),
+        []
     )
     MOBILENET_V2 = (
         ["block_16_depthwise", "block_13_depthwise"],
@@ -86,6 +98,7 @@ class ModelLayerSettings(Enum):
                 "block_5_depthwise",
             ]
         ),
+        []
     )
 
     @property
@@ -97,3 +110,9 @@ class ModelLayerSettings(Enum):
     def shallow(self):
         """Returns shallow dream layers with activation coefficients."""
         return self.value[1]
+
+    @property
+    def classic(self):
+        """Returns the convolutional blocks of the model"""
+        return self.value[2]
+        
