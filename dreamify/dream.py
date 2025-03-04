@@ -45,9 +45,7 @@ def dream(
 ):
     output_path = Path(output_path)
 
-    ft_ext = FeatureExtractor(
-        model_name=model_name, dream_style="shallow", layer_settings=None
-    )
+    ft_ext = FeatureExtractor(model_name, "shallow", layer_settings, channel_settings)
 
     original_img = get_image(image_path)
     original_img = preprocess_image(original_img, model_name)

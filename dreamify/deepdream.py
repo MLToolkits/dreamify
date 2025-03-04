@@ -37,7 +37,7 @@ def deepdream(
 ):
     output_path = Path(output_path)
 
-    ft_ext = FeatureExtractor(model_name, dream_style="deep", layer_settings=None)
+    ft_ext = FeatureExtractor(model_name, "deep", layer_settings, channel_settings)
     get_tiled_gradients = TiledGradients(ft_ext.feature_extractor)
 
     img = get_image(image_path)
