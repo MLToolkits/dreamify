@@ -8,7 +8,7 @@ def get_layer_settings(model_name_enum: ModelType, dream_style="deep"):
     try:
         model_settings = ModelLayerSettings[model_name_enum.name]
         return model_settings.deep if dream_style == "deep" else model_settings.shallow
-    except KeyError:
+    except ValueError:
         raise NotImplementedError(
             f"Layer settings for {model_name_enum.name} with style {dream_style} not implemented."
         )
