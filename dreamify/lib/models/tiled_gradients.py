@@ -1,3 +1,5 @@
+from random import choice
+
 import tensorflow as tf
 
 
@@ -54,10 +56,26 @@ class TiledGradients(tf.Module):
         """Calculate the DeepDream loss by maximizing activations."""
         img_batch = tf.expand_dims(img, axis=0)
         layer_activations = feature_extractor(img_batch)
+
+        if feature_extractor.channel_settings == "random":
+            # Select a random channel for each layer
+            for layer_name in layer_activations:
+                channels = layer_activations[layer_name].shape[-1]
+                random_channel = choice(channels)
+                layer_activations[layer_name] = layer_activations[layer_name][
+                    ..., random_channel
+                ]
+
         if len(layer_activations) == 1:
             layer_activations = [layer_activations]
 
-        return tf.reduce_sum([tf.math.reduce_mean(act) for act in layer_activations])
+        # Ensure activations are iterable
+        if isinstance(layer_activations, dict):
+            activations_list = list(layer_activations.values())
+        else:
+            activations_list = [layer_activations]
+
+        return tf.reduce_sum([tf.reduce_mean(act) for act in activations_list])
 
     @staticmethod
     def random_roll(img, maxroll):

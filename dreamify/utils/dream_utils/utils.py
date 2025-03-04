@@ -1,3 +1,5 @@
+from random import choice
+
 import tensorflow as tf
 from tqdm import trange
 
@@ -5,10 +7,20 @@ from tqdm import trange
 def compute_loss(input_image, config):
     features = config.feature_extractor(input_image)
     loss = tf.zeros(shape=())
+
     for name in features.keys():
         coeff = config.layer_settings[name]
         activation = features[name]
+
+        # Apply channel selection logic
+        if config.feature_extractor.channel_settings == "random":
+            channels = activation.shape[-1]
+            random_channel = choice(channels)
+            activation = activation[..., random_channel]
+
+        # Compute loss on selected activations
         loss += coeff * tf.reduce_mean(tf.square(activation[:, 2:-2, 2:-2, :]))
+
     return loss
 
 
