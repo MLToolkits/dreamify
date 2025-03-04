@@ -6,7 +6,7 @@ def generate_shallow_settings(layers):
     return {layer: coef for layer, coef in zip(layers, [1.0, 1.5, 2.0, 2.5])}
 
 
-class ModelLayerSettings(Enum):
+class ModelLayerNames(Enum):
     INCEPTION_V3 = (
         ["mixed3", "mixed5"],
         generate_shallow_settings(["mixed4", "mixed5", "mixed6", "mixed7"]),
