@@ -25,6 +25,7 @@ def classicdream(
     output_path="classicdream.png",
     model_name="inception_v3",
     layer_settings=None,
+    channel_settings=None,
     iterations=10,
     learning_rate=1.5,
     octaves=4,
